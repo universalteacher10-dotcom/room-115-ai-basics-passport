@@ -12,6 +12,36 @@
 @media(max-width:1000px){.app{grid-template-columns:205px minmax(0,1fr)}.side{padding:20px 10px}.main{padding:25px 18px}.hero{grid-template-columns:1fr}.heroVisual{display:none}.grid.three{grid-template-columns:1fr 1fr}}
 @media(max-width:710px){.app{display:block;padding-bottom:65px}.side{position:fixed;top:auto;bottom:0;height:65px;width:100%;z-index:30;padding:4px;background:#0c2037;box-shadow:0 -5px 20px #0003;overflow:auto}.side .logo,.sideFoot{display:none}.menu{display:flex;gap:1px;padding:0;justify-content:space-around}.nav{font-size:10px;flex-direction:column;gap:0;padding:7px 4px;text-align:center;justify-content:center;min-width:67px}.nav.active:before{display:none}.main{padding:20px 13px}.top{padding-bottom:15px}.hero{padding:23px}.grid,.grid.three,.videoGrid{grid-template-columns:1fr}.sectionTitle{align-items:flex-start}.compare{grid-template-columns:1fr}.card{padding:18px}}
 @media print{.side,.noPrint,.top,footer,.btn,video{display:none!important}.app{display:block}.main{padding:0}.card,.panel{box-shadow:none;break-inside:avoid}.printOnly{display:block}.hero{padding:8px;background:white}body{background:white}.focus{background:white}}
+/* Guided student pathway */
+.pathHead{background:linear-gradient(118deg,#fefefe,#eaf6ff);border:1px solid #d8e9f6;border-radius:22px;padding:22px 25px;margin-bottom:18px}
+.pathHead h1{font-size:clamp(27px,3vw,38px);line-height:1.13;letter-spacing:-.04em;margin:8px 0}
+.pathStops{display:flex;align-items:center;gap:8px;overflow-x:auto;padding:8px 0 14px}
+.pathStop{display:flex;align-items:center;gap:8px;min-width:138px;border:1px solid #cce0ef;background:#fff;border-radius:13px;color:#315774;padding:10px 12px;text-align:left;font-size:13px;font-weight:800}
+.pathStop.active{background:#e4f4ff;border-color:#2377de;color:#0b54b0}
+.pathStop.finished{border-color:#72d4b5;background:#e9faf5;color:#167058}
+.pathStop.locked{opacity:.5;cursor:not-allowed}
+.pathNum{background:#d9ebf9;padding:5px 9px;border-radius:8px}
+.pathStop.active .pathNum{background:#1676d9;color:#fff}
+.pathMain{display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:16px}
+.pathResource{background:#f0f9ff;border:1px solid #cae5f5;border-radius:15px;padding:17px}
+.pathResource a{display:inline-flex;align-items:center;gap:5px;font-weight:800}
+.pathNote{border:1px solid #c5d9e9;border-radius:12px;overflow:hidden;margin:11px 0 15px}
+.pathNote .head,.pathNote .data{display:grid;grid-template-columns:33% 67%}
+.pathNote .head{background:#13436f;color:#fff;font-size:13px;font-weight:800}
+.pathNote .head>span,.pathNote .data>span{padding:12px;border-right:1px solid #b6d2e7}
+.pathNote .data>span{font-size:14px;background:#f7fbff}
+.pathNote .data>span:last-child,.pathNote .head>span:last-child{border-right:0}
+.pathChecklist{display:grid;gap:10px;margin-top:16px}
+.pathChecklist label{display:flex;align-items:flex-start;gap:10px;border:1px solid #cde0eb;background:#fafdff;border-radius:11px;padding:12px;font-weight:650}
+.pathChecklist input{width:20px;height:20px;accent-color:#156aca;margin-top:2px;flex-shrink:0}
+.pathNext{padding:18px;background:#e9f8ff;border:1px solid #cce8f3;border-radius:15px;margin-top:17px}
+.pathSide{position:sticky;top:24px;align-self:start}
+.pathSide h3{margin:0 0 8px}
+.pathMini{padding:10px 0;border-bottom:1px solid #e0ebf2}
+.pathMini:last-child{border-bottom:0}
+.pathMini small{color:#667e90}
+@media(max-width:960px){.pathMain{grid-template-columns:1fr}.pathSide{position:static}}
+@media(max-width:710px){.pathStops{padding-bottom:12px}.pathStop{min-width:119px}.pathHead{padding:18px}.pathNote .data>span{font-size:13px}}
 </style>
 </head>
 <body>
@@ -38,7 +68,7 @@ const RESOURCE = {
  googleyt:"https://www.youtube.com/watch?v=iR2O2GPbB0E",
  codeML:"https://www.youtube.com/watch?v=KHbwOetbmbs"
 };
-const pages=[["home","⌂","Home"],["learn","▷","Learn"],["practice","✧","Practice"],["study","▤","My Study Kit"],["words","◇","Vocabulary"],["resources","▣","Resources"],["teacher","ⓘ","Teacher Notes"]];
+const pages=[["path","→","Learning Path"],["home","⌂","Overview"],["study","▤","My Study Kit"],["practice","✧","Practice"],["words","◇","Vocabulary"],["resources","▣","Resources"],["teacher","ⓘ","Teacher Notes"]];
 const lexicon=[
  ["AI","Computer technology that can recognize patterns, respond to information, or create outputs.","Know AI","A chatbot answering a question"],
  ["Chatbot","An application that responds in a conversation using text or voice.","Know AI","A student asks a question in a chat window"],
@@ -86,8 +116,8 @@ const questions=[
  ["Why are your OWN flashcards important?","Creating and recalling information helps you learn","They are just decoration","AI can take the exam for you",0,"Active creation and recall strengthen study habits."]
 ];
 const NAVID="room115_ai_basics_v2";
-let state={page:"home",sessions:[false,false],study:[false,false,false],flash:{},responses:{},quizIndex:0,quizAnswers:{},quizHistory:[],vocabSearch:"",vocabFilter:"All",wordIndex:0,wordFlip:false,progressName:""};
-try{const saved=JSON.parse(localStorage.getItem(NAVID)||"{}");state={...state,...saved,sessions:(saved.sessions||state.sessions).slice(0,2),study:(saved.study||state.study).slice(0,3)}}catch{}
+let state={page:"path",pathStep:0,pathDone:[false,false,false,false,false],pathChecks:{},pathAnswers:{},sessions:[false,false],study:[false,false,false],flash:{},responses:{},quizIndex:0,quizAnswers:{},quizHistory:[],vocabSearch:"",vocabFilter:"All",wordIndex:0,wordFlip:false,progressName:""};
+try{const saved=JSON.parse(localStorage.getItem(NAVID)||"{}");state={...state,...saved,sessions:(saved.sessions||state.sessions).slice(0,2),study:(saved.study||state.study).slice(0,3),pathDone:(saved.pathDone||state.pathDone).slice(0,5),pathChecks:saved.pathChecks||{},pathAnswers:saved.pathAnswers||{}};if(state.page==="home"||state.page==="learn"||!pages.some(p=>p[0]===state.page))state.page="path"}catch{}
 const content=document.getElementById("content"),nav=document.getElementById("nav");
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 function persist(){try{localStorage.setItem(NAVID,JSON.stringify(state))}catch{}}
@@ -97,13 +127,173 @@ const link=(label,url)=>`<a target="_blank" rel="noopener noreferrer" href="${ur
 function bar(count,total){return `<div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="${total}" aria-valuenow="${count}"><b style="width:${100*count/total}%"></b></div>`}
 function section(title,sub=""){return `<div class="sectionTitle"><div><h2>${title}</h2>${sub?`<div class="small muted">${sub}</div>`:""}</div></div>`}
 function draw(){nav.innerHTML=pages.map(([p,ic,n])=>`<button class="nav ${p===state.page?"active":""}" onclick="setPage('${p}')"><span style="font-size:20px">${ic}</span><span>${n}</span></button>`).join("");
- const views={home:homeView,learn:learnView,practice:practiceView,study:studyView,words:wordsView,resources:resourcesView,teacher:teacherView};
+ const views={path:guidedPathView,home:homeView,learn:learnView,practice:practiceView,study:studyView,words:wordsView,resources:resourcesView,teacher:teacherView};
  content.innerHTML=views[state.page]();
 }
+
+/* Five studio checkpoints. Two AI-intro sessions + three original study products.
+   Source links are deliberately on their own pages, not hidden in a resource bank. */
+const pathway=[
+{
+title:"Meet AI",category:"INTRO · 1 OF 2",time:"~20 minutes",tag:"Watch → Explain → Note",
+description:"Start with the big picture: AI, chatbots, large language models, creating content, and finding information.",
+resources:[
+{label:"Khan Academy — What Is AI? (2:37)",url:"https://www.khanacademy.org/science/big-questions/what-is-ai",note:"Watch the video or select Transcript if playback is blocked."},
+{label:"Khan Academy — What Are AI Chatbots?",url:"https://www.khanacademy.org/college-careers-more/ai-for-education/x68ea37461197a514%3Aai-our-lives/x68ea37461197a514%3Aai-chatbots-who-s-behind-the-screen/v/what-are-ai-chatbots",note:"Short follow-up if time allows; you can read its transcript instead."}
+],
+guide:"Teacher's glossary: Levels 1–4. Find Chatbot, Information Retrieval, Generative AI, Prompt, LLM, ANI and AGI. Your source has the test vocabulary.",
+task:"Begin a page of two-column notes. On the LEFT, write a vocabulary term or a question. On the RIGHT, write its meaning IN YOUR OWN WORDS and one example. Start with at least two terms you heard in the videos.",
+exampleLeft:"How do I know a claim is supported?",exampleRight:"I can look for where the claim came from and compare it with the original. Example: check the book before repeating a quotation.",
+exampleWhy:"This models a QUESTION on the left, an explanation on the right, and a specific ELA example. It is not a completed test-vocabulary study guide.",
+noteCue:"Try your own entries for “chatbot” and “generative AI.” Keep room to add more vocabulary in later checkpoints.",
+question:"Which action is an example of generative AI?",answers:["Locating a quoted passage in your source","Creating a new example paragraph from a prompt","Finding a date printed on a page"],correct:1,feedback:"Generative AI makes new content. Retrieval locates information already available from sources.",
+checks:["I watched a Khan video or read its transcript.","I started my own two-column notes using the teacher's vocabulary."],
+fallback:"If Khan Academy cannot play on your Chromebook, use Transcript on the video page, then read Levels 1–4 in the teacher's source. Do not leave the lesson incomplete solely because the video is blocked."
+},
+{
+title:"Ask Better Questions",category:"INTRO · 2 OF 2",time:"~20 minutes",tag:"Explore → Try → Add notes",
+description:"Learn why specific prompts, role-prompting, and clear instructions help you use AI as a study partner.",
+resources:[
+{label:"Code.org Humanities — Writing Process, Level 1: Crafting Prompts",url:"https://studio.code.org/courses/gen-ai-humanities/units/1/lessons/1/student",note:"Select Level 1 only. Do not complete all four levels or the 45-minute teacher lesson."},
+{label:"Your built-in Prompt Builder (optional fallback)",url:"",note:"The original prompt builder in our site remains available as a built-in example."}
+],
+guide:"Teacher's glossary: Levels 5–7. Focus on AI Assumptions, Prompt Engineering, Multimodal AI and Role-Prompting. Level 8 (Prompt Injection) is extension vocabulary, not a new required technical topic.",
+task:"Before leaving this checkpoint, add at least two more two-column notes. Explain HOW better instructions improve a study response, and write your own ELA-focused prompt (do not ask AI to write your assignment).",
+exampleLeft:"Why revise instructions?",exampleRight:"A vague request may give me the wrong kind of help. Example: “Ask me one question about my theme claim; wait for my answer” is more useful than “Do my essay.”",
+exampleWhy:"Notice the student-friendly explanation and original school-life example. Write your own note about prompt engineering or role-prompting rather than copying this.",
+noteCue:"Add your own notes for “prompt engineering” and “role-prompting.” Highlight anything you want to turn into a flashcard.",
+question:"Which instruction makes the clearest STUDY prompt?",answers:["Help me, I guess.","Write my finished essay right now.","Act as my ELA coach. Quiz me on my claim one question at a time."],correct:2,feedback:"A role, an exact academic task, and limits on the response make prompts more useful for learning.",
+checks:["I tried the Code.org Level 1 activity, or completed the site's fallback practice.","I added my own explanations and an improved study prompt to my notes."],
+fallback:"If Code.org requires an unavailable login, use the built-in prompt builder from the course's learning examples, or compare the three prompts in the practice check here. Do not make a new unapproved account."
+},
+{
+title:"Question AI & Finish Your Notes",category:"STUDY KIT · 1 OF 3",time:"~20 minutes",tag:"Verify → Explain → Photograph",
+description:"Practice checking claims before trusting them, then finish the first required study artifact: original two-column notes.",
+resources:[
+{label:"Code.org Humanities — Research Process, Level 1: Verifying Quotes",url:"https://studio.code.org/courses/gen-ai-humanities/units/1/lessons/2/student",note:"Select Level 1 only, then return here. Do not complete the entire lesson."},
+{label:"Khan Academy — Learning With AI: Promising Practices",url:"https://www.khanacademy.org/college-careers-more/ai-for-education/x68ea37461197a514%3Aunit-teaching-with-ai/x68ea37461197a514%3Agetting-started-with-ai-in-the-classroom/a/learning-with-ai-promising-practices-for-students",note:"Optional reading if you need more support with checking AI information."}
+],
+guide:"Teacher's glossary: Levels 2, 9, 10 and 11 — Information Retrieval, Hallucination, Knowledge Cutoff and Session Context. Also revisit any missing terms from Levels 1–7.",
+task:"Complete your HANDWRITTEN two-column notes using the teacher's source. Each left-side term or question needs a student-written explanation and, when useful, an example. Take a clear photo; submit it in your existing badge tracker.",
+exampleLeft:"What should I do with a quote I can't locate?",exampleRight:"Find its original author or publication. If I cannot verify it, I should not use it as evidence in my analysis.",
+exampleWhy:"This is an application of fact-checking, not an answer bank. Your own notes need to cover the teacher's test terms with explanations you understand.",
+noteCue:"Finish your notes on “hallucination,” “knowledge cutoff” and “session context.” Your source explains each. Photograph your actual notes when done.",
+question:"An AI confidently cites a quotation that is not in the story. What's your best next step?",answers:["Use it because it sounds academic","Find the quotation in the original story or a reliable source","Ask AI to invent a page number"],correct:1,feedback:"A confident answer can still be wrong. Verify quotations against original sources before using them.",
+checks:["I practiced verifying a claim using Code.org or our source-checking example.","I finished AND photographed my original two-column notes for the official badge tracker."],
+fallback:"If Code.org is inaccessible, use the original story or another trustworthy source to verify a quotation. You still create your OWN notes; the site cannot submit your photograph for you."
+},
+{
+title:"Make Your Own Flashcards",category:"STUDY KIT · 2 OF 3",time:"~20 minutes",tag:"Create → Shuffle → Recall",
+description:"Turn vocabulary from your two-column notes into a second ORIGINAL study tool you can use for memory practice.",
+resources:[
+{label:"Your teacher's 13-level AI Basics Glossary",url:"https://docs.google.com/document/d/1Kp1XnWhoVCiMLsB7iBQgi8D_zyCHysvX9W6grH-cOEE/edit",note:"Check your meanings here, but explain them on flashcards in your own words."},
+{label:"Khan Academy — AI for Education",url:"https://www.khanacademy.org/college-careers-more/ai-for-education",note:"Optional background reading, not another course to complete."}
+],
+guide:"Study Guide Levels 1–13, especially Level 12 (AI Study Partner) and Level 13 (NotebookLM). Flashcards should include terms you personally struggle to remember.",
+task:"Make your own paper or digital flashcards. FRONT: a term or a practice question. BACK: a definition YOU wrote plus an example. Shuffle; answer aloud before looking at the back. Photograph or otherwise document the original cards in your badge tracker.",
+exampleLeft:"FRONT — What should a good study card ask?",exampleRight:"BACK — One specific question I can answer without peeking. Example: explain the difference between retrieving and generating information.",
+exampleWhy:"This is a MODEL of flashcard structure, not a full ready-made set. You make your own from the teacher's materials.",
+noteCue:"Review your two-column notes first. Any term you couldn't explain is a good candidate for a student-created flashcard.",
+question:"Which flashcard practice best builds memory?",answers:["Read only the backs while looking at the answers","Try to answer each card before flipping it","Let AI write all your submitted flashcards"],correct:1,feedback:"Active recall helps you check what you really remember. The submitted study materials must be student-created.",
+checks:["I made original flashcards from my own notes and the teacher's source.","I practiced recalling answers before flipping cards, and saved evidence for the tracker."],
+fallback:"You do not need another website. Paper index cards and handwritten vocabulary work perfectly. The site offers a blank printable template, never completed answers."
+},
+{
+title:"Your Choice & Test Readiness",category:"STUDY KIT · 3 OF 3",time:"~20 minutes",tag:"Choose → Review → Request",
+description:"Create one new study tool, review the full vocabulary list, and prepare to request the original badge assessment.",
+resources:[
+{label:"Your teacher's 13-level AI Basics Glossary",url:"https://docs.google.com/document/d/1Kp1XnWhoVCiMLsB7iBQgi8D_zyCHysvX9W6grH-cOEE/edit",note:"This remains the exact source for test terminology."},
+{label:"Our built-in practice questions",url:"",note:"Original practice with explanations; not the teacher's official 25-question certification test."}
+],
+guide:"Review all 13 levels. Check Chatbot / Retrieval / Generative AI / Prompt / LLM / ANI / AGI / Assumptions / Prompt Engineering / Multimodal / Role-Prompting / Hallucinations / Knowledge Cutoff / Session Context / Study Partner / NotebookLM. Prompt Injection is extra glossary material.",
+task:"Create your THIRD different study material from the teacher's source: a self-written one-page guide, concept map, self-made practice quiz or another approved method. Then try a few original practice questions. Save evidence in the badge tracker.",
+exampleLeft:"A question for my self-made quiz",exampleRight:"Write my own question from a term I keep missing, then an answer key explaining WHY it's correct.",
+exampleWhy:"The model demonstrates how to make your own practice question, rather than supplying a pre-completed student study guide.",
+noteCue:"Check your vocabulary notes and flashcards for weak areas; use them to choose what your final student-made study tool should cover.",
+question:"Which choice follows the AI Basics Badge requirements?",answers:["Submit someone else's finished notes","Complete the teacher's certification test inside this website","Create my third original study tool, then follow the official tracker to request the test"],correct:2,feedback:"The site is preparation. Your official 25-question test, test-request email, reflection and teacher approval are separate steps.",
+checks:["I created and documented my THIRD, different study tool.","I reviewed my vocabulary and know to use the official badge tracker to request my test."],
+fallback:"If you cannot access an outside resource, your teacher's source and three original study products are enough for the badge preparation. The official test remains unchanged."
+}
+];
+function pathCheck(i,k,value){if(!state.pathChecks[i])state.pathChecks[i]=[false,false];state.pathChecks[i][k]=value;persist();draw()}
+function pathAnswer(i,opt){state.pathAnswers[i]=opt;persist();draw()}
+function pathSelect(i){if(i>0&&!state.pathDone[i-1])return;state.pathStep=i;state.page="path";persist();draw();window.scrollTo({top:0,behavior:"smooth"})}
+function pathFinish(i){
+ const marks=state.pathChecks[i]||[false,false];
+ if(!marks.every(Boolean)||state.pathAnswers[i]===undefined)return;
+ state.pathDone[i]=true;
+ if(i<2)state.sessions[i]=true;
+ if(i>=2)state.study[i-2]=true;
+ if(i<4)state.pathStep=i+1;
+ persist();draw();window.scrollTo({top:0,behavior:"smooth"});
+}
+function guidedPathView(){
+ const completed=state.pathDone.filter(Boolean).length;
+ const i=Math.min(4,Math.max(0,Number(state.pathStep)||0)),step=pathway[i];
+ const checks=state.pathChecks[i]||[false,false],answer=state.pathAnswers[i],answered=answer!==undefined;
+ const ready=checks.every(Boolean)&&answered;
+ const model=(left,right)=>\`<div class="pathNote" role="table" aria-label="Model of two-column study notes"><div class="head" role="row"><span>LEFT · Term / Question</span><span>RIGHT · In my own words + example</span></div><div class="data" role="row"><span>\${esc(left)}</span><span>\${esc(right)}</span></div></div>\`;
+ return \`
+ <div class="pathHead">
+ <div class="eyebrow">Room 115 · Your guided learning path</div>
+ <h1>One step. One resource. Your own notes.</h1>
+ <p class="muted" style="max-width:770px;margin:0 0 13px">Use one ~20-minute Studio period per checkpoint. First learn the material; then CREATE your own required study tools. No extra worksheets, no technical AI course, and no replacement certification test.</p>
+ <div class="row"><strong>\${completed} of 5 checkpoints complete</strong><span class="pill">✓ Progress stays on this device</span></div>
+ <div style="margin-top:10px">\${bar(completed,5)}</div>
+ </div>
+ <div class="pathStops" aria-label="Guided study pathway">
+ \${pathway.map((s,j)=>\`<button class="pathStop \${i===j?"active":""} \${state.pathDone[j]?"finished":""} \${j>0&&!state.pathDone[j-1]?"locked":""}" aria-current="\${i===j?"step":"false"}" \${j>0&&!state.pathDone[j-1]?"disabled":""} onclick="pathSelect(\${j})"><span class="pathNum">\${state.pathDone[j]?"✓":j+1}</span><span>\${esc(s.title)}</span></button>\`).join("")}
+ </div>
+ <div class="pathMain">
+ <article class="card">
+ <div class="row"><span class="tag">\${esc(step.category)}</span><span class="pill">⏱ \${step.time}</span></div>
+ <h2 style="font-size:28px;margin:9px 0 5px;letter-spacing:-.025em">\${i+1}. \${esc(step.title)}</h2><p class="muted" style="margin-top:0">\${esc(step.description)}</p>
+ <div class="lessonPart"><h3>Activity 1 · Open ONE resource, then come back</h3>
+ \${step.resources.map((r,j)=>r.url?
+ \`<div class="pathResource" style="margin-bottom:10px"><span class="tag">\${j===0?"START HERE":"IF THERE'S TIME / SUPPORT"}</span><p style="margin:7px 0 5px">\${link(r.label,r.url)}</p><p class="small muted" style="margin:0">\${esc(r.note)}</p></div>\`:
+ \`<div class="pathResource" style="margin-bottom:10px"><span class="tag">OPTIONAL FALLBACK</span><p style="margin:7px 0 5px"><b>\${esc(r.label)}</b></p><p class="small muted" style="margin:0">\${esc(r.note)}</p></div>\`
+ ).join("")}
+ <p class="small muted"><b>When you're done, return to this tab.</b> Open only the named video/level, not the entire Khan or Code.org course. If the website is blocked, use the alternate instructions below.</p>
+ </div>
+ <div class="lessonPart"><h3>Activity 2 · Connect it to YOUR test vocabulary</h3><p>\${esc(step.guide)}</p>
+ <p><b>Teacher source:</b> \${link("Open the AI Basics Badge Study Guide",RESOURCE.source)}</p>
+ </div>
+ <div class="lessonPart"><h3>Activity 3 · Two-column notes / your study material</h3>
+ <p>\${esc(step.task)}</p>
+ <div class="tag">Teacher model · This is what helpful notes look like</div>
+ \${model(step.exampleLeft,step.exampleRight)}
+ <div class="focus"><b>Why this model works:</b> \${esc(step.exampleWhy)}</div>
+ <p style="margin:13px 0"><b>Now it's your turn:</b> \${esc(step.noteCue)}</p>
+ <div class="row noPrint">\${btn("Print blank two-column page","printNotes()","secondary")}\${i===3?btn("Print BLANK flashcards","printCards()","ghost"):""}\${i===4?btn("Print study plan","printPlan()","ghost"):""}</div>
+ <p class="small muted">⚠️ Write on paper or in your own document. The example is NOT an answer bank. Nothing you mark here is submitted to the teacher automatically.</p>
+ </div>
+ <div class="lessonPart"><h3>Activity 4 · One quick check</h3><p style="font-weight:700">\${esc(step.question)}</p>
+ <div class="choices">\${step.answers.map((opt,j)=>\`<button class="choice \${answer===j?"chosen":""}" onclick="pathAnswer(\${i},\${j})">\${String.fromCharCode(65+j)}. \${esc(opt)}</button>\`).join("")}</div>
+ \${answered?\`<div class="feedback \${answer===step.correct?"":"bad"}"><strong>\${answer===step.correct?"✓ You got it.":"Review the difference."}</strong> \${esc(step.feedback)}</div>\`:"<p class='small muted'>Choose an answer to get an explanation. This is formative practice, not your official badge exam.</p>"}
+ </div>
+ <div class="lessonPart"><h3>Activity 5 · Check off YOUR work</h3><p class="small muted">Check each statement only when you've actually done it. You can complete work over more than one Studio period.</p>
+ <div class="pathChecklist">\${step.checks.map((txt,k)=>\`<label><input type="checkbox" \${checks[k]?"checked":""} onchange="pathCheck(\${i},\${k},this.checked)"><span>\${esc(txt)}</span></label>\`).join("")}</div>
+ </div>
+ <div class="pathNext">
+ \${state.pathDone[i]?\`<strong>✓ Checkpoint complete.</strong><p class="small muted" style="margin:6px 0 12px">\${i===4?"Your preparation pathway is done. The real badge test and approval are still in your teacher's system.":"Return anytime, or go on to the next checkpoint."}</p>\`: \`<strong>Ready to move on?</strong><p class="small muted" style="margin:6px 0 12px">Answer the quick check and tick both work statements to unlock the next checkpoint.</p>\`}
+ <div class="row">\${i>0?btn("← Previous checkpoint",\`pathSelect(\${i-1})\`,"ghost"):"<span></span>"}
+ \${state.pathDone[i]?(i<4?btn("Continue to next →",\`pathSelect(\${i+1})\`):btn("Review test practice →","setPage('practice')")):
+ \`<button class="btn primary" onclick="pathFinish(\${i})" \${ready?"":"disabled"}>✓ Mark complete & continue →</button>\`}</div>
+ </div>
+ </article>
+ <aside class="card pathSide">
+ <h3>Where I am</h3><span class="tag">Stage \${i+1} / 5</span>
+ \${pathway.map((p,j)=>\`<div class="pathMini"><b>\${state.pathDone[j]?"✓ ":j===i?"→ ":"○ "}\${esc(p.title)}</b><small style="display:block">\${esc(p.category)}</small></div>\`).join("")}
+ <div style="margin-top:14px;padding-top:12px;border-top:1px solid #dce7ef"><b>Keep your badge requirements:</b><p class="small muted">Two-column notes → flashcards → third study tool → email test request → original 25-question test (18/25 passes) → reflection → approval.</p><b class="small">Need help accessing a site?</b><p class="small muted">\${esc(step.fallback)}</p><a class="small" href="\${RESOURCE.source}" target="_blank" rel="noopener noreferrer">Teacher's required source ↗</a></div>
+ </aside>
+ </div>
+ \`;
+}
+
 function homeView(){const done=state.sessions.filter(Boolean).length,s=state.study.filter(Boolean).length;return `
-<section class="hero"><div><div class="eyebrow">NHS · ELA Elective</div><h1>AI Basics<br>Passport</h1><p>Learn it. Question it. Use it to learn.<br>Two short, hands-on learning sessions. Then create <strong>your own</strong> study materials from your teacher's guide.</p>${btn("Start learning →","setPage('learn')")} ${btn("Teacher's source ↗","window.open(RESOURCE.source,'_blank')","ghost")}</div><div class="heroVisual"><div class="orb"><span>AI</span></div><b>ROOM 115</b><span class="muted small">Your learning lab</span></div></section>
+<section class="hero"><div><div class="eyebrow">NHS · ELA Elective</div><h1>AI Basics<br>Passport</h1><p>Learn it. Question it. Use it to learn.<br>Two short, hands-on learning sessions. Then create <strong>your own</strong> study materials from your teacher's guide.</p>${btn("Continue guided pathway →","setPage('path')")} ${btn("Teacher's source ↗","window.open(RESOURCE.source,'_blank')","ghost")}</div><div class="heroVisual"><div class="orb"><span>AI</span></div><b>ROOM 115</b><span class="muted small">Your learning lab</span></div></section>
 ${section("Your journey","Only about 20 minutes of each Studio block—your academic work stays protected.")}
-<div class="grid"><div class="card"><div class="row"><span class="tag">Intro sessions</span><span class="stat">${done}/2</span></div>${bar(done,2)}<p>Understand AI & prompt better · Question AI & study smarter</p>${btn(done===2?"Review lessons →":"Continue learning →","setPage('learn')","secondary")}</div>
+<div class="grid"><div class="card"><div class="row"><span class="tag">Intro sessions</span><span class="stat">${done}/2</span></div>${bar(done,2)}<p>Understand AI & prompt better · Question AI & study smarter</p>${btn(done===2?"Review guided pathway →":"Continue pathway →","setPage('path')","secondary")}</div>
 <div class="card"><div class="row"><span class="tag">Your study kit</span><span class="stat">${s}/3</span></div>${bar(s,3)}<p>Handwritten two-column notes · Your flashcards · Your choice</p>${btn("Build your study kit →","setPage('study')","secondary")}</div></div>
 ${section("Your two learning sessions")}
 <div class="grid">${[["01","Understand AI & Write Better Prompts","Chatbots · prompts · generative AI · LLMs",0],["02","Question AI & Be a Better Study Partner","Hallucinations · verification · academic agency",1]].map(([num,name,desc,i])=>`<div class="card"><div class="row"><span class="tag">Session ${num}</span><span class="pill">${state.sessions[i]?"✓ Completed":"20 min"}</span></div><h3>${name}</h3><p>${desc}</p>${btn("Open session →",`setPage('learn');setTimeout(()=>document.getElementById('lesson${i}')?.scrollIntoView({behavior:'smooth'}),50)`,"ghost")}</div>`).join("")}</div>
