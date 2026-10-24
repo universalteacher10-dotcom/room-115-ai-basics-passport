@@ -31,6 +31,8 @@ const RESOURCE = {
  skilltycoon:"https://skilltycoon.com/courses/ai-foundations",
  codewriting:"https://studio.code.org/courses/gen-ai-humanities/units/1/lessons/1/student",
  coderesearch:"https://studio.code.org/courses/gen-ai-humanities/units/1/lessons/2/student",
+ coderesources:"https://studio.code.org/courses/gen-ai-humanities/units/1/resources",
+ codeunit:"https://studio.code.org/courses/gen-ai-humanities/units/1?viewAs=Instructor",
  codevideos:"https://code.org/en-US/resources/videos",
  codeyt:"https://youtu.be/X-AWdfSFCHQ",
  googleyt:"https://www.youtube.com/watch?v=iR2O2GPbB0E",
@@ -193,6 +195,15 @@ ${resource("↗","Code.org · Generative AI for Humanities — Writing","Optiona
 ${resource("✓","Code.org · Generative AI for Humanities — Research","Optional quotation and information-verification activities.",RESOURCE.coderesearch)}
 ${resource("◎","SkillTycoon · Think, Prompt, Verify","Optional self-paced activity model; your own built-in lessons are sufficient.",RESOURCE.skilltycoon)}
 </div>
+${section("Code.org Humanities — the useful lesson resources","Teacher-approved practice aligned to the ELA AI Basics test. You do not need to finish the full two-lesson unit.")}
+<div class="card">
+<div class="focus"><strong>Best match for our badge:</strong> Use the teacher's vocabulary guide for the EXACT test terms. These Code.org humanities resources help you practice clearer prompts and checking claims, not programming or training an AI model.</div>
+${resource("01","Writing Process · Crafting Prompts","Try only the prompt activity. Supports prompts, LLMs, prompt engineering and role-prompting (test topics 3–6 and 10–12).",RESOURCE.codewriting)}
+${resource("02","Research Process · Verifying Quotes","Try verifying whether a quotation is real or misattributed. Supports information retrieval, hallucinations and checking facts (test topics 2, 13–14 and 25).",RESOURCE.coderesearch)}
+${resource("03","Code.org Humanities · Complete Teacher Resource Library","For your teacher: AI Chatbot Prompting Guide, chatbot guides, supporting slides and lesson resources. You may need to sign in to view some materials.",RESOURCE.coderesources)}
+${resource("04","Code.org Humanities · Instructor Unit Overview","Shows optional Evaluating Responses, search-engine research and chatbot research activities. The two complete lessons are each planned at 45 minutes; our badge does not require them.",RESOURCE.codeunit)}
+<p class="small muted" style="padding:8px 17px 0">Recommended use: one short prompt activity OR one short quote-check activity inside a regular 20-minute Studio slot. Work on your own study materials remains a separate badge requirement.</p>
+</div>
 ${section("Verified optional YouTube lessons","These supplement—not replace—your teacher's materials.")}
 <div class="card">
 ${resource("▶","Code.org · How Chatbots and LLMs Work","7:20 · Helpful visual explanation of chatbots and language models.",RESOURCE.codeyt)}
@@ -204,6 +215,7 @@ function resource(icon,name,description,url){return `<div class="resource"><div 
 function teacherView(){const n=state.sessions.filter(Boolean).length,m=state.study.filter(Boolean).length,correct=state.quizHistory.filter(x=>x.correct).length;return `<div class="eyebrow">Teacher's process · Student reference</div><h1 style="font-size:34px;margin:5px 0">Badge information</h1><p class="muted">This course supports, but does not replace, the existing AI Study Studio Badge Tracker and assessment.</p>
 <div class="grid"><div class="card"><h3>Your local progress summary</h3><p>Introduction sessions: <strong>${n}/2</strong><br>Self-created study formats: <strong>${m}/3</strong><br>Practice questions answered: <strong>${state.quizHistory.length}</strong><br>Practice accuracy: <strong>${state.quizHistory.length?Math.round(correct/state.quizHistory.length*100)+"%":"Not started"}</strong></p>${btn("Print progress summary","printSummary()","secondary")}</div>
 <div class="card"><h3>Official badge rules</h3><p>Original certification assessment: <strong>25 questions</strong>. Pass: <strong>18 correct or more</strong>. Up to <strong>3 attempts</strong> with the established half-credit corrections policy.</p><p>Three STUDENT-MADE study artifacts; teacher-request email saved as PDF; original + AI-polished reflection; approval email.</p></div></div>
+<div class="card"><h3>Code.org Humanities teaching resources</h3><p>The <a href="${RESOURCE.coderesources}" target="_blank" rel="noopener noreferrer">Generative AI for Humanities resource library ↗</a> contains the AI Chatbot Prompting Guide and product-specific chatbot guides, plus materials associated with the Writing and Research lessons. Some items may require teacher sign-in or verification. Our two 20-minute AI Basics sessions do not require teaching the entire Code.org unit.</p><p>Teacher-selectable extensions: Writing Process (Crafting Prompts and Evaluating Responses), Research Process (Verifying Quotes, Using a Search Engine, Using an AI Chatbot). Prioritize the two shorter tasks above. These are optional examples, not new required student submissions.</p></div>
 ${section("Classroom safeguards")}<div class="card"><p><strong>No accounts or class lists.</strong> Site progress is saved only in this browser (local storage). It is not sent to Mrs. Paden or to any server. If the browser data is cleared or you switch devices, progress may disappear.</p><p><strong>Academic agency.</strong> Student learning comes first. AI may support feedback and self-quizzing but should not generate the study products students submit as their own.</p><p><strong>Official badge approval.</strong> Do the actual 25-question certification test and all evidence in the existing badge system. This website's practice scores are not your official test score or badge.</p>
 <div class="row">${btn("Clear my saved progress","confirm('Clear all local progress?')&&clearAll()","ghost")}${btn("Open teacher source guide","window.open(RESOURCE.source,'_blank')","secondary")}</div></div>
 <div class="printOnly"><h2>My AI Basics progress</h2><p>Introduction: ${n}/2 · Study tools: ${m}/3 · Practice answered: ${state.quizHistory.length}</p></div>`}
