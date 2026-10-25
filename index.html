@@ -260,6 +260,30 @@ body{background:radial-gradient(ellipse at 85% 0%,#dff7fa 0,transparent 35%),lin
 @media(max-width:700px){.gcAction{grid-template-columns:1fr;padding:16px}.gcAction p{margin-left:0}.gcActionLink{width:100%}}
 @media print{.gcAction{box-shadow:none}.gcActionLink{color:#075e72!important;background:#fff!important;border:1px solid #075e72}}
 
+
+/* LOCKED VISUAL SYSTEM: canonical holographic SVG cards stored in assets/badges/source.
+   Do not replace with plain SVG line icons, emoji or circle badges. */
+.badgeShelf{grid-template-columns:repeat(7,minmax(0,1fr));gap:13px}
+.passportBadge.collectibleBadge{padding:6px 6px 10px;min-height:0;gap:5px;overflow:visible;background:linear-gradient(160deg,#0d2345,#04172c);border:1px solid #3f7399;border-radius:17px;box-shadow:0 10px 18px #020b2480;isolation:isolate}
+.badgeCardArtwork{position:relative;width:100%;display:block;aspect-ratio:300/390;border-radius:13px;overflow:hidden}
+.badgeCardArtwork img{display:block;width:100%;height:100%;object-fit:contain;filter:saturate(.48) brightness(.65);transition:filter .25s ease,transform .25s ease}
+.badgeCollectorSheen{position:absolute;inset:0;background:linear-gradient(115deg,transparent 16%,#d1fcff21 39%,transparent 58%);pointer-events:none;opacity:.35}
+.badgeCollectorState{font-size:10px;font-weight:900;letter-spacing:.12em;color:#a4b8d0;line-height:1.6;text-align:center}
+.passportBadge.collectibleBadge.isLocked{box-shadow:0 8px 20px #0008,inset 0 0 15px #19405a99}
+.passportBadge.collectibleBadge.isActive{border-color:#53eaff;box-shadow:0 0 17px #26dffd99,0 0 32px #00bcd044,inset 0 0 18px #21d5fa55}
+.passportBadge.collectibleBadge.isActive img{filter:saturate(1.2) brightness(1.12)}
+.passportBadge.collectibleBadge.isActive .badgeCollectorState{color:#72f6ff}
+.passportBadge.collectibleBadge.isEarned{border-color:#77f4e9;box-shadow:0 0 13px #61f1f088,0 0 28px #2baede55,inset 0 0 14px #63f7f344}
+.passportBadge.collectibleBadge.isEarned img{filter:saturate(1.18) brightness(1.13)}
+.passportBadge.collectibleBadge.isEarned .badgeCollectorState{color:#b9fff6}
+.passportBadge.collectibleBadge.isPrestige{border-color:#ffe29b;box-shadow:0 0 14px #ffcb6a99,0 0 30px #e6ac4c77,inset 0 0 18px #f9ba3d55}
+.passportBadge.collectibleBadge.isPrestige .badgeCollectorState{color:#ffe5a1}
+.passportBadge.collectibleBadge.isPrestige .badgeCollectorSheen{background:linear-gradient(110deg,transparent 10%,#fff2b144 40%,transparent 65%);opacity:1}
+.passportBadge.collectibleBadge:hover img,.passportBadge.collectibleBadge:focus-visible img{transform:scale(1.035)}
+.passportBadge.collectibleBadge.isFocused{outline:2px solid #fff0af;outline-offset:2px}
+@media(max-width:1000px){.badgeShelf{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:540px){.badgeShelf{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}}
+@media(prefers-reduced-motion:reduce){.badgeCardArtwork img,.passportBadge.collectibleBadge{transition:none!important}}
 </style>
 </head>
 <body>
@@ -416,8 +440,11 @@ function videoStage(i){if(i===0)return `<div class="mediaTiles">${stageMedia('AI
 function earnedTopicCount(){return literacyLevels.filter(row=>Boolean(state.pathDone[row[3]])).length}
 function showBadgeDetails(n){if(!Number.isInteger(n)||n<1||n>literacyLevels.length)return;state.badgeFocus=n;draw();document.getElementById('badge-detail')?.scrollIntoView({behavior:'smooth',block:'nearest'})}
 function dismissBadgeNotice(){state.lastEarnedStage=null;persist();draw()}
+function badgeAsset(number){return '/assets/badges/source/badge-'+String(number).padStart(2,'0')+'.svg'}
 function badgeMedallion(row){const [number,name,summary,stage]=row;const earned=Boolean(state.pathDone[stage]);const active=!earned&&state.pathStep===stage;const selected=state.badgeFocus===number;
- return `<button type="button" aria-pressed="${selected}" aria-label="Topic ${number}: ${esc(name)}. ${earned?'Earned':'Not yet earned'}. View details" class="passportBadge ${earned?'isEarned':active?'isActive':'isLocked'} ${selected?'isFocused':''}" style="--badgeColor:${badgeColors[number-1]}" onclick="showBadgeDetails(${number})"><span class="badgeSeal"><span class="badgeSealInner">${passportIcon(number-1)}</span><span class="badgeNum">${number}</span><span class="badgeStateIcon" aria-hidden="true">${earned?'✓':active?'●':'🔒'}</span></span><span class="badgeText">${esc(name)}</span><span class="badgeState">${earned?'EARNED':active?'WORKING ON IT':'TO UNLOCK'}</span></button>`
+ const earnedCount=Object.values(state.pathDone||{}).filter(Boolean).length;
+ const prestige=earned&&earnedCount>=10;
+ return `<button type="button" aria-pressed="${selected}" aria-label="Badge ${number}: ${esc(name)}. ${earned?'Earned':active?'In progress':'Not yet earned'}. View details" class="passportBadge collectibleBadge ${earned?'isEarned':active?'isActive':'isLocked'} ${prestige?'isPrestige':''} ${selected?'isFocused':''}" style="--badgeColor:${badgeColors[number-1]};--progressGlow:${Math.min(earnedCount,14)/14}" onclick="showBadgeDetails(${number})"><span class="badgeCardArtwork"><img src="${badgeAsset(number)}" alt="" loading="lazy"/><span class="badgeCollectorSheen"></span></span><span class="badgeCollectorState">${earned?'✦ EARNED':active?'◈ CURRENT':'◇ LOCKED'}</span></button>`
 }
 function moduleIllustration(i){
  const index=i===2?8:11;
