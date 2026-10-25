@@ -1,0 +1,168 @@
+{
+  "version": "1.0",
+  "system": "AI Passport holographic collector series",
+  "canonicalDirectory": "assets/badges/source",
+  "designLock": "docs/BADGE_SYSTEM_LOCK.md",
+  "sharedUsage": [
+    "AI Passport website",
+    "Master Study Guide",
+    "Student handouts",
+    "Slides and NotebookLM visuals"
+  ],
+  "badges": [
+    {
+      "id": 1,
+      "title": "Befriending AI",
+      "asset": "assets/badges/source/badge-01.svg",
+      "states": [
+        "locked",
+        "active",
+        "earned",
+        "gold-prestige"
+      ]
+    },
+    {
+      "id": 2,
+      "title": "The Knowledgeable AI",
+      "asset": "assets/badges/source/badge-02.svg",
+      "states": [
+        "locked",
+        "active",
+        "earned",
+        "gold-prestige"
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Generative AI",
+      "asset": "assets/badges/source/badge-03.svg",
+      "states": [
+        "locked",
+        "active",
+        "earned",
+        "gold-prestige"
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Types of AI",
+      "asset": "assets/badges/source/badge-04.svg",
+      "states": [
+        "locked",
+        "active",
+        "earned",
+        "gold-prestige"
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Over-eager AI",
+      "asset": "assets/badges/source/badge-05.svg",
+      "states": [
+        "locked",
+        "active",
+        "earned",
+        "gold-prestige"
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Prompt Engineering",
+      "asset": "assets/badges/source/badge-06.svg",
+      "states": [
+        "locked",
+        "active",
+        "earned",
+        "gold-prestige"
+      ]
+    },
+    {
+      "id": 7,
+      "title": "Questions Are Power",
+      "asset": "assets/badges/source/badge-07.svg",
+      "states": [
+        "locked",
+        "active",
+        "earned",
+        "gold-prestige"
+      ]
+    },
+    {
+      "id": 8,
+      "title": "The Prompt Hack",
+      "asset": "assets/badges/source/badge-08.svg",
+      "states": [
+        "locked",
+        "active",
+        "earned",
+        "gold-prestige"
+      ]
+    },
+    {
+      "id": 9,
+      "title": "Confident Lies",
+      "asset": "assets/badges/source/badge-09.svg",
+      "states": [
+        "locked",
+        "active",
+        "earned",
+        "gold-prestige"
+      ]
+    },
+    {
+      "id": 10,
+      "title": "AI Stuck in Time",
+      "asset": "assets/badges/source/badge-10.svg",
+      "states": [
+        "locked",
+        "active",
+        "earned",
+        "gold-prestige"
+      ]
+    },
+    {
+      "id": 11,
+      "title": "AI's Memory",
+      "asset": "assets/badges/source/badge-11.svg",
+      "states": [
+        "locked",
+        "active",
+        "earned",
+        "gold-prestige"
+      ]
+    },
+    {
+      "id": 12,
+      "title": "AI for Studies",
+      "asset": "assets/badges/source/badge-12.svg",
+      "states": [
+        "locked",
+        "active",
+        "earned",
+        "gold-prestige"
+      ]
+    },
+    {
+      "id": 13,
+      "title": "Beyond the Chatbot",
+      "asset": "assets/badges/source/badge-13.svg",
+      "states": [
+        "locked",
+        "active",
+        "earned",
+        "gold-prestige"
+      ]
+    },
+    {
+      "id": 14,
+      "title": "AI Safety & Real-World Risks",
+      "asset": "assets/badges/source/badge-14.svg",
+      "states": [
+        "locked",
+        "active",
+        "earned",
+        "gold-prestige"
+      ]
+    }
+  ]
+}
