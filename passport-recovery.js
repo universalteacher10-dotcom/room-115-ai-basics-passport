@@ -18,6 +18,6 @@ get("backup-file-button").onclick=()=>get("backup-file").click();
 get("backup-file").onchange=async e=>{try{const f=e.target.files[0];if(!f)return;if(f.size>100000)throw Error("File too large");restore(JSON.parse(await f.text()))}catch(err){say(err.message)}finally{e.target.value=""}};
 get("backup-code-button").onclick=()=>{get("backup-code").style.display="block";get("backup-apply").style.display="inline-block";get("backup-code").focus()};
 get("backup-apply").onclick=()=>{try{restore(parseCode(get("backup-code").value.trim()))}catch(err){say(err.message)}};
-function update(){let p={};try{p=JSON.parse(localStorage.getItem(KEY)||"{}")}catch{}const done=(p.pathDone||[]).filter(Boolean).length;const el=get("backup-stats");if(el)el.textContent="📊 Passport checkpoints: "+done+" / "+Math.max(5,(p.pathDone||[]).length)+" · Saved on this device";}
+function update(){let p={};try{p=JSON.parse(localStorage.getItem(KEY)||"{}")}catch{}const done=(p.pathDone||[]).filter(Boolean).length;const el=get("backup-stats");if(el)el.textContent="📊 Passport modules: "+done+" / "+Math.max(6,(p.pathDone||[]).length)+" · Saved on this device";}
 update();setInterval(update,2500);
 })();
