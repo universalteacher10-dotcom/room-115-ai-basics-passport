@@ -68,7 +68,7 @@ const RESOURCE = {
  googleyt:"https://www.youtube.com/watch?v=iR2O2GPbB0E",
  codeML:"https://www.youtube.com/watch?v=KHbwOetbmbs"
 };
-const pages=[["path","→","Learning Path"],["home","⌂","Overview"],["study","▤","My Study Kit"],["practice","✧","Practice"],["words","◇","Vocabulary"],["resources","▣","Resources"],["teacher","ⓘ","Teacher Notes"]];
+const pages=[["path","→","Learning Path"],["home","⌂","Overview"],["study","▤","My Study Kit"],["practice","✧","Practice"],["words","◇","Vocabulary"],["resources","▣","Resources"],["teacher","ⓘ","Teacher Notes"],["recovery","🛡️","Save & Restore"]];
 const lexicon=[
  ["AI","Computer technology that can recognize patterns, respond to information, or create outputs.","Know AI","A chatbot answering a question"],
  ["Chatbot","An application that responds in a conversation using text or voice.","Know AI","A student asks a question in a chat window"],
@@ -127,7 +127,7 @@ const link=(label,url)=>`<a target="_blank" rel="noopener noreferrer" href="${ur
 function bar(count,total){return `<div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="${total}" aria-valuenow="${count}"><b style="width:${100*count/total}%"></b></div>`}
 function section(title,sub=""){return `<div class="sectionTitle"><div><h2>${title}</h2>${sub?`<div class="small muted">${sub}</div>`:""}</div></div>`}
 function draw(){nav.innerHTML=pages.map(([p,ic,n])=>`<button class="nav ${p===state.page?"active":""}" onclick="setPage('${p}')"><span style="font-size:20px">${ic}</span><span>${n}</span></button>`).join("");
- const views={path:guidedPathView,home:homeView,learn:learnView,practice:practiceView,study:studyView,words:wordsView,resources:resourcesView,teacher:teacherView};
+ const views={path:guidedPathView,home:homeView,learn:learnView,practice:practiceView,study:studyView,words:wordsView,resources:resourcesView,teacher:teacherView,recovery:()=>`<div id="recovery-slot"></div>`};
  content.innerHTML=views[state.page]();
 }
 
