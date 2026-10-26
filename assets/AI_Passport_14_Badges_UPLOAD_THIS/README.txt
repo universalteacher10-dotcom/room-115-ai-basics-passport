@@ -1,0 +1,1 @@
+Extract the assets folder into your room-115-ai-basics-passport repository while on preview/ai-passport-resource-rebuild-20261025. These 14 WebP files match the paths already used by the preview site. Commit and push on preview only.
