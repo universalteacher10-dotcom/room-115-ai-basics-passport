@@ -4,7 +4,7 @@ const KEY="room115_ai_basics_v2";
 const panel=document.createElement("section");
 panel.style.cssText="margin:18px 0;padding:20px;border:2px solid #22b6c4;border-radius:18px;background:#e8f9fa;color:#12354c";
 panel.innerHTML='<h2>🛡️ My AI Passport · Save & Restore</h2><p id="backup-stats"></p><div style="display:flex;gap:9px;flex-wrap:wrap"><button id="backup-download">💾 Download Progress</button><button id="backup-copy">🔑 Copy Recovery Code</button><button id="backup-doc">📄 Open Recovery Doc</button><button id="backup-file-button">📂 Upload Progress</button><button id="backup-code-button">🔓 Enter Recovery Code</button></div><input id="backup-file" type="file" accept=".json" hidden><textarea id="backup-code" placeholder="Paste recovery code" aria-label="Recovery code" style="display:none;width:100%;min-height:90px;margin-top:12px"></textarea><button id="backup-apply" style="display:none">Restore Code</button><p id="backup-message" role="status" aria-live="polite"></p><small>Local browser storage can be cleared. Back up after major steps. A backup is not proof of teacher approval.</small>';
-const host=document.getElementById("content");if(host)host.before(panel);else document.body.prepend(panel);
+const originalDraw=draw;draw=function(){originalDraw();if(state.page==="recovery"){const slot=document.getElementById("recovery-slot");if(slot)slot.append(panel)}};draw();
 const get=id=>document.getElementById(id),say=t=>get("backup-message").textContent=t;
 const snapshot=()=>({format:"ai-passport-v1",savedAt:new Date().toISOString(),progress:JSON.parse(localStorage.getItem(KEY)||"{}")});
 const valid=o=>o&&o.format==="ai-passport-v1"&&o.progress&&typeof o.progress==="object"&&!Array.isArray(o.progress)&&JSON.stringify(o).length<100000;
