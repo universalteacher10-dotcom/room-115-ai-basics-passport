@@ -116,8 +116,8 @@ const questions=[
  ["Why are your OWN flashcards important?","Creating and recalling information helps you learn","They are just decoration","AI can take the exam for you",0,"Active creation and recall strengthen study habits."]
 ];
 const NAVID="room115_ai_basics_v2";
-let state={page:"path",pathStep:0,pathDone:[false,false,false,false,false],pathChecks:{},pathAnswers:{},sessions:[false,false],study:[false,false,false],flash:{},responses:{},quizIndex:0,quizAnswers:{},quizHistory:[],vocabSearch:"",vocabFilter:"All",wordIndex:0,wordFlip:false,progressName:""};
-try{const saved=JSON.parse(localStorage.getItem(NAVID)||"{}");state={...state,...saved,sessions:(saved.sessions||state.sessions).slice(0,2),study:(saved.study||state.study).slice(0,3),pathDone:(saved.pathDone||state.pathDone).slice(0,5),pathChecks:saved.pathChecks||{},pathAnswers:saved.pathAnswers||{}};if(state.page==="home"||state.page==="learn"||!pages.some(p=>p[0]===state.page))state.page="path"}catch{}
+let state={page:"home",pathStep:0,pathDone:[false,false,false,false,false],pathChecks:{},pathAnswers:{},sessions:[false,false],study:[false,false,false],flash:{},responses:{},quizIndex:0,quizAnswers:{},quizHistory:[],vocabSearch:"",vocabFilter:"All",wordIndex:0,wordFlip:false,progressName:""};
+try{const saved=JSON.parse(localStorage.getItem(NAVID)||"{}");state={...state,...saved,sessions:(saved.sessions||state.sessions).slice(0,2),study:(saved.study||state.study).slice(0,3),pathDone:(saved.pathDone||state.pathDone).slice(0,5),pathChecks:saved.pathChecks||{},pathAnswers:saved.pathAnswers||{}};if(!pages.some(p=>p[0]===state.page))state.page="home"}catch{}
 const content=document.getElementById("content"),nav=document.getElementById("nav");
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 function persist(){try{localStorage.setItem(NAVID,JSON.stringify(state))}catch{}}
@@ -236,8 +236,8 @@ function guidedPathView(){
  return `
  <div class="pathHead">
  <div class="eyebrow">Room 115 · Your guided learning path</div>
- <h1>One step. One resource. Your own notes.</h1>
- <p class="muted" style="max-width:770px;margin:0 0 13px">Use one ~20-minute Studio period per checkpoint. First learn the material; then CREATE your own required study tools. No extra worksheets, no technical AI course, and no replacement certification test.</p>
+ <h1>Your AI Basics Learning Path</h1>
+ <p class="muted" style="max-width:770px;margin:0 0 13px">Use one ~20-minute Studio period per checkpoint. First learn the material; then CREATE your own required study tools. Build understanding and your own study tools as you work toward the AI Basics Badge.</p>
  <div class="row"><strong>${completed} of 5 checkpoints complete</strong><span class="pill">✓ Progress stays on this device</span></div>
  <div style="margin-top:10px">${bar(completed,5)}</div>
  </div>
@@ -291,8 +291,8 @@ function guidedPathView(){
 }
 
 function homeView(){const done=state.sessions.filter(Boolean).length,s=state.study.filter(Boolean).length;return `
-<section class="hero"><div><div class="eyebrow">NHS · ELA Elective</div><h1>AI Basics<br>Passport</h1><p>Learn it. Question it. Use it to learn.<br>Two short, hands-on learning sessions. Then create <strong>your own</strong> study materials from your teacher's guide.</p>${btn("Continue guided pathway →","setPage('path')")} ${btn("Teacher's source ↗","window.open(RESOURCE.source,'_blank')","ghost")}</div><div class="heroVisual"><div class="orb"><span>AI</span></div><b>ROOM 115</b><span class="muted small">Your learning lab</span></div></section>
-${section("Your journey","Only about 20 minutes of each Studio block—your academic work stays protected.")}
+<section class="hero"><div><div class="eyebrow">ROOM 115 · AI STUDY STUDIO · BADGE JOURNEY</div><h1>AI Basics<br>Passport 🏅</h1><p>Learn it. Question it. Use it to learn.<br>Two short, hands-on learning sessions. Then create <strong>your own</strong> study materials from your teacher's guide.</p>${btn("Continue guided pathway →","setPage('path')")} ${btn("Teacher's source ↗","window.open(RESOURCE.source,'_blank')","ghost")}</div><div class="heroVisual"><div class="orb"><span>AI</span></div><b>ROOM 115</b><span class="muted small">Your learning lab</span><div style="font-size:32px" aria-label="Learning badge imagery">🧠 📚 🏆</div></div></section>
+<div class="card" style="padding:20px;margin:18px 0;background:linear-gradient(110deg,#e5faff,#f5f0ff)"><div class="eyebrow">🏅 AI BASICS BADGE · YOUR MILESTONES</div><div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:space-around;text-align:center;margin:14px 0"><div>🧠<br><b>Learn</b></div><div>📝<br><b>Study Tools</b></div><div>✉️<br><b>Test Request</b></div><div>🏆<br><b>Test</b></div><div>🌟<br><b>Reflection</b></div></div><p class="small muted">Milestones are visual guides, not awarded certificates. Teacher approval is still required.</p></div>${section("Your journey","Only about 20 minutes of each Studio block—your academic work stays protected.")}
 <div class="grid"><div class="card"><div class="row"><span class="tag">Intro sessions</span><span class="stat">${done}/2</span></div>${bar(done,2)}<p>Understand AI & prompt better · Question AI & study smarter</p>${btn(done===2?"Review guided pathway →":"Continue pathway →","setPage('path')","secondary")}</div>
 <div class="card"><div class="row"><span class="tag">Your study kit</span><span class="stat">${s}/3</span></div>${bar(s,3)}<p>Handwritten two-column notes · Your flashcards · Your choice</p>${btn("Build your study kit →","setPage('study')","secondary")}</div></div>
 ${section("Your two learning sessions")}
