@@ -650,7 +650,7 @@ function guidedPathView(){
   </div>
  </div>
  <div class="passportHeroFoot"><div class="passportHeroFootLabel"><strong>My learning progress</strong><span>${done} of 5 modules complete · ${earnedTopicCount()} of 14 badges earned</span></div>${bar(done,5)}</div>
-</section>`
+</section>
  ${newBadgeToast()}<div class="pathTabs">${pathway.map((step,j)=>`<button type="button" class="pathTab ${i===j?'sel':''} ${state.pathDone[j]?'done':''}" ${j>0&&!state.pathDone[j-1]?'disabled':''} onclick="pathVisit(${j})"><b>${state.pathDone[j]?'✓':j+1}</b><span>${esc(step.title)}</span></button>`).join('')}</div>
  <p class="pathSwipeHint">Swipe across the module tabs to see what comes next.</p>
  ${moduleRoadmap(i)}
