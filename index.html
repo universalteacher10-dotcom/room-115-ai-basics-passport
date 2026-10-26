@@ -68,7 +68,7 @@ const RESOURCE = {
  googleyt:"https://www.youtube.com/watch?v=iR2O2GPbB0E",
  codeML:"https://www.youtube.com/watch?v=KHbwOetbmbs"
 };
-const pages=[["path","→","Learning Path"],["home","⌂","Overview"],["study","▤","My Study Kit"],["practice","✧","Practice"],["words","◇","Vocabulary"],["resources","▣","Resources"],["teacher","ⓘ","Teacher Notes"],["recovery","🛡️","Save & Restore"]];
+const pages=[["path","→","Learning Path"],["home","⌂","Overview"],["badge","🏅","Badge Journey"],["study","▤","My Study Kit"],["practice","✧","Practice"],["words","◇","Vocabulary"],["resources","▣","Resources"],["teacher","ⓘ","Teacher Notes"],["recovery","🛡️","Save & Restore"]];
 const lexicon=[
  ["AI","Computer technology that can recognize patterns, respond to information, or create outputs.","Know AI","A chatbot answering a question"],
  ["Chatbot","An application that responds in a conversation using text or voice.","Know AI","A student asks a question in a chat window"],
@@ -127,7 +127,7 @@ const link=(label,url)=>`<a target="_blank" rel="noopener noreferrer" href="${ur
 function bar(count,total){return `<div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="${total}" aria-valuenow="${count}"><b style="width:${100*count/total}%"></b></div>`}
 function section(title,sub=""){return `<div class="sectionTitle"><div><h2>${title}</h2>${sub?`<div class="small muted">${sub}</div>`:""}</div></div>`}
 function draw(){nav.innerHTML=pages.map(([p,ic,n])=>`<button class="nav ${p===state.page?"active":""}" onclick="setPage('${p}')"><span style="font-size:20px">${ic}</span><span>${n}</span></button>`).join("");
- const views={path:guidedPathView,home:homeView,learn:learnView,practice:practiceView,study:studyView,words:wordsView,resources:resourcesView,teacher:teacherView,recovery:()=>`<div id="recovery-slot"></div>`};
+ const views={path:guidedPathView,home:homeView,badge:badgeJourneyView,learn:learnView,practice:practiceView,study:studyView,words:wordsView,resources:resourcesView,teacher:teacherView,recovery:()=>`<div id="recovery-slot"></div>`};
  content.innerHTML=views[state.page]();
 }
 
@@ -290,6 +290,18 @@ function guidedPathView(){
  `;
 }
 
+function badgeJourneyView(){const n=state.pathDone.filter(Boolean).length;return `
+<section class="hero"><div><div class="eyebrow">AI STUDY STUDIO · BADGE ACQUISITION</div><h1>Earn Your AI Basics Badge 🏅</h1><p>Follow the learning path, make your own study tools, and submit the required evidence. Your teacher verifies the official test and badge approval.</p>${btn("Continue Learning Path →","setPage('path')")} ${btn("Open Study Kit →","setPage('study')","ghost")}</div><div class="heroVisual"><div class="orb"><span>AI</span></div><b>AI STUDY STUDIO</b><span class="small muted">Learn · Practice · Create · Demonstrate</span></div></section>
+<div class="card" style="padding:20px;margin:18px 0"><h2>🎯 Your badge roadmap</h2><p class="muted">Learning-path checkpoints complete: ${n} of 5. Completing this website does not automatically award a badge.</p>${bar(n,5)}</div>
+<div class="grid">
+<div class="card" style="padding:20px"><h3>🟢 Step 1 · Start Here</h3><p>Review the AI Basics badge requirements, academic honesty, and how the passport works.</p>${btn("Open Learning Path","setPage('path')","secondary")}</div>
+<div class="card" style="padding:20px"><h3>🏆 Step 2 · Learn & Document</h3><p>Complete the required learning activities. Keep any teacher-requested course or certificate evidence in the official badge tracker.</p>${btn("Open Resources","setPage('resources')","secondary")}</div>
+<div class="card" style="padding:20px"><h3>📝 Step 3 · Three Study Materials</h3><p>Create and submit YOUR OWN two-column notes, flashcards, and one student-choice study tool. Photograph or export your work and upload evidence to your official badge tracker.</p>${btn("My Study Kit","setPage('study')","secondary")}</div>
+<div class="card" style="padding:20px"><h3>✉️ Step 4 · Email Test Request</h3><p>When your study materials are ready, send your teacher a professional email requesting the AI Basics test. Save a PDF of the sent email for your badge tracker.</p><p class="small muted">Your email is a request, not a test pass.</p></div>
+<div class="card" style="padding:20px"><h3>📋 Step 5 · Take the Test</h3><p>Take the teacher's official 25-question assessment. Passing is 18/25. Up to three attempts are permitted; follow the teacher's correction directions when needed.</p>${btn("Practice Only","setPage('practice')","secondary")}</div>
+<div class="card" style="padding:20px"><h3>🌟 Final Reflection & Badge Request</h3><p>Explain what you learned, how you used AI responsibly, and one warning or risk you learned about AI. Include original notes, draft, and polished reflection as directed. Request teacher approval by email.</p><p class="small muted">A badge is earned only after the teacher confirms requirements.</p></div>
+</div>
+<div class="card" style="padding:20px;margin-top:18px;background:#effaff"><h3>⚠️ Responsible AI reminder</h3><p>AI can hallucinate facts or quotations, miss context, show bias, and expose private information when you share it. Verify important claims with trusted sources; protect your own and others' data; submit your own thinking.</p></div>`;}
 function homeView(){const done=state.sessions.filter(Boolean).length,s=state.study.filter(Boolean).length;return `
 <section class="hero"><div><div class="eyebrow">AI STUDY STUDIO · AI STUDY STUDIO · BADGE JOURNEY</div><h1>AI<br>Passport 🏅</h1><p>Learn it. Question it. Use it to learn.<br>Two short, hands-on learning sessions. Then create <strong>your own</strong> study materials from your teacher's guide.</p>${btn("Continue guided pathway →","setPage('path')")} ${btn("Teacher's source ↗","window.open(RESOURCE.source,'_blank')","ghost")}</div><div class="heroVisual"><div class="orb"><span>AI</span></div><b>AI STUDY STUDIO</b><span class="muted small">Your learning lab</span><div style="font-size:32px" aria-label="Learning badge imagery">🧠 📚 🏆</div></div></section>
 <div class="card" style="padding:20px;margin:18px 0;background:linear-gradient(110deg,#e5faff,#f5f0ff)"><div class="eyebrow">🏅 AI BASICS BADGE · YOUR MILESTONES</div><div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:space-around;text-align:center;margin:14px 0"><div>🧠<br><b>Learn</b></div><div>📝<br><b>Study Tools</b></div><div>✉️<br><b>Test Request</b></div><div>🏆<br><b>Test</b></div><div>🌟<br><b>Reflection</b></div></div><p class="small muted">Milestones are visual guides, not awarded certificates. Teacher approval is still required.</p></div>${section("Your journey","Only about 20 minutes of each Studio block—your academic work stays protected.")}
