@@ -377,119 +377,44 @@ body{background:radial-gradient(ellipse at 85% 0%,#dff7fa 0,transparent 35%),lin
 @media(prefers-reduced-motion:reduce){.moduleBadgeCard{transition:none}}
 
 
-/* Persistent, visible student backup controls; no new accounts or remote storage. */
-.progressSafeguard{
- position:relative;z-index:3;display:flex;flex-direction:column;gap:9px;
- background:linear-gradient(105deg,#e8f6ff,#f0eefa 70%,#fff8e4);
- border:1.5px solid #8abeda;border-left:5px solid #168fc4;
- border-radius:14px;padding:13px 16px;margin:0 0 15px;
- box-shadow:0 4px 13px #114e7622
-}
-.progressSafeguardIntro{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:12px;row-gap:4px}
-.progressSafeguardIntro strong{font-size:15px;color:#073956;font-weight:900}
-.progressSafeguardIntro span{font-size:12px;color:#37556c}
-.progressSafeguardActions{display:flex;gap:8px;flex-wrap:wrap}
-.progressSafeguardActions .btn{font-size:13px!important;padding:9px 12px!important;min-height:38px;white-space:normal}
-.progressSafeguardActions .btn:first-child{background:#136ca1;color:#fff}
-.progressSafeguardActions .btn:nth-child(2){background:#fff;border:1px solid #5e95b8;color:#16426e}
-.progressBackupFeedback{font-size:12px;color:#176185}
-.progressBackupFeedback:empty{display:none}
-.progressBackupFeedback .backupCode{max-height:120px;width:100%;font-family:monospace;user-select:all}
-@media(max-width:600px){.progressSafeguard{padding:12px}.progressSafeguardActions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.progressSafeguardActions .btn{font-size:12px!important;padding:8px 6px!important}}
-
-
-/* Progress tools live in the left sidebar, not above the lesson. */
-.side .progressSafeguard{
- z-index:2;
- position:relative;
- margin:13px 0 0;
- padding:12px 10px 13px;
- display:block;
- background:linear-gradient(155deg,#133a59,#0d2b48);
- color:#f5fbff;
- border:1px solid #4184aa;
- border-left:3px solid #25b6e5;
- box-shadow:inset 0 1px 0 #ffffff1a,0 4px 12px #0003;
-}
-.side .progressSafeguardIntro{display:flex;flex-direction:column;gap:5px}
-.side .progressSafeguardIntro strong{font-size:13px;color:#ebfaff}
-.side .progressSafeguardIntro span{font-size:11px;color:#c3dce9;line-height:1.35}
-.side .progressSafeguardActions{display:grid;grid-template-columns:minmax(0,1fr);gap:6px;margin-top:10px}
-.side .progressSafeguardActions .btn{
- width:100%;min-width:0;
- text-align:center;
- font-size:11px!important;
- line-height:1.25;
- padding:9px 6px!important;
- border-radius:9px;
- min-height:36px;
-}
-.side .progressSafeguardActions .btn:first-child{background:#1b9cc9;color:#fff;border:1px solid #86e2f7}
-.side .progressSafeguardActions .btn:nth-child(2){background:#d9effb;border:1px solid #94d5e6;color:#113d5f}
-.side .progressSafeguardActions .btn:nth-child(3),
-.side .progressSafeguardActions .btn:nth-child(4){background:#153b60;border:1px solid #4e83a8;color:#e8f4ff}
-.side .progressSafeguardActions .btn:hover,.side .progressSafeguardActions .btn:focus-visible{outline:2px solid #d3edff;outline-offset:1px}
-.side .progressBackupFeedback{color:#d2f8ff;overflow-wrap:anywhere;margin-top:8px}
-.side .progressBackupFeedback label,.side .progressBackupFeedback p{font-size:11px;color:#d2f8ff}
-.side .progressBackupFeedback textarea{font-size:10px;min-height:90px;color:#102e4b;background:#fff}
-.progressSafeguardToggle{display:none}
-/* The sidebar becomes bottom navigation on phones. Keep tools reachable via a compact left-side toggle. */
-@media(max-width:710px){
- .side .progressSafeguard{
-  position:fixed;left:10px;bottom:75px;
-  width:166px;max-width:calc(100vw - 20px);
-  height:auto;padding:5px;z-index:35;
-  border-radius:12px;box-shadow:0 8px 25px #001a39a6
- }
- .progressSafeguardToggle{
-  display:block;width:100%;border:0;border-radius:8px;padding:9px 8px;
-  background:#1b9cc9;color:white;font-size:12px;font-weight:900;cursor:pointer;
- }
- .side .progressSafeguard .progressSafeguardContent{display:none}
- .side .progressSafeguard.open{width:min(340px,calc(100vw - 20px));max-height:calc(100dvh - 100px);overflow-y:auto;padding:9px}
- .side .progressSafeguard.open .progressSafeguardContent{display:block;margin-top:9px}
- .side .progressSafeguardIntro span{font-size:11px}
-}
-@media print{.progressSafeguard{display:none!important}}
-
-
 /* AI Passport Save & Restore page */
 .recoveryPage{max-width:1100px;margin:auto}.recoveryHero{padding:30px;border-radius:25px;background:linear-gradient(115deg,#103b66,#087e9a 70%,#12b6bc);color:#fff;display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center;box-shadow:0 20px 40px #12496a25}.recoveryHero h1{font-size:clamp(29px,4vw,47px);line-height:1.1;margin:7px 0}.recoveryHero p{color:#e1f8ff;max-width:600px}.recoveryIcon{font-size:76px;filter:drop-shadow(0 10px 15px #002b4855)}.recoveryGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:18px}.recoveryCard{padding:23px;border:1px solid #d4e6f1;border-radius:20px;background:#fff;box-shadow:0 10px 26px #113c6210}.recoveryCard h3{margin:0 0 7px;font-size:20px}.recoveryCard p{color:#547087}.recoveryCard button{border:0;border-radius:12px;padding:11px 16px;background:#116bca;color:#fff;font-weight:800;cursor:pointer}.recoveryCard button:hover{background:#0756a7}.recoveryCard input,.recoveryCard textarea{border:1px solid #b9d4e4;border-radius:12px;padding:12px;max-width:100%}.recoveryCard textarea{width:100%;min-height:120px}.recoveryStat{display:inline-block;background:#d9f7f3;color:#086f72;border-radius:99px;padding:7px 13px;font-weight:850}.recoveryMessage{padding:12px;border-radius:12px;background:#e8f8ff;color:#13547d;margin-top:15px}.recoveryFine{color:#59768a;font-size:13px;margin-top:18px}@media(max-width:720px){.recoveryGrid{grid-template-columns:1fr}.recoveryHero{grid-template-columns:1fr}.recoveryIcon{display:none}}
 
-/* Four consolidated progress controls use the existing Passport sidebar styles. */
-.side #backup-shown[hidden],.side #backup-restore[hidden]{display:none!important}
-.side .progressBackupFeedback{margin-top:9px;line-height:1.4}
-.side .progressBackupFeedback label{display:block;color:#d9f4ff;font-size:11px;font-weight:750;margin:9px 0 4px}
-.side .progressBackupFeedback textarea{width:100%;box-sizing:border-box;resize:vertical;overflow-wrap:anywhere}
-.side #backup-apply{width:100%;margin-top:7px;background:#1b9cc9;color:#fff}
-.side #backup-message{color:#d5edfb;margin:9px 0 7px;font-size:11px}
-.side #sidebar-backup-stats{display:block;color:#a8dfea;font-size:11px;margin-top:10px}
+
+/* The original concise student mission, styled as the AI Study Studio hero. */
+.pathHead.passportHero{position:relative;isolation:isolate;overflow:hidden;padding:28px 29px 22px!important;border:1px solid #3586a4!important;border-radius:24px;background:radial-gradient(ellipse at 85% 6%,#167e8e77 0,transparent 41%),linear-gradient(122deg,#061d3a 0%,#093e61 57%,#0e7482 100%)!important;color:#f2fcff;box-shadow:0 17px 35px #082d4d32}
+.passportHero::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.28;background:repeating-linear-gradient(120deg,transparent 0 94px,#72d9e608 95px 96px)}
+.passportHero .pathHeroGrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(166px,218px);gap:22px;align-items:center;position:relative;z-index:1}
+.passportHero .eyebrow{color:#a6f3e8;letter-spacing:.14em;font-size:11px}
+.passportHero .eyebrow span{color:#5cbdd2;padding:0 4px}
+.passportHero h1{color:#fff!important;font-size:clamp(32px,3.5vw,48px)!important;line-height:1.12;letter-spacing:-.045em;margin:11px 0 12px!important;font-weight:850}
+.passportHero h1 em{color:#8af0d8;font-style:normal}
+.passportHero .passportHeroDescriptor{color:#f0fcff!important;font-weight:750;font-size:15px;line-height:1.5;margin:0 0 9px!important}
+.passportHero .passportHeroSubtext{color:#cbe4ee!important;font-size:13px;line-height:1.57;max-width:620px;margin:0 0 14px!important}
+.passportHeroRoute{display:flex;flex-wrap:wrap;gap:8px;align-items:center;color:#e0fff8;font-size:12px;font-weight:850}
+.passportHeroRoute b{color:#64d9df;font-weight:700}
+.passportHeroArt{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-width:0;padding:13px;border:1px solid #65bed052;background:linear-gradient(135deg,#ffffff1a,#0436549e);border-radius:19px;box-shadow:inset 0 1px #fff2,0 10px 25px #06203b36}
+.passportHeroArtLabel{font-size:10px;letter-spacing:.11em;font-weight:900;color:#c0f6ed;text-align:center}
+.passportHeroArt img{display:block;width:min(100%,141px);height:137px;object-fit:contain;filter:drop-shadow(0 10px 17px #001c39aa)}
+.passportHeroStats{display:flex;flex-direction:column;align-items:center;gap:3px;color:#fff;text-align:center}
+.passportHeroStats strong{font-size:36px;line-height:1;font-weight:900;font-variant-numeric:tabular-nums;color:#fff}
+.passportHeroStats strong span{font-size:17px;color:#9ef1e5}
+.passportHeroStats small{font-size:11px;color:#ccecf2;font-weight:700}
+.passportHeroFoot{position:relative;z-index:1;border-top:1px solid #b3f6ff3a;padding-top:13px;margin-top:16px}
+.passportHeroFootLabel{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 14px;color:#ebfbff;font-size:12px}
+.passportHeroFootLabel span{color:#b2dfe7}
+.passportHero .progress{height:9px;background:#ffffff2b;border-radius:40px;margin-top:9px;overflow:hidden;border:1px solid #ffffff20}
+.passportHero .progress b{background:linear-gradient(90deg,#38afd9,#7cf0d5);border-radius:40px}
+@media(max-width:900px){.pathHead.passportHero{padding:21px!important}.passportHero .pathHeroGrid{grid-template-columns:minmax(0,1fr) 165px;gap:15px}.passportHeroArt img{height:115px}.passportHero h1{font-size:34px!important}}
+@media(max-width:570px){.passportHero .pathHeroGrid{grid-template-columns:1fr;gap:14px}.passportHero h1{font-size:clamp(29px,8vw,36px)!important}.passportHeroArt{flex-direction:row;justify-content:center;gap:12px;padding:8px 13px}.passportHeroArtLabel{display:none}.passportHeroArt img{width:77px;height:76px}.passportHeroStats strong{font-size:32px}.passportHero .passportHeroSubtext{font-size:12px}.passportHeroFootLabel{font-size:11px}}
+@media print{.pathHead.passportHero{background:#fff!important;color:#153d5d}.passportHero h1,.passportHero .passportHeroDescriptor,.passportHero .passportHeroSubtext{color:#153d5d!important}}
 
 </style>
 </head>
 <body>
 <div class="app">
 <aside class="side"><div class="logo"><div class="logoMark" aria-hidden="true"><img src="/assets/branding/ai-study-studio-neural-logo.svg" alt=""/></div><div><strong>AI Study Studio</strong><small>AI Passport · Learning Modules</small></div></div><nav class="menu" id="nav"></nav>
-<section class="progressSafeguard" id="progressTools" aria-label="AI Passport progress backup and recovery">
- <button type="button" class="progressSafeguardToggle" aria-controls="progressSafeguardContent" aria-expanded="false" onclick="toggleProgressTools()">💾 Progress Backup</button>
- <div class="progressSafeguardContent" id="progressSafeguardContent">
-  <div class="progressSafeguardIntro"><strong>💾 Save & Restore</strong><span>Back up after every Studio session. Keep your file or recovery code in your private school Drive.</span></div>
-  <div class="progressSafeguardActions">
-   <button type="button" class="btn secondary" id="backup-download">⬇ Save</button>
-   <button type="button" class="btn ghost" id="backup-file-button">⬆ Upload</button>
-   <button type="button" class="btn ghost" id="backup-copy">🔑 Show Code</button>
-   <button type="button" class="btn ghost" id="backup-code-button">↩ Restore Code</button>
-  </div>
-  <input id="backup-file" type="file" accept=".json,application/json" aria-label="Upload a saved AI Passport progress file" hidden />
-  <div class="progressBackupFeedback" id="backup-interaction">
-   <div id="backup-shown" hidden><label for="backup-display-code">Your recovery code (copy it into your private recovery log)</label><textarea class="backupCode" id="backup-display-code" rows="4" spellcheck="false" readonly aria-label="Your AI Passport recovery code"></textarea></div>
-   <div id="backup-restore" hidden><label for="backup-code">Paste a saved AIP1- recovery code</label><textarea class="backupCode" id="backup-code" rows="4" spellcheck="false" placeholder="Paste your AIP1- code here" aria-label="Paste AI Passport recovery code"></textarea><button type="button" class="btn secondary" id="backup-apply">Confirm Restore</button></div>
-   <p id="backup-message" role="status" aria-live="polite">Progress stays on this device until you save a backup.</p>
-  </div>
-  <div class="progressSafeguardIntro"><span id="sidebar-backup-stats" aria-live="polite">Checking saved progress…</span></div>
- </div>
-</section>
-<div class="sideFoot">Learn it.<br>Question it.<br>Use it to learn.<br><br>Progress saves on this device. Use the Save button above after each Studio session.</div></aside>
+<div class="sideFoot">Learn it.<br>Question it.<br>Use it to learn.<br><br>Progress saves on this device. Use the Save & Restore page above at the end of each Studio session.</div></aside>
 <main class="main">
 <div class="top"><div><div class="crumb">AI PASSPORT · 14 TOPIC BADGES</div><div style="font-size:20px;font-weight:850;letter-spacing:-.03em">AI Study Studio</div></div><div class="right"><span class="pill">⏱ 20-min Studio sessions</span></div></div>
 <div id="content"></div><footer>AI Study Studio · Learn here. Submit your work in Google Classroom. Your teacher checks the badge requirements and administers the certification test.</footer>
@@ -709,7 +634,23 @@ function guidedPathView(){
  const done=state.pathDone.filter(Boolean).length,i=Math.max(0,Math.min(4,Number(state.pathStep)||0)),p=pathway[i],a=state.pathAnswers[i]||{},checks=state.pathChecks[i]||[false,false],s=stageDirections[i];
  const score=p.questions.filter((q,k)=>a[k]===q[2]).length,compareScore=comparePrompts[i].filter((q,k)=>(state.compareAnswers[i]||{})[k]===q.answer).length;
  const ready=p.checks.every((_,k)=>checks[k])&&score===p.questions.length&&compareScore===comparePrompts[i].length&&(i!==4||safetyReady());
- return `<div class="pathHead stage-${i}"><div class="eyebrow">AI STUDY STUDIO · LEARNING MODULES</div><div class="pathHeroGrid"><div><h1>AI Passport</h1><p class="studioSubhead">Five learning modules · 14 AI literacy badges</p><p class="studentMission">Mastering these levels of AI literacy is your first step toward being ready for the future with Artificial Intelligence.</p><p>Earn topic badges by completing each AI Passport Module. Follow Learn → Create → Submit → Continue.</p></div><div class="heroMetric"><strong>${earnedTopicCount()}<span>/14</span></strong><span>Topic badges</span><small>${done}/5 modules complete</small></div></div><div class="row"><strong>My learning progress</strong><span class="pill">~20 minutes per Studio session</span></div>${bar(done,5)}</div>
+ return `<section class="pathHead stage-${i} passportHero" aria-label="AI Passport learning progress">
+ <div class="pathHeroGrid">
+  <div class="passportHeroCopy">
+   <div class="eyebrow">AI STUDY STUDIO <span aria-hidden="true">·</span> AI PASSPORT</div>
+   <h1>One step. One resource.<br><em>Your own notes.</em></h1>
+   <p class="passportHeroDescriptor">Five learning modules. Fourteen collectible AI literacy badges.</p>
+   <p class="passportHeroSubtext">Use one ~20-minute Studio period per checkpoint. Learn first, then CREATE your own required study tools. No extra worksheets, technical AI course, or replacement certification test.</p>
+   <div class="passportHeroRoute"><span>Learn</span><b aria-hidden="true">→</b><span>Create</span><b aria-hidden="true">→</b><span>Submit</span><b aria-hidden="true">→</b><span>Continue</span></div>
+  </div>
+  <div class="passportHeroArt" aria-label="Your collectible badge progress">
+   <span class="passportHeroArtLabel">CURRENT TOPIC BADGE</span>
+   <img src="${badgeAsset([1,6,9,12,14][i])}" onerror="badgeImageFallback(this)" alt="${esc(literacyLevels[[0,5,8,11,13][i]][1])} badge artwork"/>
+   <div class="passportHeroStats"><strong>${earnedTopicCount()}<span>/14</span></strong><small>Topic badges earned</small></div>
+  </div>
+ </div>
+ <div class="passportHeroFoot"><div class="passportHeroFootLabel"><strong>My learning progress</strong><span>${done} of 5 modules complete · ${earnedTopicCount()} of 14 badges earned</span></div>${bar(done,5)}</div>
+</section>`
  ${newBadgeToast()}<div class="pathTabs">${pathway.map((step,j)=>`<button type="button" class="pathTab ${i===j?'sel':''} ${state.pathDone[j]?'done':''}" ${j>0&&!state.pathDone[j-1]?'disabled':''} onclick="pathVisit(${j})"><b>${state.pathDone[j]?'✓':j+1}</b><span>${esc(step.title)}</span></button>`).join('')}</div>
  <p class="pathSwipeHint">Swipe across the module tabs to see what comes next.</p>
  ${moduleRoadmap(i)}
@@ -735,39 +676,6 @@ function guidedPathView(){
  <div class="pathNext"><strong>${state.pathDone[i]?'✓ Stage finished':'Ready to finish this stage?'}</strong><p class="small muted">Complete the compare choices (${compareScore}/${comparePrompts[i].length} correct), the three practice questions (${score}/3 correct), and the two work checks.</p><div class="row">${i>0?btn('← Previous stage',`pathVisit(${i-1})`,'ghost'):'<span></span>'}${state.pathDone[i]?(i<4?btn('Next stage →',`pathVisit(${i+1})`):btn('Review all practice','setPage(\'practice\')')):`<button type="button" class="btn primary" id="${i===4?'module5-finish':'module-finish'}" onclick="pathComplete(${i})" ${ready?'':'disabled'}>✓ Finish and continue →</button>`}</div></div>
  </article><aside class="card pathSide"><h3>📌 Your Classroom badge steps</h3><p class="small muted">The official record of submitted work is in Google Classroom.</p>${classroomSteps()}<div class="gcMini"><p class="small muted">Your module-specific upload reminder appears after the Google Doc creation task below.</p></div><p>${btn('Save Learning Record PDF','printSummary()','secondary')}</p><p class="small muted">Site checkmarks are stored in this browser only. Your teacher sees your uploaded evidence, not these checkmarks.</p><p class="small muted">💾 Use the Save & Restore page in the left navigation to back up your progress.</p></aside></div><div id="badge-collection">${passportBadgeWall()}</div>`;
 }
-
-function currentProgressBackupCode(){const obj={v:1,pathDone:state.pathDone,pathStep:state.pathStep,pathChecks:state.pathChecks,pathAnswers:state.pathAnswers,compareAnswers:state.compareAnswers,isteAnswers:state.isteAnswers,study:state.study,sessions:state.sessions};return btoa(unescape(encodeURIComponent(JSON.stringify(obj))))}
-function toggleProgressTools(){
- const panel=document.getElementById('progressTools');
- if(!panel)return;
- const open=panel.classList.toggle('open');
- const toggle=panel.querySelector('.progressSafeguardToggle');
- if(toggle)toggle.setAttribute('aria-expanded',String(open));
-}
-function downloadProgressBackup(){
- try{
-  const code=currentProgressBackupCode();
-  const file=new Blob([code+'\n'],{type:'text/plain;charset=utf-8'});
-  const url=URL.createObjectURL(file);
-  const a=document.createElement('a');
-  a.href=url;a.download='AI-Passport-Progress-'+new Date().toISOString().slice(0,10)+'.txt';
-  document.body.appendChild(a);a.click();a.remove();
-  setTimeout(()=>URL.revokeObjectURL(url),2000);
-  const el=document.getElementById('backupArea');
-  if(el)el.textContent='Backup download started. Save the downloaded file in your private school Google Drive, and download a fresh copy after each session.';
- }catch(e){alert('The download could not start. Use “Show backup code” to copy your progress instead.')}
-}
-function showPathBackup(){const code=currentProgressBackupCode();const el=document.getElementById('backupArea');if(el)el.innerHTML=`<label class="small" for="progressBackup">Copy this code to a private school document</label><textarea id="progressBackup" class="backupCode" readonly>${code}</textarea><p class="small muted">This backup contains your checkmarks and practice choices, but no student name. Keep it private.</p>`;}
-function restorePathBackup(){const raw=prompt('Paste your AI Basics progress backup code:');if(!raw)return;applyProgressCode(raw)}
-function restoreProgressFromFile(input){
- const file=input.files&&input.files[0];if(!file)return;
- if(file.size>65536){alert('That file is too large to be an AI Passport progress backup.');input.value='';return}
- const reader=new FileReader();
- reader.onload=()=>{applyProgressCode(String(reader.result||''));input.value=''};
- reader.onerror=()=>{alert('The backup file could not be read.');input.value=''};
- reader.readAsText(file);
-}
-function applyProgressCode(raw){try{const data=JSON.parse(decodeURIComponent(escape(atob(raw.trim()))));if(data.v!==1||!Array.isArray(data.pathDone)||data.pathDone.length!==5||!Array.isArray(data.study)||!Array.isArray(data.sessions))throw Error('Not a valid backup');const ok=confirm('Restore progress from this code? It will replace your current checkpoint progress.');if(!ok)return;state.pathDone=data.pathDone.map(Boolean);state.pathStep=Math.min(4,Math.max(0,Number(data.pathStep)||0));state.pathChecks=data.pathChecks||{};state.pathAnswers=data.pathAnswers||{};state.compareAnswers=data.compareAnswers||{};state.isteAnswers=data.isteAnswers||{};state.study=data.study.slice(0,3).map(Boolean);state.sessions=data.sessions.slice(0,2).map(Boolean);persist();draw();alert('Checkpoint progress restored.')}catch(e){alert('That progress code could not be read. Please check that you copied all of it.')}}
 
 function homeView(){const done=state.sessions.filter(Boolean).length,s=state.study.filter(Boolean).length;return `
 <section class="hero"><div><div class="eyebrow">NHS · ELA Elective</div><h1>AI<br>Passport</h1><p><strong>Mastering these levels of AI literacy is your first step toward being ready for the future with Artificial Intelligence.</strong></p><p>Learn it. Question it. Use it to learn. Five short checkpoints cover 14 topics and three student-created study tools.</p>${btn("Continue guided pathway →","setPage('path')")} ${btn("Master Study Guide ↗","window.open(RESOURCE.source,'_blank')","ghost")}</div><div class="heroVisual"><div class="orb"><span>AI</span></div><b>AI STUDY STUDIO</b><span class="muted small">Your learning lab</span></div></section>
