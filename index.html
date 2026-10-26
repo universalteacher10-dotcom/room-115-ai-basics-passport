@@ -68,7 +68,7 @@ const RESOURCE = {
  googleyt:"https://www.youtube.com/watch?v=iR2O2GPbB0E",
  codeML:"https://www.youtube.com/watch?v=KHbwOetbmbs"
 };
-const pages=[["path","→","Learning Path"],["home","⌂","Overview"],["badge","🏅","Badge Journey"],["study","▤","My Study Kit"],["practice","✧","Practice"],["words","◇","Vocabulary"],["resources","▣","Resources"],["teacher","ⓘ","Teacher Notes"],["recovery","🛡️","Save & Restore"]];
+const pages=[["path","→","Learning Path"],["home","⌂","Overview"],["learn","🎬","Videos & Activities"],["badge","🏅","Badge Journey"],["study","▤","My Study Kit"],["practice","✧","Practice"],["words","◇","Vocabulary"],["resources","▣","Resources"],["teacher","ⓘ","Teacher Notes"],["recovery","🛡️","Save & Restore"]];
 const lexicon=[
  ["AI","Computer technology that can recognize patterns, respond to information, or create outputs.","Know AI","A chatbot answering a question"],
  ["Chatbot","An application that responds in a conversation using text or voice.","Know AI","A student asks a question in a chat window"],
@@ -304,7 +304,18 @@ function badgeJourneyView(){const n=state.pathDone.filter(Boolean).length;return
 <div class="card" style="padding:20px;margin-top:18px;background:#effaff"><h3>⚠️ Responsible AI reminder</h3><p>AI can hallucinate facts or quotations, miss context, show bias, and expose private information when you share it. Verify important claims with trusted sources; protect your own and others' data; submit your own thinking.</p></div>`;}
 function homeView(){const done=state.sessions.filter(Boolean).length,s=state.study.filter(Boolean).length;return `
 <section class="hero"><div><div class="eyebrow">AI STUDY STUDIO · AI STUDY STUDIO · BADGE JOURNEY</div><h1>AI<br>Passport 🏅</h1><p>Learn it. Question it. Use it to learn.<br>Two short, hands-on learning sessions. Then create <strong>your own</strong> study materials from your teacher's guide.</p>${btn("Continue guided pathway →","setPage('path')")} ${btn("Teacher's source ↗","window.open(RESOURCE.source,'_blank')","ghost")}</div><div class="heroVisual"><div class="orb"><span>AI</span></div><b>AI STUDY STUDIO</b><span class="muted small">Your learning lab</span><div style="font-size:32px" aria-label="Learning badge imagery">🧠 📚 🏆</div></div></section>
-<div class="card" style="padding:20px;margin:18px 0;background:linear-gradient(110deg,#e5faff,#f5f0ff)"><div class="eyebrow">🏅 AI BASICS BADGE · YOUR MILESTONES</div><div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:space-around;text-align:center;margin:14px 0"><div>🧠<br><b>Learn</b></div><div>📝<br><b>Study Tools</b></div><div>✉️<br><b>Test Request</b></div><div>🏆<br><b>Test</b></div><div>🌟<br><b>Reflection</b></div></div><p class="small muted">Milestones are visual guides, not awarded certificates. Teacher approval is still required.</p></div>${section("Your journey","Only about 20 minutes of each Studio block—your academic work stays protected.")}
+<div class="card" style="padding:20px;margin:18px 0;background:linear-gradient(110deg,#e5faff,#f5f0ff)"><div class="eyebrow">🏅 AI BASICS BADGE · YOUR MILESTONES</div><div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:space-around;text-align:center;margin:14px 0"><div>🧠<br><b>Learn</b></div><div>📝<br><b>Study Tools</b></div><div>✉️<br><b>Test Request</b></div><div>🏆<br><b>Test</b></div><div>🌟<br><b>Reflection</b></div></div><p class="small muted">Milestones are visual guides, not awarded certificates. Teacher approval is still required.</p></div><section class="card" style="margin:18px 0;background:#f0f8ff">
+ <div class="row"><h3>🎬 Start Here · Video Learning Menu</h3><span class="pill">Edpuzzle-friendly</span></div>
+ <p class="small muted">Choose the video that helps you understand today's concept. Your teacher may assign selected clips in Edpuzzle. You do not have to watch every video.</p>
+ <div class="grid">
+ <div><b>Chatbots and LLMs</b><p><a href="https://www.youtube.com/watch?v=X-AWdfSFCHQ" target="_blank" rel="noopener noreferrer">Code.org: How Chatbots &amp; LLMs Work ↗</a></p></div>
+ <div><b>Prompts and roles</b><p><a href="https://youtu.be/6k-6jtgsbW4" target="_blank" rel="noopener noreferrer">Public Library: How to Craft and Refine Prompts ↗</a></p></div>
+ <div><b>Hallucinations</b><p><a href="https://youtu.be/cA83zeSRjxQ" target="_blank" rel="noopener noreferrer">Public Library: Assessing AI &amp; Hallucinations ↗</a></p></div>
+ <div><b>Verifying information</b><p><a href="https://www.poynter.org/mediawise/programs/ai-unlocked/finding-facts-with-generative-ai-search/" target="_blank" rel="noopener noreferrer">MediaWise: Finding Facts With AI Search ↗</a></p></div>
+ </div>
+ <p class="small muted">Also use <a href="https://studio.code.org/courses/gen-ai-humanities/units/1/resources" target="_blank" rel="noopener noreferrer">Code.org's Humanities resource collection ↗</a> for teacher support.</p>
+</section>
+${section("Your journey","Only about 20 minutes of each Studio block—your academic work stays protected.")}
 <div class="grid"><div class="card"><div class="row"><span class="tag">Intro sessions</span><span class="stat">${done}/2</span></div>${bar(done,2)}<p>Understand AI & prompt better · Question AI & study smarter</p>${btn(done===2?"Review guided pathway →":"Continue pathway →","setPage('path')","secondary")}</div>
 <div class="card"><div class="row"><span class="tag">Your study kit</span><span class="stat">${s}/3</span></div>${bar(s,3)}<p>Handwritten two-column notes · Your flashcards · Your choice</p>${btn("Build your study kit →","setPage('study')","secondary")}</div></div>
 ${section("Your two learning sessions")}
