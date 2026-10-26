@@ -452,23 +452,15 @@ body{background:radial-gradient(ellipse at 85% 0%,#dff7fa 0,transparent 35%),lin
 }
 @media print{.progressSafeguard{display:none!important}}
 
+
+/* AI Passport Save & Restore page */
+.recoveryPage{max-width:1100px;margin:auto}.recoveryHero{padding:30px;border-radius:25px;background:linear-gradient(115deg,#103b66,#087e9a 70%,#12b6bc);color:#fff;display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center;box-shadow:0 20px 40px #12496a25}.recoveryHero h1{font-size:clamp(29px,4vw,47px);line-height:1.1;margin:7px 0}.recoveryHero p{color:#e1f8ff;max-width:600px}.recoveryIcon{font-size:76px;filter:drop-shadow(0 10px 15px #002b4855)}.recoveryGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:18px}.recoveryCard{padding:23px;border:1px solid #d4e6f1;border-radius:20px;background:#fff;box-shadow:0 10px 26px #113c6210}.recoveryCard h3{margin:0 0 7px;font-size:20px}.recoveryCard p{color:#547087}.recoveryCard button{border:0;border-radius:12px;padding:11px 16px;background:#116bca;color:#fff;font-weight:800;cursor:pointer}.recoveryCard button:hover{background:#0756a7}.recoveryCard input,.recoveryCard textarea{border:1px solid #b9d4e4;border-radius:12px;padding:12px;max-width:100%}.recoveryCard textarea{width:100%;min-height:120px}.recoveryStat{display:inline-block;background:#d9f7f3;color:#086f72;border-radius:99px;padding:7px 13px;font-weight:850}.recoveryMessage{padding:12px;border-radius:12px;background:#e8f8ff;color:#13547d;margin-top:15px}.recoveryFine{color:#59768a;font-size:13px;margin-top:18px}@media(max-width:720px){.recoveryGrid{grid-template-columns:1fr}.recoveryHero{grid-template-columns:1fr}.recoveryIcon{display:none}}
 </style>
 </head>
 <body>
 <div class="app">
 <aside class="side"><div class="logo"><div class="logoMark" aria-hidden="true"><img src="/assets/branding/ai-study-studio-neural-logo.svg" alt=""/></div><div><strong>AI Study Studio</strong><small>AI Passport · Learning Modules</small></div></div><nav class="menu" id="nav"></nav>
-<section class="progressSafeguard" id="progressTools" aria-label="Save and restore AI Passport progress">
- <button type="button" class="progressSafeguardToggle" aria-controls="progressSafeguardContent" aria-expanded="false" onclick="toggleProgressTools()">💾 Save / Restore</button>
- <div id="progressSafeguardContent" class="progressSafeguardContent"><div class="progressSafeguardIntro"><strong>💾 Save your AI Passport progress</strong><span>Save a backup after each Studio session. Keep it in your private school Google Drive.</span></div>
- <div class="progressSafeguardActions">
-  <button type="button" class="btn secondary" onclick="downloadProgressBackup()">⬇ Save My Progress</button>
-  <button type="button" class="btn ghost" onclick="document.getElementById('progressBackupFile').click()">⬆ Upload Saved Backup</button>
-  <button type="button" class="btn ghost" onclick="showPathBackup()">Show My Code</button>
-  <button type="button" class="btn ghost" onclick="restorePathBackup()">Restore From Code</button>
- </div>
- <input id="progressBackupFile" type="file" accept=".txt,text/plain" aria-label="Upload your AI Passport progress backup file" onchange="restoreProgressFromFile(this)" hidden/>
- <div id="backupArea" class="progressBackupFeedback" aria-live="polite"></div></div>
-</section><div class="sideFoot">Learn it.<br>Question it.<br>Use it to learn.<br><br>Progress saves on this device. Use Save My Progress above at the end of each Studio session.</div></aside>
+<div class="sideFoot">Learn it.<br>Question it.<br>Use it to learn.<br><br>Progress saves on this device. Use Save My Progress above at the end of each Studio session.</div></aside>
 <main class="main">
 <div class="top"><div><div class="crumb">AI PASSPORT · 14 TOPIC BADGES</div><div style="font-size:20px;font-weight:850;letter-spacing:-.03em">AI Study Studio</div></div><div class="right"><span class="pill">⏱ 20-min Studio sessions</span></div></div>
 <div id="content"></div><footer>AI Study Studio · Learn here. Submit your work in Google Classroom. Your teacher checks the badge requirements and administers the certification test.</footer>
