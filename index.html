@@ -397,15 +397,69 @@ body{background:radial-gradient(ellipse at 85% 0%,#dff7fa 0,transparent 35%),lin
 .progressBackupFeedback .backupCode{max-height:120px;width:100%;font-family:monospace;user-select:all}
 @media(max-width:600px){.progressSafeguard{padding:12px}.progressSafeguardActions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.progressSafeguardActions .btn{font-size:12px!important;padding:8px 6px!important}}
 
+
+/* Progress tools live in the left sidebar, not above the lesson. */
+.side .progressSafeguard{
+ z-index:2;
+ position:relative;
+ margin:13px 0 0;
+ padding:12px 10px 13px;
+ display:block;
+ background:linear-gradient(155deg,#133a59,#0d2b48);
+ color:#f5fbff;
+ border:1px solid #4184aa;
+ border-left:3px solid #25b6e5;
+ box-shadow:inset 0 1px 0 #ffffff1a,0 4px 12px #0003;
+}
+.side .progressSafeguardIntro{display:flex;flex-direction:column;gap:5px}
+.side .progressSafeguardIntro strong{font-size:13px;color:#ebfaff}
+.side .progressSafeguardIntro span{font-size:11px;color:#c3dce9;line-height:1.35}
+.side .progressSafeguardActions{display:grid;grid-template-columns:minmax(0,1fr);gap:6px;margin-top:10px}
+.side .progressSafeguardActions .btn{
+ width:100%;min-width:0;
+ text-align:center;
+ font-size:11px!important;
+ line-height:1.25;
+ padding:9px 6px!important;
+ border-radius:9px;
+ min-height:36px;
+}
+.side .progressSafeguardActions .btn:first-child{background:#1b9cc9;color:#fff;border:1px solid #86e2f7}
+.side .progressSafeguardActions .btn:nth-child(2){background:#d9effb;border:1px solid #94d5e6;color:#113d5f}
+.side .progressSafeguardActions .btn:nth-child(3),
+.side .progressSafeguardActions .btn:nth-child(4){background:#153b60;border:1px solid #4e83a8;color:#e8f4ff}
+.side .progressSafeguardActions .btn:hover,.side .progressSafeguardActions .btn:focus-visible{outline:2px solid #d3edff;outline-offset:1px}
+.side .progressBackupFeedback{color:#d2f8ff;overflow-wrap:anywhere;margin-top:8px}
+.side .progressBackupFeedback label,.side .progressBackupFeedback p{font-size:11px;color:#d2f8ff}
+.side .progressBackupFeedback textarea{font-size:10px;min-height:90px;color:#102e4b;background:#fff}
+.progressSafeguardToggle{display:none}
+/* The sidebar becomes bottom navigation on phones. Keep tools reachable via a compact left-side toggle. */
+@media(max-width:710px){
+ .side .progressSafeguard{
+  position:fixed;left:10px;bottom:75px;
+  width:166px;max-width:calc(100vw - 20px);
+  height:auto;padding:5px;z-index:35;
+  border-radius:12px;box-shadow:0 8px 25px #001a39a6
+ }
+ .progressSafeguardToggle{
+  display:block;width:100%;border:0;border-radius:8px;padding:9px 8px;
+  background:#1b9cc9;color:white;font-size:12px;font-weight:900;cursor:pointer;
+ }
+ .side .progressSafeguard .progressSafeguardContent{display:none}
+ .side .progressSafeguard.open{width:min(340px,calc(100vw - 20px));max-height:calc(100dvh - 100px);overflow-y:auto;padding:9px}
+ .side .progressSafeguard.open .progressSafeguardContent{display:block;margin-top:9px}
+ .side .progressSafeguardIntro span{font-size:11px}
+}
+@media print{.progressSafeguard{display:none!important}}
+
 </style>
 </head>
 <body>
 <div class="app">
-<aside class="side"><div class="logo"><div class="logoMark" aria-hidden="true"><img src="/assets/branding/ai-study-studio-neural-logo.svg" alt=""/></div><div><strong>AI Study Studio</strong><small>AI Passport · Learning Modules</small></div></div><nav class="menu" id="nav"></nav><div class="sideFoot">Learn it.<br>Question it.<br>Use it to learn.<br><br>Progress saves on this device. It can be erased if school browser data is cleared; use the backup code in Learning Path.</div></aside>
-<main class="main">
-<div class="top"><div><div class="crumb">AI PASSPORT · 14 TOPIC BADGES</div><div style="font-size:20px;font-weight:850;letter-spacing:-.03em">AI Study Studio</div></div><div class="right"><span class="pill">⏱ 20-min Studio sessions</span></div></div>
-<section class="progressSafeguard" aria-label="Save and restore AI Passport progress">
- <div class="progressSafeguardIntro"><strong>💾 Save your AI Passport progress</strong><span>Save a backup after each Studio session. Keep it in your private school Google Drive.</span></div>
+<aside class="side"><div class="logo"><div class="logoMark" aria-hidden="true"><img src="/assets/branding/ai-study-studio-neural-logo.svg" alt=""/></div><div><strong>AI Study Studio</strong><small>AI Passport · Learning Modules</small></div></div><nav class="menu" id="nav"></nav>
+<section class="progressSafeguard" id="progressTools" aria-label="Save and restore AI Passport progress">
+ <button type="button" class="progressSafeguardToggle" aria-controls="progressSafeguardContent" aria-expanded="false" onclick="toggleProgressTools()">💾 Save / Restore</button>
+ <div id="progressSafeguardContent" class="progressSafeguardContent"><div class="progressSafeguardIntro"><strong>💾 Save your AI Passport progress</strong><span>Save a backup after each Studio session. Keep it in your private school Google Drive.</span></div>
  <div class="progressSafeguardActions">
   <button type="button" class="btn secondary" onclick="downloadProgressBackup()">⬇ Save My Progress</button>
   <button type="button" class="btn ghost" onclick="document.getElementById('progressBackupFile').click()">⬆ Upload Saved Backup</button>
@@ -413,8 +467,10 @@ body{background:radial-gradient(ellipse at 85% 0%,#dff7fa 0,transparent 35%),lin
   <button type="button" class="btn ghost" onclick="restorePathBackup()">Restore From Code</button>
  </div>
  <input id="progressBackupFile" type="file" accept=".txt,text/plain" aria-label="Upload your AI Passport progress backup file" onchange="restoreProgressFromFile(this)" hidden/>
- <div id="backupArea" class="progressBackupFeedback" aria-live="polite"></div>
-</section>
+ <div id="backupArea" class="progressBackupFeedback" aria-live="polite"></div></div>
+</section><div class="sideFoot">Learn it.<br>Question it.<br>Use it to learn.<br><br>Progress saves on this device. Use Save My Progress above at the end of each Studio session.</div></aside>
+<main class="main">
+<div class="top"><div><div class="crumb">AI PASSPORT · 14 TOPIC BADGES</div><div style="font-size:20px;font-weight:850;letter-spacing:-.03em">AI Study Studio</div></div><div class="right"><span class="pill">⏱ 20-min Studio sessions</span></div></div>
 <div id="content"></div><footer>AI Study Studio · Learn here. Submit your work in Google Classroom. Your teacher checks the badge requirements and administers the certification test.</footer>
 </main>
 </div>
@@ -655,6 +711,13 @@ function guidedPathView(){
 }
 
 function currentProgressBackupCode(){const obj={v:1,pathDone:state.pathDone,pathStep:state.pathStep,pathChecks:state.pathChecks,pathAnswers:state.pathAnswers,compareAnswers:state.compareAnswers,isteAnswers:state.isteAnswers,study:state.study,sessions:state.sessions};return btoa(unescape(encodeURIComponent(JSON.stringify(obj))))}
+function toggleProgressTools(){
+ const panel=document.getElementById('progressTools');
+ if(!panel)return;
+ const open=panel.classList.toggle('open');
+ const toggle=panel.querySelector('.progressSafeguardToggle');
+ if(toggle)toggle.setAttribute('aria-expanded',String(open));
+}
 function downloadProgressBackup(){
  try{
   const code=currentProgressBackupCode();
