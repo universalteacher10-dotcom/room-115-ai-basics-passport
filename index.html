@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Room 115 | AI Basics Passport</title>
+<title>AI Study Studio | AI Basics Passport</title>
 <meta name="description" content="A self-paced, ELA-focused AI literacy course with short videos, original interactive practice, and student-created study materials."/>
 <style>
 :root{--ink:#13263c;--muted:#546779;--blue:#1769df;--cyan:#00b4c7;--gold:#ffb43b;--wash:#f4f8fc;--line:#dce7f1;--white:#fff;--shadow:0 18px 45px rgba(17,46,78,.09);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;color:var(--ink)}
@@ -46,10 +46,10 @@
 </head>
 <body>
 <div class="app">
-<aside class="side"><div class="logo"><div class="logoMark">AI</div><div><strong>Room 115</strong><small>Study Studio · ELA</small></div></div><nav class="menu" id="nav"></nav><div class="sideFoot">Learn it.<br>Question it.<br>Use it to learn.<br><br>All your progress stays on this device.</div></aside>
+<aside class="side"><div class="logo"><div class="logoMark">AI</div><div><strong>AI Study Studio</strong><small>AI Passport</small></div></div><nav class="menu" id="nav"></nav><div class="sideFoot">Learn it.<br>Question it.<br>Use it to learn.<br><br>All your progress stays on this device.</div></aside>
 <main class="main">
-<div class="top"><div><div class="crumb">Nantucket High School · AI Study Studio</div><div style="font-size:16px;font-weight:850">AI Basics Passport</div></div><div class="right"><span class="pill">⏱ 20-min Studio sessions</span></div></div>
-<div id="content"></div><footer>AI Study Studio · Room 115 · Learning here does not award the official badge. Complete the teacher's existing badge tracker and certification test.</footer>
+<div class="top"><div><div class="crumb">AI Study Studio</div><div style="font-size:16px;font-weight:850">AI Basics Passport</div></div><div class="right"><span class="pill">⏱ 20-min Studio sessions</span></div></div>
+<div id="content"></div><footer>AI Study Studio · AI Study Studio · Learning here does not award the official badge. Complete the teacher's existing badge tracker and certification test.</footer>
 </main>
 </div>
 <script>
@@ -235,7 +235,7 @@ function guidedPathView(){
  const model=(left,right)=>`<div class="pathNote" role="table" aria-label="Model of two-column study notes"><div class="head" role="row"><span>LEFT · Term / Question</span><span>RIGHT · In my own words + example</span></div><div class="data" role="row"><span>${esc(left)}</span><span>${esc(right)}</span></div></div>`;
  return `
  <div class="pathHead">
- <div class="eyebrow">Room 115 · Your guided learning path</div>
+ <div class="eyebrow">AI Study Studio · Your guided learning path</div>
  <h1>Your AI Basics Learning Path</h1>
  <p class="muted" style="max-width:770px;margin:0 0 13px">Use one ~20-minute Studio period per checkpoint. First learn the material; then CREATE your own required study tools. Build understanding and your own study tools as you work toward the AI Basics Badge.</p>
  <div class="row"><strong>${completed} of 5 checkpoints complete</strong><span class="pill">✓ Progress stays on this device</span></div>
@@ -291,7 +291,7 @@ function guidedPathView(){
 }
 
 function homeView(){const done=state.sessions.filter(Boolean).length,s=state.study.filter(Boolean).length;return `
-<section class="hero"><div><div class="eyebrow">ROOM 115 · AI STUDY STUDIO · BADGE JOURNEY</div><h1>AI Basics<br>Passport 🏅</h1><p>Learn it. Question it. Use it to learn.<br>Two short, hands-on learning sessions. Then create <strong>your own</strong> study materials from your teacher's guide.</p>${btn("Continue guided pathway →","setPage('path')")} ${btn("Teacher's source ↗","window.open(RESOURCE.source,'_blank')","ghost")}</div><div class="heroVisual"><div class="orb"><span>AI</span></div><b>ROOM 115</b><span class="muted small">Your learning lab</span><div style="font-size:32px" aria-label="Learning badge imagery">🧠 📚 🏆</div></div></section>
+<section class="hero"><div><div class="eyebrow">AI STUDY STUDIO · AI STUDY STUDIO · BADGE JOURNEY</div><h1>AI<br>Passport 🏅</h1><p>Learn it. Question it. Use it to learn.<br>Two short, hands-on learning sessions. Then create <strong>your own</strong> study materials from your teacher's guide.</p>${btn("Continue guided pathway →","setPage('path')")} ${btn("Teacher's source ↗","window.open(RESOURCE.source,'_blank')","ghost")}</div><div class="heroVisual"><div class="orb"><span>AI</span></div><b>AI STUDY STUDIO</b><span class="muted small">Your learning lab</span><div style="font-size:32px" aria-label="Learning badge imagery">🧠 📚 🏆</div></div></section>
 <div class="card" style="padding:20px;margin:18px 0;background:linear-gradient(110deg,#e5faff,#f5f0ff)"><div class="eyebrow">🏅 AI BASICS BADGE · YOUR MILESTONES</div><div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:space-around;text-align:center;margin:14px 0"><div>🧠<br><b>Learn</b></div><div>📝<br><b>Study Tools</b></div><div>✉️<br><b>Test Request</b></div><div>🏆<br><b>Test</b></div><div>🌟<br><b>Reflection</b></div></div><p class="small muted">Milestones are visual guides, not awarded certificates. Teacher approval is still required.</p></div>${section("Your journey","Only about 20 minutes of each Studio block—your academic work stays protected.")}
 <div class="grid"><div class="card"><div class="row"><span class="tag">Intro sessions</span><span class="stat">${done}/2</span></div>${bar(done,2)}<p>Understand AI & prompt better · Question AI & study smarter</p>${btn(done===2?"Review guided pathway →":"Continue pathway →","setPage('path')","secondary")}</div>
 <div class="card"><div class="row"><span class="tag">Your study kit</span><span class="stat">${s}/3</span></div>${bar(s,3)}<p>Handwritten two-column notes · Your flashcards · Your choice</p>${btn("Build your study kit →","setPage('study')","secondary")}</div></div>
@@ -410,11 +410,11 @@ ${section("Classroom safeguards")}<div class="card"><p><strong>No accounts or cl
 <div class="row">${btn("Clear my saved progress","confirm('Clear all local progress?')&&clearAll()","ghost")}${btn("Open teacher source guide","window.open(RESOURCE.source,'_blank')","secondary")}</div></div>
 <div class="printOnly"><h2>My AI Basics progress</h2><p>Introduction: ${n}/2 · Study tools: ${m}/3 · Practice answered: ${state.quizHistory.length}</p></div>`}
 function clearAll(){localStorage.removeItem(NAVID);location.reload()}
-function popPrint(markup){const w=window.open("","_blank");if(!w){alert("Please allow pop-ups to print blank templates.");return}w.document.write(`<!doctype html><html><head><title>Room 115 Study Template</title><style>body{font-family:Arial,sans-serif;padding:22px;color:#13263c}h1{font-size:22px}table{border-collapse:collapse;width:100%}td,th{border:1px solid #555;padding:10px;height:52px;text-align:left;vertical-align:top}hr{border:1px solid #aaa;margin:22px 0}.box{display:inline-block;border:1px solid #777;width:40%;height:130px;margin:2%;vertical-align:top;padding:10px}@media print{button{display:none}}</style></head><body>${markup}<p style="font-size:12px">Create YOUR OWN explanations from the teacher-provided source. Do not turn in a filled-in AI-generated guide.</p><button onclick="window.print()">Print</button></body></html>`);w.document.close();w.focus();w.print()}
+function popPrint(markup){const w=window.open("","_blank");if(!w){alert("Please allow pop-ups to print blank templates.");return}w.document.write(`<!doctype html><html><head><title>AI Study Studio Study Template</title><style>body{font-family:Arial,sans-serif;padding:22px;color:#13263c}h1{font-size:22px}table{border-collapse:collapse;width:100%}td,th{border:1px solid #555;padding:10px;height:52px;text-align:left;vertical-align:top}hr{border:1px solid #aaa;margin:22px 0}.box{display:inline-block;border:1px solid #777;width:40%;height:130px;margin:2%;vertical-align:top;padding:10px}@media print{button{display:none}}</style></head><body>${markup}<p style="font-size:12px">Create YOUR OWN explanations from the teacher-provided source. Do not turn in a filled-in AI-generated guide.</p><button onclick="window.print()">Print</button></body></html>`);w.document.close();w.focus();w.print()}
 function printNotes(){popPrint(`<h1>Blank Two-Column Notes · AI Basics</h1><p>Name: _____________ Date: _____________ Topic: _____________</p><table><tr><th style="width:30%">Key word / Question</th><th>My own explanation / Example</th></tr>${Array.from({length:9},()=>"<tr><td></td><td></td></tr>").join("")}</table><h3>Summary in my own words</h3><hr><hr><hr>`)}
 function printCards(){popPrint(`<h1>Blank Flashcard Templates · AI Basics</h1><p>Name: _____________ Date: _____________</p>${Array.from({length:8},(_,i)=>`<div class="box">Card ${i+1}: Front — term / question</div><div class="box">Back — my own definition / example</div>`).join("")}`)}
 function printPlan(){popPrint(`<h1>My AI Basics Student-Made Study Plan</h1><p>Materials source: Mrs. Paden's AI Basics Study Guide</p><p>□ Two-column notes □ Flashcards □ My choice</p><p>My third study tool: ______________________________</p><h3>Terms I still need to practice</h3><hr><hr><hr><h3>How I'll quiz myself</h3><hr><hr>`)}
-function printSummary(){const n=state.sessions.filter(Boolean).length,m=state.study.filter(Boolean).length;popPrint(`<h1>Room 115 · AI Basics Learning Progress</h1><p>Student (optional): _______________________</p><p>Introduction lessons completed: ${n}/2</p><p>Student-created study formats checked: ${m}/3</p><p>Practice questions answered: ${state.quizHistory.length}</p><p>This is a learning summary, NOT an official certificate, badge, submission, or assessment result.</p>`)}
+function printSummary(){const n=state.sessions.filter(Boolean).length,m=state.study.filter(Boolean).length;popPrint(`<h1>AI Study Studio · AI Basics Learning Progress</h1><p>Student (optional): _______________________</p><p>Introduction lessons completed: ${n}/2</p><p>Student-created study formats checked: ${m}/3</p><p>Practice questions answered: ${state.quizHistory.length}</p><p>This is a learning summary, NOT an official certificate, badge, submission, or assessment result.</p>`)}
 window.addEventListener("error",e=>{console.error(e.message)});
 draw();updatePrompt();
 </script>
