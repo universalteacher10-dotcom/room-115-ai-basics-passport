@@ -457,8 +457,8 @@ function showBadgeDetails(n){if(!Number.isInteger(n)||n<1||n>literacyLevels.leng
 function closeBadgeFocus(){document.getElementById('badgeFocusDialog')?.remove();document.body.classList.remove('badgeDialogOpen')}
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeBadgeFocus()});
 function dismissBadgeNotice(){state.lastEarnedStage=null;persist();draw()}
-function badgeImageFallback(image){image.onerror=null;image.src=image.src.replace('/premium/','/source/').replace('.webp','.svg')}
-function badgeAsset(number){return '/assets/badges/premium/badge-'+String(number).padStart(2,'0')+'.webp'}
+function badgeImageFallback(image){image.onerror=null;image.src='/assets/badges/source/'+image.src.match(/badge-(\d{2})\.webp/)?.[1]+'.svg'}
+function badgeAsset(number){return '/assets/AI_Passport_14_Badges_UPLOAD_THIS/assets/badges/premium/badge-'+String(number).padStart(2,'0')+'.webp'}
 function badgeMedallion(row){const [number,name,summary,stage]=row;const earned=Boolean(state.pathDone[stage]);const active=!earned&&state.pathStep===stage;const selected=state.badgeFocus===number;
  const earnedCount=Object.values(state.pathDone||{}).filter(Boolean).length;
  const prestige=earned&&earnedCount>=10;
