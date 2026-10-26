@@ -299,6 +299,18 @@ body{background:radial-gradient(ellipse at 85% 0%,#dff7fa 0,transparent 35%),lin
 
 /* Premium badge art: portrait and landscape variants must not crop. */
 .badgeCardArtwork img,.previewBadgeArt,.badgeFocusVisual img,.cardDetailArt img{object-fit:contain!important}
+
+/* AI Passport collection progression: Blue → Bronze → Silver → Gold.
+   Student-checkpoint progress only; teacher certification remains separate. */
+.passportBadge.collectibleBadge,.passportPreviewPin{--tier:#38b8ff;--tierLight:#b5edff;--tierGlow:rgba(28,162,255,.55);border:2px solid var(--tier)!important;box-shadow:0 0 0 1px var(--tierLight) inset,0 0 13px var(--tierGlow),0 10px 22px #0011269c!important}
+.passportBadge.collectibleBadge.tier-bronze,.passportPreviewPin.tier-bronze{--tier:#cf823e;--tierLight:#ffcc8c;--tierGlow:rgba(222,127,40,.55)}
+.passportBadge.collectibleBadge.tier-silver,.passportPreviewPin.tier-silver{--tier:#c4e2f3;--tierLight:#fff;--tierGlow:rgba(177,221,255,.75)}
+.passportBadge.collectibleBadge.tier-gold,.passportPreviewPin.tier-gold{--tier:#f4c354;--tierLight:#fff3b2;--tierGlow:rgba(255,194,53,.85)}
+.passportBadge.collectibleBadge.isEarned,.passportPreviewPin.earned{animation:tierPulse 3.5s ease-in-out infinite}
+@keyframes tierPulse{50%{box-shadow:0 0 0 1px var(--tierLight) inset,0 0 28px var(--tierGlow),0 9px 23px #0011269c}}
+.passportBadge.collectibleBadge.isLocked img{filter:saturate(.72) brightness(.82)}
+.passportBadge.collectibleBadge.tier-gold img{filter:saturate(1.1) brightness(1.1)}
+@media(prefers-reduced-motion:reduce){.passportBadge.collectibleBadge.isEarned,.passportPreviewPin.earned{animation:none}}
 </style>
 </head>
 <body>
@@ -459,16 +471,17 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeBadgeFocus()});
 function dismissBadgeNotice(){state.lastEarnedStage=null;persist();draw()}
 function badgeImageFallback(image){image.onerror=null;image.src='/assets/badges/source/'+image.src.match(/badge-(\d{2})\.webp/)?.[1]+'.svg'}
 function badgeAsset(number){return '/assets/AI_Passport_14_Badges_UPLOAD_THIS/assets/badges/premium/badge-'+String(number).padStart(2,'0')+'.webp'}
+function badgeBorderTier(row){if(!state.pathDone[row[3]])return 'blue';const count=earnedTopicCount();return count>=11?'gold':count>=7?'silver':count>=3?'bronze':'blue'}
 function badgeMedallion(row){const [number,name,summary,stage]=row;const earned=Boolean(state.pathDone[stage]);const active=!earned&&state.pathStep===stage;const selected=state.badgeFocus===number;
  const earnedCount=Object.values(state.pathDone||{}).filter(Boolean).length;
- const prestige=earned&&earnedCount>=10;
- return `<button type="button" aria-pressed="${selected}" aria-label="Badge ${number}: ${esc(name)}. ${earned?'Earned':active?'In progress':'Not yet earned'}. View details" class="passportBadge collectibleBadge ${earned?'isEarned':active?'isActive':'isLocked'} ${prestige?'isPrestige':''} ${selected?'isFocused':''}" style="--badgeColor:${badgeColors[number-1]};--progressGlow:${Math.min(earnedCount,14)/14}" onclick="showBadgeDetails(${number})"><span class="badgeCardArtwork"><img src="${badgeAsset(number)}" onerror="badgeImageFallback(this)" alt="" loading="lazy"/><span class="badgeCollectorSheen"></span></span><span class="badgeCollectorState">${earned?'✦ EARNED':active?'◈ CURRENT':'◇ LOCKED'}</span></button>`
+ const tier=earned?(earnedCount>=11?'gold':earnedCount>=7?'silver':earnedCount>=3?'bronze':'blue'):'blue';const prestige=earned&&tier==='gold';
+ return `<button type="button" aria-pressed="${selected}" aria-label="Badge ${number}: ${esc(name)}. ${earned?'Earned':active?'In progress':'Not yet earned'}. View details" class="passportBadge collectibleBadge tier-${tier} ${earned?'isEarned':active?'isActive':'isLocked'} ${prestige?'isPrestige':''} ${selected?'isFocused':''}" style="--badgeColor:${badgeColors[number-1]};--progressGlow:${Math.min(earnedCount,14)/14}" onclick="showBadgeDetails(${number})"><span class="badgeCardArtwork"><img src="${badgeAsset(number)}" onerror="badgeImageFallback(this)" alt="" loading="lazy"/><span class="badgeCollectorSheen"></span></span><span class="badgeCollectorState">${earned?'✦ EARNED':active?'◈ CURRENT':'◇ LOCKED'}</span></button>`
 }
 function moduleIllustration(i){
  const index=i===2?8:11;
  return `<div class="moduleIllustration" aria-hidden="true"><div class="orbitRing ringOne"></div><div class="orbitRing ringTwo"></div><div class="heroIllustrationSeal" style="--badgeColor:${badgeColors[index]}">${passportIcon(index)}</div><span class="orbitNode nodeOne"></span><span class="orbitNode nodeTwo"></span><span class="orbitNode nodeThree"></span></div>`;
 }
-function passportBadgePreview(){return `<div class="passportPreviewWrap" aria-label="Preview of your 14 AI Passport badges"><div class="passportPreviewTop"><strong>THE AI PASSPORT · BADGE GALLERY</strong><span>14 collectible topic badges</span></div><div class="passportPreviewRail">${literacyLevels.map(row=>`<button type="button" class="passportPreviewPin ${state.pathDone[row[3]]?'earned':''}" title="Open Level ${row[0]}: ${esc(row[1])}" aria-label="Open full-screen badge ${row[0]} ${esc(row[1])}" onclick="showBadgeDetails(${row[0]})" style="--badgeColor:${badgeColors[row[0]-1]}"><img class="previewBadgeArt" src="${badgeAsset(row[0])}" onerror="badgeImageFallback(this)" alt="" loading="lazy"/><small>${row[0]}</small></button>`).join('')}</div></div>`;}
+function passportBadgePreview(){return `<div class="passportPreviewWrap" aria-label="Preview of your 14 AI Passport badges"><div class="passportPreviewTop"><strong>THE AI PASSPORT · BADGE GALLERY</strong><span>14 collectible topic badges</span></div><div class="passportPreviewRail">${literacyLevels.map(row=>`<button type="button" class="passportPreviewPin ${state.pathDone[row[3]]?'earned':''} tier-${badgeBorderTier(row)}" title="Open Level ${row[0]}: ${esc(row[1])}" aria-label="Open full-screen badge ${row[0]} ${esc(row[1])}" onclick="showBadgeDetails(${row[0]})" style="--badgeColor:${badgeColors[row[0]-1]}"><img class="previewBadgeArt" src="${badgeAsset(row[0])}" onerror="badgeImageFallback(this)" alt="" loading="lazy"/><small>${row[0]}</small></button>`).join('')}</div></div>`;}
 function passportBadgeWall(){const earned=earnedTopicCount();const focus=literacyLevels.find(row=>row[0]===state.badgeFocus);const row=focus||null;const done= row?Boolean(state.pathDone[row[3]]):false;
  return `<section class="badgeWall" aria-label="AI Passport mini badges"><div class="badgeWallHead"><div><span class="badgeSectionEyebrow">THE AI PASSPORT COLLECTION</span><h2>14 topics. 14 badges to earn.</h2><p>Complete the module practice and check off your own work to collect topic badges. Your teacher checks Classroom evidence separately.</p></div><div class="badgeTally"><strong>${earned}<span>/14</span></strong><span>Badges earned</span></div></div><div class="badgesProgress">${bar(earned,14)}</div><div class="badgeShelf">${literacyLevels.map(badgeMedallion).join('')}</div>${row?`<div class="badgeDetail" id="badge-detail" role="status"><span class="badgeDetailArt cardDetailArt"><img src="${badgeAsset(row[0])}" onerror="badgeImageFallback(this)" alt="Badge ${row[0]}: ${esc(row[1])}"/></span><div><span class="badgeSectionEyebrow">LEVEL ${row[0]} · ${done?'BADGE EARNED':'UNLOCK IN MODULE '+(row[3]+1)}</span><h3>${esc(row[1])}</h3><p>${esc(row[2])}</p><p class="badgeHow">${done?'✓ You earned this badge after completing Module '+(row[3]+1)+'.':'Finish Module '+(row[3]+1)+' to earn this badge. Continue your learning in the stage below.'}</p></div><button type="button" class="badgeDismiss" title="Close badge details" aria-label="Close badge details" onclick="state.badgeFocus=null;draw()">×</button></div>`:''}</section>`
 }
