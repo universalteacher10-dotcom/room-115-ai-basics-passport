@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Room 115 | AI Basics Passport</title>
+<title>AI Study Studio | AI Basics Passport</title>
 <meta name="description" content="A self-paced, ELA-focused AI literacy course with short videos, original interactive practice, and student-created study materials."/>
 <style>
 :root{--ink:#13263c;--muted:#546779;--blue:#1769df;--cyan:#00b4c7;--gold:#ffb43b;--wash:#f4f8fc;--line:#dce7f1;--white:#fff;--shadow:0 18px 45px rgba(17,46,78,.09);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;color:var(--ink)}
@@ -46,10 +46,10 @@
 </head>
 <body>
 <div class="app">
-<aside class="side"><div class="logo"><div class="logoMark">AI</div><div><strong>Room 115</strong><small>Study Studio · ELA</small></div></div><nav class="menu" id="nav"></nav><div class="sideFoot">Learn it.<br>Question it.<br>Use it to learn.<br><br>All your progress stays on this device.</div></aside>
+<aside class="side"><div class="logo"><div class="logoMark">AI</div><div><strong>AI Study Studio</strong><small>AI Passport</small></div></div><nav class="menu" id="nav"></nav><div class="sideFoot">Learn it.<br>Question it.<br>Use it to learn.<br><br>All your progress stays on this device.</div></aside>
 <main class="main">
-<div class="top"><div><div class="crumb">Nantucket High School · AI Study Studio</div><div style="font-size:16px;font-weight:850">AI Basics Passport</div></div><div class="right"><span class="pill">⏱ 20-min Studio sessions</span></div></div>
-<div id="content"></div><footer>AI Study Studio · Room 115 · Learning here does not award the official badge. Complete the teacher's existing badge tracker and certification test.</footer>
+<div class="top"><div><div class="crumb">AI Study Studio</div><div style="font-size:16px;font-weight:850">AI Basics Passport</div></div><div class="right"><span class="pill">⏱ 20-min Studio sessions</span></div></div>
+<div id="content"></div><footer>AI Study Studio · AI Study Studio · Learning here does not award the official badge. Complete the teacher's existing badge tracker and certification test.</footer>
 </main>
 </div>
 <script>
@@ -68,7 +68,7 @@ const RESOURCE = {
  googleyt:"https://www.youtube.com/watch?v=iR2O2GPbB0E",
  codeML:"https://www.youtube.com/watch?v=KHbwOetbmbs"
 };
-const pages=[["path","→","Learning Path"],["home","⌂","Overview"],["study","▤","My Study Kit"],["practice","✧","Practice"],["words","◇","Vocabulary"],["resources","▣","Resources"],["teacher","ⓘ","Teacher Notes"]];
+const pages=[["path","→","Learning Path"],["home","⌂","Overview"],["learn","🎬","Videos & Activities"],["badge","🏅","Badge Journey"],["study","▤","My Study Kit"],["practice","✧","Practice"],["words","◇","Vocabulary"],["resources","▣","Resources"],["teacher","ⓘ","Teacher Notes"],["recovery","🛡️","Save & Restore"]];
 const lexicon=[
  ["AI","Computer technology that can recognize patterns, respond to information, or create outputs.","Know AI","A chatbot answering a question"],
  ["Chatbot","An application that responds in a conversation using text or voice.","Know AI","A student asks a question in a chat window"],
@@ -116,8 +116,8 @@ const questions=[
  ["Why are your OWN flashcards important?","Creating and recalling information helps you learn","They are just decoration","AI can take the exam for you",0,"Active creation and recall strengthen study habits."]
 ];
 const NAVID="room115_ai_basics_v2";
-let state={page:"path",pathStep:0,pathDone:[false,false,false,false,false],pathChecks:{},pathAnswers:{},sessions:[false,false],study:[false,false,false],flash:{},responses:{},quizIndex:0,quizAnswers:{},quizHistory:[],vocabSearch:"",vocabFilter:"All",wordIndex:0,wordFlip:false,progressName:""};
-try{const saved=JSON.parse(localStorage.getItem(NAVID)||"{}");state={...state,...saved,sessions:(saved.sessions||state.sessions).slice(0,2),study:(saved.study||state.study).slice(0,3),pathDone:(saved.pathDone||state.pathDone).slice(0,5),pathChecks:saved.pathChecks||{},pathAnswers:saved.pathAnswers||{}};if(state.page==="home"||state.page==="learn"||!pages.some(p=>p[0]===state.page))state.page="path"}catch{}
+let state={page:"home",pathStep:0,pathDone:[false,false,false,false,false],pathChecks:{},pathAnswers:{},sessions:[false,false],study:[false,false,false],flash:{},responses:{},quizIndex:0,quizAnswers:{},quizHistory:[],vocabSearch:"",vocabFilter:"All",wordIndex:0,wordFlip:false,progressName:""};
+try{const saved=JSON.parse(localStorage.getItem(NAVID)||"{}");state={...state,...saved,sessions:(saved.sessions||state.sessions).slice(0,2),study:(saved.study||state.study).slice(0,3),pathDone:(saved.pathDone||state.pathDone).slice(0,5),pathChecks:saved.pathChecks||{},pathAnswers:saved.pathAnswers||{}};if(!pages.some(p=>p[0]===state.page))state.page="home"}catch{}
 const content=document.getElementById("content"),nav=document.getElementById("nav");
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 function persist(){try{localStorage.setItem(NAVID,JSON.stringify(state))}catch{}}
@@ -127,7 +127,7 @@ const link=(label,url)=>`<a target="_blank" rel="noopener noreferrer" href="${ur
 function bar(count,total){return `<div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="${total}" aria-valuenow="${count}"><b style="width:${100*count/total}%"></b></div>`}
 function section(title,sub=""){return `<div class="sectionTitle"><div><h2>${title}</h2>${sub?`<div class="small muted">${sub}</div>`:""}</div></div>`}
 function draw(){nav.innerHTML=pages.map(([p,ic,n])=>`<button class="nav ${p===state.page?"active":""}" onclick="setPage('${p}')"><span style="font-size:20px">${ic}</span><span>${n}</span></button>`).join("");
- const views={path:guidedPathView,home:homeView,learn:learnView,practice:practiceView,study:studyView,words:wordsView,resources:resourcesView,teacher:teacherView};
+ const views={path:guidedPathView,home:homeView,badge:badgeJourneyView,learn:learnView,practice:practiceView,study:studyView,words:wordsView,resources:resourcesView,teacher:teacherView,recovery:()=>`<div id="recovery-slot"></div>`};
  content.innerHTML=views[state.page]();
 }
 
@@ -235,9 +235,9 @@ function guidedPathView(){
  const model=(left,right)=>`<div class="pathNote" role="table" aria-label="Model of two-column study notes"><div class="head" role="row"><span>LEFT · Term / Question</span><span>RIGHT · In my own words + example</span></div><div class="data" role="row"><span>${esc(left)}</span><span>${esc(right)}</span></div></div>`;
  return `
  <div class="pathHead">
- <div class="eyebrow">Room 115 · Your guided learning path</div>
- <h1>One step. One resource. Your own notes.</h1>
- <p class="muted" style="max-width:770px;margin:0 0 13px">Use one ~20-minute Studio period per checkpoint. First learn the material; then CREATE your own required study tools. No extra worksheets, no technical AI course, and no replacement certification test.</p>
+ <div class="eyebrow">AI Study Studio · Your guided learning path</div>
+ <h1>Your AI Basics Learning Path</h1>
+ <p class="muted" style="max-width:770px;margin:0 0 13px">Use one ~20-minute Studio period per checkpoint. First learn the material; then CREATE your own required study tools. Build understanding and your own study tools as you work toward the AI Basics Badge.</p>
  <div class="row"><strong>${completed} of 5 checkpoints complete</strong><span class="pill">✓ Progress stays on this device</span></div>
  <div style="margin-top:10px">${bar(completed,5)}</div>
  </div>
@@ -290,8 +290,31 @@ function guidedPathView(){
  `;
 }
 
+function badgeJourneyView(){const n=state.pathDone.filter(Boolean).length;return `
+<section class="hero"><div><div class="eyebrow">AI STUDY STUDIO · BADGE ACQUISITION</div><h1>Earn Your AI Basics Badge 🏅</h1><p>Follow the learning path, make your own study tools, and submit the required evidence. Your teacher verifies the official test and badge approval.</p>${btn("Continue Learning Path →","setPage('path')")} ${btn("Open Study Kit →","setPage('study')","ghost")}</div><div class="heroVisual"><div class="orb"><span>AI</span></div><b>AI STUDY STUDIO</b><span class="small muted">Learn · Practice · Create · Demonstrate</span></div></section>
+<div class="card" style="padding:20px;margin:18px 0"><h2>🎯 Your badge roadmap</h2><p class="muted">Learning-path checkpoints complete: ${n} of 5. Completing this website does not automatically award a badge.</p>${bar(n,5)}</div>
+<div class="grid">
+<div class="card" style="padding:20px"><h3>🟢 Step 1 · Start Here</h3><p>Review the AI Basics badge requirements, academic honesty, and how the passport works.</p>${btn("Open Learning Path","setPage('path')","secondary")}</div>
+<div class="card" style="padding:20px"><h3>🏆 Step 2 · Learn & Document</h3><p>Complete the required learning activities. Keep any teacher-requested course or certificate evidence in the official badge tracker.</p>${btn("Open Resources","setPage('resources')","secondary")}</div>
+<div class="card" style="padding:20px"><h3>📝 Step 3 · Three Study Materials</h3><p>Create and submit YOUR OWN two-column notes, flashcards, and one student-choice study tool. Photograph or export your work and upload evidence to your official badge tracker.</p>${btn("My Study Kit","setPage('study')","secondary")}</div>
+<div class="card" style="padding:20px"><h3>✉️ Step 4 · Email Test Request</h3><p>When your study materials are ready, send your teacher a professional email requesting the AI Basics test. Save a PDF of the sent email for your badge tracker.</p><p class="small muted">Your email is a request, not a test pass.</p></div>
+<div class="card" style="padding:20px"><h3>📋 Step 5 · Take the Test</h3><p>Take the teacher's official 25-question assessment. Passing is 18/25. Up to three attempts are permitted; follow the teacher's correction directions when needed.</p>${btn("Practice Only","setPage('practice')","secondary")}</div>
+<div class="card" style="padding:20px"><h3>🌟 Final Reflection & Badge Request</h3><p>Explain what you learned, how you used AI responsibly, and one warning or risk you learned about AI. Include original notes, draft, and polished reflection as directed. Request teacher approval by email.</p><p class="small muted">A badge is earned only after the teacher confirms requirements.</p></div>
+</div>
+<div class="card" style="padding:20px;margin-top:18px;background:#effaff"><h3>⚠️ Responsible AI reminder</h3><p>AI can hallucinate facts or quotations, miss context, show bias, and expose private information when you share it. Verify important claims with trusted sources; protect your own and others' data; submit your own thinking.</p></div>`;}
 function homeView(){const done=state.sessions.filter(Boolean).length,s=state.study.filter(Boolean).length;return `
-<section class="hero"><div><div class="eyebrow">NHS · ELA Elective</div><h1>AI Basics<br>Passport</h1><p>Learn it. Question it. Use it to learn.<br>Two short, hands-on learning sessions. Then create <strong>your own</strong> study materials from your teacher's guide.</p>${btn("Continue guided pathway →","setPage('path')")} ${btn("Teacher's source ↗","window.open(RESOURCE.source,'_blank')","ghost")}</div><div class="heroVisual"><div class="orb"><span>AI</span></div><b>ROOM 115</b><span class="muted small">Your learning lab</span></div></section>
+<section class="hero"><div><div class="eyebrow">AI STUDY STUDIO · AI STUDY STUDIO · BADGE JOURNEY</div><h1>AI<br>Passport 🏅</h1><p>Learn it. Question it. Use it to learn.<br>Two short, hands-on learning sessions. Then create <strong>your own</strong> study materials from your teacher's guide.</p>${btn("Continue guided pathway →","setPage('path')")} ${btn("Teacher's source ↗","window.open(RESOURCE.source,'_blank')","ghost")}</div><div class="heroVisual"><div class="orb"><span>AI</span></div><b>AI STUDY STUDIO</b><span class="muted small">Your learning lab</span><div style="font-size:32px" aria-label="Learning badge imagery">🧠 📚 🏆</div></div></section>
+<div class="card" style="padding:20px;margin:18px 0;background:linear-gradient(110deg,#e5faff,#f5f0ff)"><div class="eyebrow">🏅 AI BASICS BADGE · YOUR MILESTONES</div><div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:space-around;text-align:center;margin:14px 0"><div>🧠<br><b>Learn</b></div><div>📝<br><b>Study Tools</b></div><div>✉️<br><b>Test Request</b></div><div>🏆<br><b>Test</b></div><div>🌟<br><b>Reflection</b></div></div><p class="small muted">Milestones are visual guides, not awarded certificates. Teacher approval is still required.</p></div><section class="card" style="margin:18px 0;background:#f0f8ff">
+ <div class="row"><h3>🎬 Start Here · Video Learning Menu</h3><span class="pill">Edpuzzle-friendly</span></div>
+ <p class="small muted">Choose the video that helps you understand today's concept. Your teacher may assign selected clips in Edpuzzle. You do not have to watch every video.</p>
+ <div class="grid">
+ <div><b>Chatbots and LLMs</b><p><a href="https://www.youtube.com/watch?v=X-AWdfSFCHQ" target="_blank" rel="noopener noreferrer">Code.org: How Chatbots &amp; LLMs Work ↗</a></p></div>
+ <div><b>Prompts and roles</b><p><a href="https://youtu.be/6k-6jtgsbW4" target="_blank" rel="noopener noreferrer">Public Library: How to Craft and Refine Prompts ↗</a></p></div>
+ <div><b>Hallucinations</b><p><a href="https://youtu.be/cA83zeSRjxQ" target="_blank" rel="noopener noreferrer">Public Library: Assessing AI &amp; Hallucinations ↗</a></p></div>
+ <div><b>Verifying information</b><p><a href="https://www.poynter.org/mediawise/programs/ai-unlocked/finding-facts-with-generative-ai-search/" target="_blank" rel="noopener noreferrer">MediaWise: Finding Facts With AI Search ↗</a></p></div>
+ </div>
+ <p class="small muted">Also use <a href="https://studio.code.org/courses/gen-ai-humanities/units/1/resources" target="_blank" rel="noopener noreferrer">Code.org's Humanities resource collection ↗</a> for teacher support.</p>
+</section>
 ${section("Your journey","Only about 20 minutes of each Studio block—your academic work stays protected.")}
 <div class="grid"><div class="card"><div class="row"><span class="tag">Intro sessions</span><span class="stat">${done}/2</span></div>${bar(done,2)}<p>Understand AI & prompt better · Question AI & study smarter</p>${btn(done===2?"Review guided pathway →":"Continue pathway →","setPage('path')","secondary")}</div>
 <div class="card"><div class="row"><span class="tag">Your study kit</span><span class="stat">${s}/3</span></div>${bar(s,3)}<p>Handwritten two-column notes · Your flashcards · Your choice</p>${btn("Build your study kit →","setPage('study')","secondary")}</div></div>
@@ -410,13 +433,14 @@ ${section("Classroom safeguards")}<div class="card"><p><strong>No accounts or cl
 <div class="row">${btn("Clear my saved progress","confirm('Clear all local progress?')&&clearAll()","ghost")}${btn("Open teacher source guide","window.open(RESOURCE.source,'_blank')","secondary")}</div></div>
 <div class="printOnly"><h2>My AI Basics progress</h2><p>Introduction: ${n}/2 · Study tools: ${m}/3 · Practice answered: ${state.quizHistory.length}</p></div>`}
 function clearAll(){localStorage.removeItem(NAVID);location.reload()}
-function popPrint(markup){const w=window.open("","_blank");if(!w){alert("Please allow pop-ups to print blank templates.");return}w.document.write(`<!doctype html><html><head><title>Room 115 Study Template</title><style>body{font-family:Arial,sans-serif;padding:22px;color:#13263c}h1{font-size:22px}table{border-collapse:collapse;width:100%}td,th{border:1px solid #555;padding:10px;height:52px;text-align:left;vertical-align:top}hr{border:1px solid #aaa;margin:22px 0}.box{display:inline-block;border:1px solid #777;width:40%;height:130px;margin:2%;vertical-align:top;padding:10px}@media print{button{display:none}}</style></head><body>${markup}<p style="font-size:12px">Create YOUR OWN explanations from the teacher-provided source. Do not turn in a filled-in AI-generated guide.</p><button onclick="window.print()">Print</button></body></html>`);w.document.close();w.focus();w.print()}
+function popPrint(markup){const w=window.open("","_blank");if(!w){alert("Please allow pop-ups to print blank templates.");return}w.document.write(`<!doctype html><html><head><title>AI Study Studio Study Template</title><style>body{font-family:Arial,sans-serif;padding:22px;color:#13263c}h1{font-size:22px}table{border-collapse:collapse;width:100%}td,th{border:1px solid #555;padding:10px;height:52px;text-align:left;vertical-align:top}hr{border:1px solid #aaa;margin:22px 0}.box{display:inline-block;border:1px solid #777;width:40%;height:130px;margin:2%;vertical-align:top;padding:10px}@media print{button{display:none}}</style></head><body>${markup}<p style="font-size:12px">Create YOUR OWN explanations from the teacher-provided source. Do not turn in a filled-in AI-generated guide.</p><button onclick="window.print()">Print</button></body></html>`);w.document.close();w.focus();w.print()}
 function printNotes(){popPrint(`<h1>Blank Two-Column Notes · AI Basics</h1><p>Name: _____________ Date: _____________ Topic: _____________</p><table><tr><th style="width:30%">Key word / Question</th><th>My own explanation / Example</th></tr>${Array.from({length:9},()=>"<tr><td></td><td></td></tr>").join("")}</table><h3>Summary in my own words</h3><hr><hr><hr>`)}
 function printCards(){popPrint(`<h1>Blank Flashcard Templates · AI Basics</h1><p>Name: _____________ Date: _____________</p>${Array.from({length:8},(_,i)=>`<div class="box">Card ${i+1}: Front — term / question</div><div class="box">Back — my own definition / example</div>`).join("")}`)}
 function printPlan(){popPrint(`<h1>My AI Basics Student-Made Study Plan</h1><p>Materials source: Mrs. Paden's AI Basics Study Guide</p><p>□ Two-column notes □ Flashcards □ My choice</p><p>My third study tool: ______________________________</p><h3>Terms I still need to practice</h3><hr><hr><hr><h3>How I'll quiz myself</h3><hr><hr>`)}
-function printSummary(){const n=state.sessions.filter(Boolean).length,m=state.study.filter(Boolean).length;popPrint(`<h1>Room 115 · AI Basics Learning Progress</h1><p>Student (optional): _______________________</p><p>Introduction lessons completed: ${n}/2</p><p>Student-created study formats checked: ${m}/3</p><p>Practice questions answered: ${state.quizHistory.length}</p><p>This is a learning summary, NOT an official certificate, badge, submission, or assessment result.</p>`)}
+function printSummary(){const n=state.sessions.filter(Boolean).length,m=state.study.filter(Boolean).length;popPrint(`<h1>AI Study Studio · AI Basics Learning Progress</h1><p>Student (optional): _______________________</p><p>Introduction lessons completed: ${n}/2</p><p>Student-created study formats checked: ${m}/3</p><p>Practice questions answered: ${state.quizHistory.length}</p><p>This is a learning summary, NOT an official certificate, badge, submission, or assessment result.</p>`)}
 window.addEventListener("error",e=>{console.error(e.message)});
 draw();updatePrompt();
 </script>
+<script src="./passport-recovery.js" defer></script>
 </body>
 </html>
