@@ -337,6 +337,45 @@ body{background:radial-gradient(ellipse at 85% 0%,#dff7fa 0,transparent 35%),lin
 @media(max-width:650px){.badgeShelf{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.badgeCardTitle{font-size:12.5px;min-height:47px}.passportPreviewPin{flex-basis:127px!important;width:127px!important}}
 @media(prefers-reduced-motion:reduce){.passportBadge.collectibleBadge{animation:none!important}}
 
+
+/* Badge rarity is intrinsic: BLUE levels 1-4, BRONZE 5-8, SILVER 9-11, GOLD 12-14. */
+.passportBadge.collectibleBadge.tier-blue,.passportPreviewPin.tier-blue{background:linear-gradient(155deg,#16568b,#071a33 78%)!important}
+.passportBadge.collectibleBadge.tier-bronze,.passportPreviewPin.tier-bronze{background:linear-gradient(150deg,#73401d,#1f2437 75%)!important;box-shadow:inset 0 0 0 1px #e5a06677,0 0 20px #c8824d8f!important}
+.passportBadge.collectibleBadge.tier-silver,.passportPreviewPin.tier-silver{background:linear-gradient(150deg,#647c92,#172b40 75%)!important;box-shadow:inset 0 0 0 1px #fff8,0 0 23px #a9d2e4a8!important}
+.passportBadge.collectibleBadge.tier-gold,.passportPreviewPin.tier-gold{background:linear-gradient(145deg,#986317,#3b301e 58%,#142b45)!important;box-shadow:inset 0 0 0 2px #ffe9ab99,0 0 26px #ffd067bc!important}
+.badgeRarityStrip,.previewRarityStrip,.moduleBadgeRarity{display:block;width:100%;border-radius:6px;text-align:center;padding:5px 4px;font-size:10px;letter-spacing:.15em;font-weight:950;color:#fff;background:linear-gradient(90deg,#07508d,#33b7fc,#07508d)}
+.tier-bronze .badgeRarityStrip,.tier-bronze .previewRarityStrip,.tier-bronze .moduleBadgeRarity{background:linear-gradient(90deg,#76451e,#efad6a,#824f29);color:#241404}
+.tier-silver .badgeRarityStrip,.tier-silver .previewRarityStrip,.tier-silver .moduleBadgeRarity{background:linear-gradient(90deg,#829bad,#fff,#97b3c7);color:#192b3b}
+.tier-gold .badgeRarityStrip,.tier-gold .previewRarityStrip,.tier-gold .moduleBadgeRarity{background:linear-gradient(90deg,#956113,#ffe38e,#cf9c31,#ffe9a6,#9c6211);color:#291d09;box-shadow:0 0 11px #ffc44b9a}
+.tier-blue .badgeCardTitle,.tier-blue .previewBadgeTitle{background:linear-gradient(90deg,#164e8d,#0a274d)}
+.tier-bronze .badgeCardTitle,.tier-bronze .previewBadgeTitle{background:linear-gradient(90deg,#9f622c,#dfac77);color:#241608!important;text-shadow:none!important}
+.tier-silver .badgeCardTitle,.tier-silver .previewBadgeTitle{background:linear-gradient(90deg,#9cb7c8,#e9f3fa);color:#1c2c41!important;text-shadow:none!important}
+.tier-gold .badgeCardTitle,.tier-gold .previewBadgeTitle{background:linear-gradient(90deg,#c08b2e,#ffe4a0,#b5872c);color:#2b1d06!important;text-shadow:none!important}
+.passportBadge.collectibleBadge .badgeCardTitle,.passportPreviewPin .previewBadgeTitle{border-radius:6px;border:1px solid var(--tier);padding:7px 4px;min-height:47px}
+.passportPreviewPin{min-height:256px!important}
+.moduleRoadmapItem{min-height:184px;display:flex;flex-direction:column;gap:5px;align-items:stretch}
+.moduleRoadmapItem .moduleRoadmapTask{min-height:47px}
+.moduleRoadmapItem .moduleBadgeCard{margin:4px auto 0}
+.moduleBadgeCard{border:2px solid var(--rarity,#3bbaff);background:#0d243f;border-radius:10px;width:94px;max-width:100%;color:#f1f9ff;display:flex;flex-direction:column;gap:4px;align-items:center;padding:5px;cursor:pointer;box-shadow:0 0 11px var(--rarityGlow,#2caef866);transition:transform .2s}
+.moduleBadgeCard:hover,.moduleBadgeCard:focus-visible{transform:translateY(-2px);outline-offset:2px}
+.moduleBadgeCard.tier-blue{--rarity:#34b4fa;--rarityGlow:#34b4fa7a;background:#103963}
+.moduleBadgeCard.tier-bronze{--rarity:#d3904d;--rarityGlow:#d3904d88;background:#553319}
+.moduleBadgeCard.tier-silver{--rarity:#d6ecfa;--rarityGlow:#b8dcff9c;background:#364f65}
+.moduleBadgeCard.tier-gold{--rarity:#ffcf59;--rarityGlow:#ffd35caa;background:#72521e}
+.moduleBadgeCard img{display:block;width:100%;height:76px;object-fit:contain}
+.moduleBadgeRarity{padding:3px;font-size:8px}
+.moduleBadgeName{display:block;font-size:9.5px;font-weight:850;line-height:1.2;text-align:center;overflow-wrap:anywhere;color:#fff}
+.moduleSafetyRequired{border:2px solid #e6c977;background:linear-gradient(115deg,#fffdfa,#fffdf0)}
+.moduleSafetyRequired h3{color:#825b16}
+.moduleSafetyGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.moduleSafetyRule{padding:11px 12px;border:1px solid #d4dee8;background:#fff;border-radius:10px}
+.moduleSafetyRule b{font-size:13px;color:#18577c}
+.moduleSafetyRule p{margin:5px 0 0;font-size:12px;line-height:1.4;color:#405469}
+.moduleSafetyNext{margin-top:14px}
+@media(max-width:720px){.moduleRoadmapItem{min-height:164px}.moduleSafetyGrid{grid-template-columns:1fr}}
+@media(max-width:480px){.moduleRoadmapItem{display:grid;grid-template-columns:30px 1fr 88px;align-items:center}.moduleRoadmapItem .moduleBadgeCard{grid-column:3;grid-row:1;margin:0}.moduleRoadmapItem .moduleRoadmapTask{grid-column:2;grid-row:1;min-height:0}.moduleRoadmapItem>span{grid-column:1;grid-row:1}}
+@media(prefers-reduced-motion:reduce){.moduleBadgeCard{transition:none}}
+
 </style>
 </head>
 <body>
