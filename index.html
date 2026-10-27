@@ -898,7 +898,7 @@ ${section("Video sequence · One time each")}<div class="card"><p><strong>Module
 ${section("Manage my progress")}<div class="card"><p class="small muted">Your teacher verifies badge requirements in Google Classroom. Use the dedicated Save & Restore page in the left navigation to save or restore your progress.</p><div class="row">${btn("Clear my saved progress","confirm('Clear all local progress?')&&clearAll()","ghost")}${btn("Open Master Study Guide","window.open(RESOURCE.source,'_blank')","secondary")}</div></div>
 <div class="printOnly"><h2>My AI Basics progress</h2><p>Introduction: ${n}/2 · Study tools: ${m}/3 · Practice answered: ${state.quizHistory.length}</p></div>`}
 function clearAll(){localStorage.removeItem(NAVID);location.reload()}
-function popPrint(markup,showNote=true,waitForImages=false){const w=window.open("","_blank");if(!w){alert("Please allow pop-ups to print.");return}w.document.write(`<!doctype html><html><head><title>AI Study Studio | Progress Report</title><style>body{font-family:Arial,sans-serif;padding:22px;color:#13263c}h1{font-size:22px}table{border-collapse:collapse;width:100%}td,th{border:1px solid #555;padding:10px;height:52px;text-align:left;vertical-align:top}hr{border:1px solid #aaa;margin:22px 0}.box{display:inline-block;border:1px solid #777;width:40%;height:130px;margin:2%;vertical-align:top;padding:10px}@media print{button{display:none}}</style></head><body>${markup}${showNote?'<p style="font-size:12px">Create your own explanations for your study materials.</p>':''}<button onclick="window.print()">Print</button></body></html>`);w.document.close();w.focus();
+function popPrint(markup,showNote=true,waitForImages=false){const w=window.open("","_blank");if(!w){alert("Please allow pop-ups to print.");return}w.document.write(`<!doctype html><html><head><title>AI Study Studio | Progress Report</title><base href="${esc(window.location&&window.location.origin?window.location.origin+'/':'/')}"><style>body{font-family:Arial,sans-serif;padding:22px;color:#13263c}h1{font-size:22px}table{border-collapse:collapse;width:100%}td,th{border:1px solid #555;padding:10px;height:52px;text-align:left;vertical-align:top}hr{border:1px solid #aaa;margin:22px 0}.box{display:inline-block;border:1px solid #777;width:40%;height:130px;margin:2%;vertical-align:top;padding:10px}@media print{button{display:none}}</style></head><body>${markup}${showNote?'<p style="font-size:12px">Create your own explanations for your study materials.</p>':''}<button onclick="window.print()">Print</button></body></html>`);w.document.close();w.focus();
  if(!waitForImages){w.print();return}
  const images=Array.from(w.document.images||[]);if(!images.length){w.print();return}
  let printed=false;
@@ -911,11 +911,66 @@ function printCards(){popPrint(`<h1>Blank Flashcard Templates · AI Basics</h1><
 function printPlan(){popPrint(`<h1>My AI Basics Student-Made Study Plan</h1><p>Materials source: Mrs. Paden's AI Basics Study Guide</p><p>□ Two-column notes □ Flashcards □ My choice</p><p>My third study tool: ______________________________</p><h3>Terms I still need to practice</h3><hr><hr><hr><h3>How I'll quiz myself</h3><hr><hr>`)}
 function printSummaryOld(){const n=state.sessions.filter(Boolean).length,m=state.study.filter(Boolean).length;popPrint(`<h1>AI Study Studio · AI Passport Learning Progress</h1><p>Student (optional): _______________________</p><p>Introduction lessons completed: ${n}/2</p><p>Student-created study formats checked: ${m}/3</p><p>Practice questions answered: ${state.quizHistory.length}</p><p>This is a learning summary, NOT an official certificate, badge, submission, or assessment result.</p>`)}
 
+function stableCertificateIdentity(rawName){
+ const normalized=String(rawName||"").trim().replace(/\s+/g," ").toLocaleLowerCase("en-US");
+ if(!normalized)throw Error("Certificate recipient name is required");
+ const existing=typeof state.certificateId==="string" && /^NHS-AIP-[0-9A-F-]{36}$/.test(state.certificateId);
+ if(existing && state.certificateRecipient===normalized && state.certificateIssuedAt)return {id:state.certificateId,issuedAt:state.certificateIssuedAt};
+ if(!window.crypto||typeof window.crypto.randomUUID!=="function")throw Error("Secure certificate IDs require a current browser and HTTPS");
+ state.certificateId="NHS-AIP-"+window.crypto.randomUUID().toUpperCase();
+ state.certificateRecipient=normalized;
+ state.certificateIssuedAt=new Date().toISOString();
+ persist();
+ return {id:state.certificateId,issuedAt:state.certificateIssuedAt};
+}
 function printCertificate(){
- if(!state.pathDone.every(Boolean)){alert('Finish all six Passport modules before making your course completion certificate.');return}
- const raw=String(state.progressName||'').trim();if(raw.length<3){alert('Type your first and last name before printing your certificate.');return}
- const name=esc(raw),date=esc(new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'}));
- popPrint(`<div style="padding:34px 27px;text-align:center;border:9px double #cba652;min-height:540px;background:linear-gradient(135deg,#fffdf6,#f0f7ff)"><div style="font-size:15px;font-weight:850;letter-spacing:.19em;color:#1c538c">AI STUDY STUDIO</div><h1 style="font-size:35px;margin:27px 0 2px;color:#1e487d">AI PASSPORT</h1><div style="font-size:21px;letter-spacing:.11em;color:#a07318;font-weight:800">CERTIFICATE OF COURSE COMPLETION</div><p style="margin:30px 0 10px">Presented to</p><div style="font-size:34px;font-weight:800;border-bottom:2px solid #b6933d;padding:10px 0;margin:0 15px">${name}</div><p style="max-width:560px;margin:27px auto 12px">for completing all six <strong>AI Passport Modules</strong> and collecting <strong>14 AI literacy topic badges</strong> through Khan Academy, Code.org, Common Sense Education, ISTE practice and the assigned Edpuzzles.</p><p><strong>Date:</strong> ${date}</p><div style="font-size:12px;color:#57697c;margin-top:42px">AI Study Studio · Course Completion Evidence for Google Classroom</div><div style="font-size:10px;color:#698097;margin-top:8px">Based on this browser’s completed checkpoints and the name entered by the student. These 14 badges track site learning milestones. The separate 25-question certification test, final reflection, and official AI Basics Badge approval are managed by the teacher.</div></div>`,false)
+ if(!state.pathDone.every(Boolean)){alert("Finish all six Passport modules before creating your course completion certificate.");return}
+ const raw=String(state.progressName||"").trim();
+ if(raw.length<3||raw.split(/\s+/).length<2){alert("Enter your first and last name before creating your course completion certificate.");return}
+ let record;try{record=stableCertificateIdentity(raw)}catch(err){alert(err.message);return}
+ const name=esc(raw.replace(/\s+/g," "));
+ const issued=esc(new Date(record.issuedAt).toLocaleDateString("en-US",{year:"numeric",month:"long",day:"numeric"}));
+ const id=esc(record.id),art=badgeAsset(14);
+ const css=`<style>
+ @page{size:letter landscape;margin:0.32in}
+ *{box-sizing:border-box}
+ body{margin:0!important;padding:0!important;background:#fff;font-family:Arial,sans-serif}
+ .certificate{position:relative;min-height:7.55in;width:100%;border:10px solid #102c4e;padding:7px;background:#fff;break-inside:avoid;print-color-adjust:exact;-webkit-print-color-adjust:exact}
+ .certificateFrame{height:100%;min-height:7.25in;position:relative;border:2px solid #b78b34;padding:25px 30px 20px;background:linear-gradient(145deg,#faffff,#fffdf7 73%,#f0f8fb);text-align:center}
+ .certTop{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #d2bd85;padding-bottom:10px;gap:10px}
+ .certBrand{font-size:12px;letter-spacing:2.6px;font-weight:900;text-align:left;color:#144e72}
+ .certSchool{font-size:9px;letter-spacing:1.5px;color:#60798c;font-weight:800;text-align:right}
+ .certKicker{font-size:12px;letter-spacing:3.5px;color:#9b702a;font-weight:900;margin-top:18px}
+ .certTitle{font-family:Georgia,serif;font-size:48px;font-weight:800;letter-spacing:3px;color:#102c4e;line-height:1;margin:10px 0 4px}
+ .certSub{font-size:16px;letter-spacing:5px;color:#117f91;font-weight:900;margin:6px 0 18px}
+ .certDivider{width:50%;height:2px;background:#c8ab6e;margin:12px auto 18px}
+ .certPresented{font-size:13px;color:#526b7c;letter-spacing:1px;text-transform:uppercase;margin:4px 0 5px}
+ .certName{font-family:Georgia,serif;font-size:39px;line-height:1.1;color:#0b536c;margin:8px auto 17px;padding:0 10px 10px;border-bottom:2px solid #d9ba75;max-width:80%;overflow-wrap:anywhere}
+ .certStatement{max-width:620px;margin:0 auto 13px;font-size:13px;line-height:1.55;color:#344f63}
+ .certEarned{display:flex;align-items:center;justify-content:center;gap:14px;margin:0 auto 13px}
+ .certEarned img{height:76px;width:76px;object-fit:contain}
+ .certEarned .certEarnedWords{font-size:16px;font-weight:900;color:#0e6b6f;text-align:left;letter-spacing:.3px}
+ .certEarned small{font-size:10px;color:#586c7b;font-weight:600}
+ .certFooter{display:grid;grid-template-columns:1fr 1.5fr;gap:14px;border-top:1px solid #d2bd85;text-align:left;padding-top:11px;margin-top:8px}
+ .certFooter b{display:block;font-size:10px;text-transform:uppercase;letter-spacing:1.2px;color:#7c6030}
+ .certFooter span{font-size:12px;color:#173b54}
+ .certId{font-family:"Courier New",monospace;font-size:10px!important;letter-spacing:.4px;overflow-wrap:anywhere}
+ .certFine{font-size:9px;line-height:1.4;color:#637586;margin:12px 0 0}
+ .certificate button{display:none!important}
+ @media print{.certificate{border-color:#102c4e!important}.certificateFrame{border-color:#b78b34!important}}
+ </style>`;
+ const markup=css+`<section class="certificate" aria-label="AI Passport course completion certificate"><div class="certificateFrame">
+ <div class="certTop"><span class="certBrand">✦ AI STUDY STUDIO</span><span class="certSchool">NANTUCKET HIGH SCHOOL · AI PASSPORT</span></div>
+ <div class="certKicker">CERTIFICATE OF ACHIEVEMENT</div>
+ <div class="certTitle">AI PASSPORT</div><div class="certSub">COURSE COMPLETION</div>
+ <div class="certDivider"></div><div class="certPresented">Presented to</div>
+ <div class="certName">${name}</div>
+ <p class="certStatement">For completing <strong>all six AI Passport learning modules</strong> and earning the complete collection of <strong>14 AI literacy topic badges</strong>, demonstrating engagement with responsible AI use, prompting, critical thinking, research, and independent learning.</p>
+ <div class="certEarned"><img src="${art}" alt="AI Safety and Real-World Risks premium topic badge"/><div class="certEarnedWords">14 / 14 TOPIC BADGES ATTAINED<small><br>Six learning modules completed</small></div></div>
+ <div class="certFooter"><div><b>Completion date</b><span>${issued}</span></div><div><b>Unique certificate ID</b><span class="certId">${id}</span></div></div>
+ <p class="certFine">Student-generated evidence of Passport course completion. This ID identifies this local certificate record; it is not an online verification code. The separate 25-question AI Basics certification test, final reflection, and teacher approval are required for the official badge.</p>
+ </div></section>`;
+ popPrint(markup,false,true);
 }
 
 function printSummary(){
@@ -928,21 +983,80 @@ function printSummary(){
   return;
  }
  const done=state.pathDone.filter(Boolean).length,topics=earnedTopicCount(),tools=state.study.filter(Boolean).length;
- const student=esc(state.progressName||"__________________________");
- const rows=literacyLevels.map(row=>"<tr><td>Level "+row[0]+"</td><td>"+esc(row[1])+"</td><td>"+topicProgressStatus(row)+"</td></tr>").join("");
- const points=pathway.map((p,i)=>"<li><strong>Module "+(i+1)+" · "+moduleProgressStatus(i)+"</strong> — "+esc(p.title)+"</li>").join("");
- const lines=value=>esc(value).replace(/\r?\n/g,"<br>");
- const line=(number,title,value)=>"<p><strong>"+number+". "+title+"</strong></p><div style='border:1px solid #b9cfdb;border-radius:8px;padding:12px;line-height:1.6;overflow-wrap:anywhere'>"+lines(value)+"</div>";
- const reflection="<h3>Student reflection on this session / check-in</h3>"+line(1,"Studio sessions or modules I worked on",session)+line(2,"What I learned or practiced",learned)+line(3,"What I will do next",next);
- const badgeCards=literacyLevels.map(row=>{
-  const attained=Boolean(state.pathDone[row[3]]);
-  const status=topicProgressStatus(row);
-  return "<div class='printBadge "+(attained?"attained":"notAttained")+"'><img src='"+badgeAsset(row[0])+"' alt='"+esc(row[1])+" badge' /><b>"+esc(row[1])+"</b><small>"+status+"</small></div>";
+ const student=esc(state.progressName||"Student name not entered");
+ const answered=state.quizHistory.length;
+ const issued=esc(new Date().toLocaleDateString("en-US",{year:"numeric",month:"short",day:"numeric"}));
+ const css=`<style>
+ @page{size:letter portrait;margin:.47in}
+ *{box-sizing:border-box}
+ body{margin:0!important;padding:0!important;color:#19394e;font-family:Arial,sans-serif;background:#fff;print-color-adjust:exact;-webkit-print-color-adjust:exact}
+ .reportSheet{width:100%;max-width:100%;padding:0;margin:auto}
+ .reportHero{background:linear-gradient(120deg,#092e51,#0c6880 78%,#0d938e);padding:19px 22px 18px;border-radius:15px;color:#fff;display:flex;justify-content:space-between;gap:12px;align-items:flex-end}
+ .reportBrand{font-size:9px;letter-spacing:2.2px;font-weight:900;color:#aeedef}
+ .reportTitle{font-size:26px;line-height:1.05;letter-spacing:-.5px;color:#fff;margin:5px 0;font-weight:900}
+ .reportSub{font-size:11px;line-height:1.4;color:#d7f6fc}
+ .reportStamp{text-align:right;min-width:115px}
+ .reportStamp b{display:block;font-size:11px;color:#fff}
+ .reportStamp small{font-size:9px;color:#d7f6fc}
+ .reportStudent{font-size:11px;display:flex;justify-content:space-between;border-bottom:1px solid #d0e0e6;padding:9px 0;margin-bottom:10px;gap:12px}
+ .reportMetrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:10px 0 14px}
+ .reportMetric{border:1px solid #cddfe5;border-radius:10px;padding:9px 9px;background:#f7fcfc;break-inside:avoid}
+ .reportMetric strong{display:block;font-size:23px;color:#075b79;line-height:1.1}
+ .reportMetric span{font-size:9px;line-height:1.25;font-weight:700;color:#557285}
+ .reportHeading{font-size:13px;letter-spacing:.2px;color:#123956;display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #27acac;padding-bottom:5px;margin:12px 0 9px;break-after:avoid}
+ .reportHeading small{font-size:9px;color:#627a8a;font-weight:400}
+ .moduleGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 10px;margin-bottom:9px}
+ .moduleItem{border:1px solid #d7e6eb;border-radius:9px;padding:8px 9px;break-inside:avoid;display:flex;align-items:center;justify-content:space-between;gap:7px;min-width:0}
+ .moduleItem b{display:block;font-size:9px;color:#47647a}
+ .moduleItem span{font-size:10px;line-height:1.3;color:#1a3c53}
+ .status{white-space:nowrap;border-radius:99px;padding:3px 6px;font-size:8px;font-weight:800;color:#526b7d;background:#edf2f5}
+ .status.Completed,.status.Attained{color:#096d5e;background:#dcf5ed}
+ .status.InProgress{color:#89571c;background:#fff1da}
+ .badgeGrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;margin:8px 0}
+ .badgeCard{padding:5px 3px;border:1px solid #d8e3e8;border-radius:8px;background:#f7fafb;text-align:center;display:flex;flex-direction:column;align-items:center;gap:3px;min-width:0;break-inside:avoid}
+ .badgeCard img{height:51px;width:51px;max-width:100%;object-fit:contain;opacity:.32;filter:grayscale(1)}
+ .badgeCard.attained{background:#e9f9f4;border-color:#73c7b8}
+ .badgeCard.attained img{opacity:1;filter:none}
+ .badgeCard b{font-size:7.6px;line-height:1.15;color:#27455d;min-height:18px}
+ .badgeCard span{font-size:7.6px;font-weight:800;color:#71838e}
+ .badgeCard.attained span{color:#057a65}
+ .badgeLegend{font-size:9px;color:#526d7a;margin:-3px 0 8px}
+ .reflectionSet{break-before:auto;margin-top:11px}
+ .reflectionCard{margin:7px 0;border:1px solid #cee0e7;border-left:4px solid #17a4a6;border-radius:8px;break-inside:avoid;overflow-wrap:anywhere;padding:9px 12px}
+ .reflectionCard b{display:block;font-size:9px;color:#32617a;text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px}
+ .reflectionCard div{font-size:11px;line-height:1.45;color:#153b50;white-space:normal}
+ .reportFoot{font-size:9px;color:#577082;line-height:1.45;border-top:1px solid #c8dfe3;margin-top:13px;padding-top:8px}
+ .reportFoot strong{color:#21516b}
+ h3{margin-top:0}
+ </style>`;
+ const statusClass=status=>status.replace(/\s+/g,"");
+ const modules=pathway.map((p,i)=>{
+  const status=moduleProgressStatus(i);
+  return `<div class="moduleItem"><div><b>MODULE ${i+1}</b><span>${esc(p.title)}</span></div><span class="status ${statusClass(status)}">${status}</span></div>`;
  }).join("");
- const imageLayout="<style>.printBadgeGrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;margin:9px 0 16px}.printBadge{display:flex;flex-direction:column;align-items:center;gap:3px;text-align:center;padding:5px 3px;border:1px solid #d0dfe7;border-radius:7px;min-width:0;break-inside:avoid;background:#f7fafc}.printBadge img{height:59px;width:59px;max-width:100%;object-fit:contain}.printBadge b{font-size:8px;line-height:1.15;min-height:19px}.printBadge small{font-size:8px;line-height:1.1}.printBadge.notAttained img{filter:grayscale(1);opacity:.3}.printBadge.attained{border-color:#5cb5a4;background:#ecfaf6}.printBadge.attained small{color:#086e5d;font-weight:bold}h3{break-after:avoid}table td,table th{height:auto;padding:4px 8px;font-size:10px}.printModuleList{font-size:11px;line-height:1.55}.printBadgeGrid{break-inside:avoid}@media print{.printBadge img{-webkit-print-color-adjust:exact;print-color-adjust:exact}.printBadge.attained{-webkit-print-color-adjust:exact;print-color-adjust:exact}}</style>";
- const badges=imageLayout+"<h3>My visual topic badge set · "+topics+" of 14 attained</h3><p style='font-size:11px'>Full color = Attained · Muted = In Progress or Not Started. Only completed module checkpoints unlock topic badges.</p><div class='printBadgeGrid'>"+badgeCards+"</div>";
- popPrint("<h1>AI STUDY STUDIO | AI PASSPORT PROGRESS REPORT</h1><p>Anytime Studio check-in · Learning Record + Student Reflection</p><p>Name: <strong>"+student+"</strong> | Class/Block: ______ | Report Date: "+esc(new Date().toLocaleDateString("en-US"))+"</p><p><b>"+done+"/6 modules complete · "+topics+"/14 topic badges attained · "+tools+"/3 original study tools marked.</b> This is progress as of this report, not final completion.</p><p>Site practice questions answered: "+state.quizHistory.length+".</p><h3>Six learning modules</h3><ol class='printModuleList'>"+points+"</ol>"+badges+"<h3>14 AI literacy topics</h3><table><tr><th>Level</th><th>Topic</th><th>Status</th></tr>"+rows+"</table>"+reflection+"<p><strong>These checkmarks are saved on this device. This report is not official certification, teacher-verified evidence, or a test result.</strong> Submit the PDF only as directed in Google Classroom.</p>",false,true);
+ const badges=literacyLevels.map(row=>{
+  const attained=Boolean(state.pathDone[row[3]]),status=topicProgressStatus(row);
+  return `<div class="badgeCard ${attained?'attained':'unearned'}"><img src="${badgeAsset(row[0])}" alt="${esc(row[1])} badge" /><b>${esc(row[1])}</b><span>${status}</span></div>`;
+ }).join("");
+ const paragraph=v=>esc(v).replace(/\r?\n/g,"<br>");
+ const ref=(n,heading,value)=>`<div class="reflectionCard"><b>${n}. ${heading}</b><div>${paragraph(value)}</div></div>`;
+ const markup=css+`<article class="reportSheet" aria-label="AI Passport student progress report">
+ <header class="reportHero"><div><div class="reportBrand">✦ NHS · AI STUDY STUDIO</div><h1 class="reportTitle">AI Passport<br>Progress Report</h1><div class="reportSub">Student learning record &amp; session reflection</div></div><div class="reportStamp"><b>STUDIO CHECK-IN</b><small>${issued}</small></div></header>
+ <div class="reportStudent"><div><strong>Student</strong> · ${student}</div><div><strong>Class / Block:</strong> ____________</div></div>
+ <div class="reportMetrics"><div class="reportMetric"><strong>${done}/6</strong><span>MODULES COMPLETED</span></div><div class="reportMetric"><strong>${topics}/14</strong><span>TOPIC BADGES ATTAINED</span></div><div class="reportMetric"><strong>${tools}/3</strong><span>STUDY TOOLS MARKED</span></div><div class="reportMetric"><strong>${answered}</strong><span>PRACTICE RESPONSES</span></div></div>
+ <h2 class="reportHeading">Module progress <small>Not Started · In Progress · Completed</small></h2>
+ <div class="moduleGrid">${modules}</div>
+ <h2 class="reportHeading">My topic badge collection <small>${topics} of 14 attained</small></h2><p class="badgeLegend">Full-color badge = Attained. Muted artwork = In Progress or Not Started. Topic badges are not official certification.</p>
+ <div class="badgeGrid">${badges}</div>
+ <section class="reflectionSet"><h2 class="reportHeading">Student reflection <small>My current Studio check-in</small></h2>
+ ${ref(1,"Studio session(s) or module(s) I worked on",session)}
+ ${ref(2,"What I learned or practiced",learned)}
+ ${ref(3,"My next step",next)}</section>
+ <footer class="reportFoot"><strong>AI Passport learning record.</strong> This report reflects progress saved in this browser at the time of export. It does not verify completed Classroom submissions, certification-test results, or teacher approval. Save as PDF and submit only when directed by your teacher.</footer>
+ </article>`;
+ popPrint(markup,false,true);
 }
+
 window.addEventListener("error",e=>{console.error(e.message)});
 draw();updatePrompt();
 </script>
