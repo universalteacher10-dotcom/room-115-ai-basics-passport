@@ -519,6 +519,7 @@ body{background:radial-gradient(ellipse at 85% 0%,#dff7fa 0,transparent 35%),lin
 @media(max-width:1070px){.moduleLaunchGrid{grid-template-columns:repeat(3,minmax(0,1fr))}.modulePreviewBadges{grid-template-columns:repeat(5,minmax(0,1fr))}}
 @media(max-width:620px){.moduleLaunchGrid{grid-template-columns:repeat(2,minmax(0,1fr))}.moduleLaunchIconArt{height:64px;width:64px;font-size:35px}.homeSummary{grid-template-columns:1fr}.modulePreviewHero{grid-template-columns:1fr}.modulePreviewIcon{font-size:59px;max-width:120px}.modulePreviewBadges{grid-template-columns:repeat(3,minmax(0,1fr))}.moduleLaunchHeading{align-items:flex-start}}
 @media(prefers-reduced-motion:reduce){.moduleLaunchIcon{transition:none}}
+.homeBadgeCollection .passportBadge:not(.isEarned){filter:grayscale(1);opacity:.55;box-shadow:none!important}.homeBadgeCollection .passportBadge.isEarned{filter:none;opacity:1}.homeBadgeCollection .passportBadge:not(.isEarned):focus-visible{opacity:.9;outline:3px solid #129ca8;outline-offset:2px}
 </style>
 </head>
 <body>
@@ -880,7 +881,7 @@ function homeView(){
  ${moduleLaunchers()}
  <section class="homeSummary"><div class="homeSummaryItem"><span>MODULES COMPLETED</span><strong>${completed}/6</strong><small>Complete learning in order</small></div><div class="homeSummaryItem"><span>TOPIC BADGES ATTAINED</span><strong>${earned}/14</strong><small>Grey until earned</small></div><div class="homeSummaryItem"><span>ORIGINAL STUDY TOOLS</span><strong>${tools}/3</strong><small>Your own study materials</small></div></section>
  ${classroomNotice("Google Classroom remains your assignment hub","Open your assigned Edpuzzles, Learning Log, original study tools, and test-request assignments in Google Classroom. Collectible Passport badges are not official certification.","GOOGLE CLASSROOM · REQUIRED ACTION")}
- ${passportBadgeWall()}
+ <div class="homeBadgeCollection">${passportBadgeWall()}</div>
  <div class="row homeDashActions">${btn("Continue current module →",`moduleOpenPreview(${Math.max(0,state.pathDone.findIndex(v=>!v)<0?5:state.pathDone.findIndex(v=>!v))})`,"primary")}${btn("Anytime Progress Report","setPage('progress')","secondary")}${btn("Official Badge Steps","setPage('teacher')","ghost")}</div>`;
 }
 
