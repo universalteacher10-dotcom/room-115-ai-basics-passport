@@ -372,6 +372,17 @@ body{background:radial-gradient(ellipse at 85% 0%,#dff7fa 0,transparent 35%),lin
 .moduleSafetyRule b{font-size:13px;color:#18577c}
 .moduleSafetyRule p{margin:5px 0 0;font-size:12px;line-height:1.4;color:#405469}
 .moduleSafetyNext{margin-top:14px}
+.reportBadgeSection{margin-top:16px}
+.reportBadgeGrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px;margin-top:13px}
+.reportBadge{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;padding:9px 5px;border-radius:12px;border:1px solid #d6e5eb;background:#f8fbfd;min-width:0;position:relative}
+.reportBadge img{display:block;width:100%;max-width:82px;aspect-ratio:1;object-fit:contain;filter:grayscale(1);opacity:.32}
+.reportBadge.isAttained{background:linear-gradient(145deg,#f2fffc,#fff);border-color:#6acabb;box-shadow:inset 0 0 0 1px #a2e7d9}
+.reportBadge.isAttained img{filter:none;opacity:1}
+.reportBadgeName{font-size:10px;font-weight:700;line-height:1.25;min-height:28px;color:#254d66}
+.reportBadgeStatus{font-size:10px;font-weight:850;color:#53748a}
+.reportBadge.isAttained .reportBadgeStatus{color:#057d6d}
+@media(max-width:900px){.reportBadgeGrid{grid-template-columns:repeat(5,minmax(0,1fr))}}
+@media(max-width:620px){.reportBadgeGrid{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.reportBadgeName{font-size:10px}}
 .progressReflectionEditor{background:linear-gradient(120deg,#f5fbff,#e9f9f6);border:1px solid #b9e4e1;border-radius:16px;padding:18px;margin:18px 0}
 .progressReflectionEditor h3{margin:0 0 8px;color:#126480}
 .progressReflectionEditor p{margin:5px 0 14px;color:#4d687d}
@@ -850,11 +861,31 @@ function progressReflectionEditor(){return `<section class="progressReflectionEd
  <div class="row">${btn('Save This Check-In as PDF','printSummary()','primary')}</div>
  <p class="small muted">Choose <strong>Save as PDF</strong> in the browser print window. For a later check-in, update your answers and download a new PDF. Save each PDF as your record of that session. Save & Restore backs up your current responses, not previously downloaded PDF files.</p>
  <p class="small muted">This progress check-in is separate from the official final certification reflection and test.</p></section>`}
+function moduleProgressStatus(i){
+ if(Boolean(state.pathDone[i]))return "Completed";
+ const checks=Array.isArray(state.pathChecks[i])&&state.pathChecks[i].some(Boolean);
+ const answered=Object.keys(state.pathAnswers[i]||{}).length>0;
+ const compared=Object.keys(state.compareAnswers[i]||{}).length>0;
+ const readiness=(i<2&&Boolean(state.sessions[i]))||(i===2&&Boolean(state.study[0]))||(i===3&&Boolean(state.study[1]))||(i===5&&Boolean(state.study[2]))||(i===4&&(Boolean(state.safetyAcknowledged)||Boolean(String(state.safetyRisk||"").trim())));
+ const iste=(i>=2&&i<=4&&state.isteAnswers[i-2]!==undefined);
+ return checks||answered||compared||readiness||iste?"In Progress":"Not Started";
+}
+function topicProgressStatus(row){return state.pathDone[row[3]]?"Attained":moduleProgressStatus(row[3])}
+function reportBadgeGallery(){
+ return `<section class="card reportBadgeSection" aria-label="Visual progress of all 14 AI Passport topic badges">
+ <h3>🏅 My 14 Topic Badges</h3><p class="small muted">Full-color badges are <strong>Attained</strong>. Badges not yet attained remain muted, with <strong>In Progress</strong> or <strong>Not Started</strong> beneath each one. This collection does not replace teacher certification.</p>
+ <div class="reportBadgeGrid">${literacyLevels.map(row=>`<div class="reportBadge ${state.pathDone[row[3]]?'isAttained':'notAttained'}" style="--reportBadgeColor:${badgeColors[row[0]-1]}"><img src="${badgeAsset(row[0])}" alt="${esc(row[1])} badge" loading="lazy" onerror="badgeImageFallback(this)"/><span class="reportBadgeName">${esc(row[1])}</span><span class="reportBadgeStatus">${topicProgressStatus(row)}</span></div>`).join("")}</div>
+ </section>`;
+}
 function progressView(){
  const done=state.pathDone.filter(Boolean).length,topics=earnedTopicCount(),tools=state.study.filter(Boolean).length;
- const current=state.pathDone.every(Boolean)?"All six modules marked complete":pathway[Math.max(0,Math.min(5,state.pathStep))].title;
+ const next=state.pathDone.findIndex(v=>!v);
+ const current=next<0?"All six modules completed":pathway[next].title;
+ const currentStatus=next<0?"Completed":moduleProgressStatus(next);
  return `<div class="eyebrow">AI STUDY STUDIO · ANYTIME CHECK-IN</div><h1>📄 Progress Report & Reflection</h1><p class="muted">Use this page after any Studio session, even if you are still on Module 1. It records what you worked on, what you learned, and the next step.</p>
- <div class="grid"><div class="card"><div class="row"><strong>Modules completed</strong><span class="stat">${done}/6</span></div>${bar(done,6)}<p class="small muted">Current module: ${esc(current)}</p></div><div class="card"><div class="row"><strong>Topic badges collected</strong><span class="stat">${topics}/14</span></div>${bar(topics,14)}<p class="small muted">Original study tools marked: ${tools}/3 · Site practice questions answered: ${state.quizHistory.length}</p></div></div>
+ <div class="grid"><div class="card"><div class="row"><strong>Modules completed</strong><span class="stat">${done}/6</span></div>${bar(done,6)}<p class="small muted">${next<0?'Course status:':'Next module:'} ${esc(current)} · <strong>${currentStatus}</strong></p></div><div class="card"><div class="row"><strong>Topic badges collected</strong><span class="stat">${topics}/14</span></div>${bar(topics,14)}<p class="small muted">Original study tools marked: ${tools}/3 · Site practice questions answered: ${state.quizHistory.length}</p></div></div>
+ <div class="card" style="margin-top:15px"><h3>📚 Module progress</h3><div class="reportModuleList">${pathway.map((p,i)=>`<div class="row" style="justify-content:space-between;border-bottom:1px solid #e4edf2;padding:8px 0"><span class="small"><strong>Module ${i+1}</strong> · ${esc(p.title)}</span><span class="small" style="font-weight:800">${moduleProgressStatus(i)}</span></div>`).join("")}</div></div>
+ ${reportBadgeGallery()}
  <div class="card" style="margin-top:15px"><label class="progressReflectionPrompt" for="progress-report-name">Student name (for this report)</label><input id="progress-report-name" class="progressReflectionInput" style="min-height:0" maxlength="90" placeholder="First and last name" value="${esc(state.progressName||'')}" oninput="state.progressName=this.value;persist()"/><p class="small muted">Your report captures the progress saved in this browser on the date you export it. Classroom submission is separate.</p></div>
  ${progressReflectionEditor()}`;
 }
@@ -867,7 +898,14 @@ ${section("Video sequence · One time each")}<div class="card"><p><strong>Module
 ${section("Manage my progress")}<div class="card"><p class="small muted">Your teacher verifies badge requirements in Google Classroom. Use the dedicated Save & Restore page in the left navigation to save or restore your progress.</p><div class="row">${btn("Clear my saved progress","confirm('Clear all local progress?')&&clearAll()","ghost")}${btn("Open Master Study Guide","window.open(RESOURCE.source,'_blank')","secondary")}</div></div>
 <div class="printOnly"><h2>My AI Basics progress</h2><p>Introduction: ${n}/2 · Study tools: ${m}/3 · Practice answered: ${state.quizHistory.length}</p></div>`}
 function clearAll(){localStorage.removeItem(NAVID);location.reload()}
-function popPrint(markup,showNote=true){const w=window.open("","_blank");if(!w){alert("Please allow pop-ups to print blank templates.");return}w.document.write(`<!doctype html><html><head><title>AI Study Studio | Study Template</title><style>body{font-family:Arial,sans-serif;padding:22px;color:#13263c}h1{font-size:22px}table{border-collapse:collapse;width:100%}td,th{border:1px solid #555;padding:10px;height:52px;text-align:left;vertical-align:top}hr{border:1px solid #aaa;margin:22px 0}.box{display:inline-block;border:1px solid #777;width:40%;height:130px;margin:2%;vertical-align:top;padding:10px}@media print{button{display:none}}</style></head><body>${markup}${showNote?'<p style="font-size:12px">Create your own explanations for your study materials.</p>':''}<button onclick="window.print()">Print</button></body></html>`);w.document.close();w.focus();w.print()}
+function popPrint(markup,showNote=true,waitForImages=false){const w=window.open("","_blank");if(!w){alert("Please allow pop-ups to print.");return}w.document.write(`<!doctype html><html><head><title>AI Study Studio | Progress Report</title><style>body{font-family:Arial,sans-serif;padding:22px;color:#13263c}h1{font-size:22px}table{border-collapse:collapse;width:100%}td,th{border:1px solid #555;padding:10px;height:52px;text-align:left;vertical-align:top}hr{border:1px solid #aaa;margin:22px 0}.box{display:inline-block;border:1px solid #777;width:40%;height:130px;margin:2%;vertical-align:top;padding:10px}@media print{button{display:none}}</style></head><body>${markup}${showNote?'<p style="font-size:12px">Create your own explanations for your study materials.</p>':''}<button onclick="window.print()">Print</button></body></html>`);w.document.close();w.focus();
+ if(!waitForImages){w.print();return}
+ const images=Array.from(w.document.images||[]);if(!images.length){w.print();return}
+ let printed=false;
+ const finish=()=>{if(printed)return;printed=true;w.focus();w.print()};
+ Promise.all(images.map(img=>img.complete?Promise.resolve():new Promise(resolve=>{img.addEventListener("load",resolve,{once:true});img.addEventListener("error",resolve,{once:true})}))).then(finish,finish);
+ setTimeout(finish,3500);
+}
 function printNotes(){popPrint(`<h1>Blank Two-Column Notes · AI Basics</h1><p>Name: _____________ Date: _____________ Topic: _____________</p><table><tr><th style="width:30%">Key word / Question</th><th>My own explanation / Example</th></tr>${Array.from({length:9},()=>"<tr><td></td><td></td></tr>").join("")}</table><h3>Summary in my own words</h3><hr><hr><hr>`)}
 function printCards(){popPrint(`<h1>Blank Flashcard Templates · AI Basics</h1><p>Name: _____________ Date: _____________</p>${Array.from({length:8},(_,i)=>`<div class="box">Card ${i+1}: Front — term / question</div><div class="box">Back — my own definition / example</div>`).join("")}`)}
 function printPlan(){popPrint(`<h1>My AI Basics Student-Made Study Plan</h1><p>Materials source: Mrs. Paden's AI Basics Study Guide</p><p>□ Two-column notes □ Flashcards □ My choice</p><p>My third study tool: ______________________________</p><h3>Terms I still need to practice</h3><hr><hr><hr><h3>How I'll quiz myself</h3><hr><hr>`)}
@@ -891,12 +929,19 @@ function printSummary(){
  }
  const done=state.pathDone.filter(Boolean).length,topics=earnedTopicCount(),tools=state.study.filter(Boolean).length;
  const student=esc(state.progressName||"__________________________");
- const rows=literacyLevels.map(row=>"<tr><td>Level "+row[0]+"</td><td>"+esc(row[1])+"</td><td>"+(state.pathDone[row[3]]?"Checkpoint finished":"In progress")+"</td></tr>").join("");
- const points=pathway.map((p,i)=>"<li>"+(state.pathDone[i]?"[x] ":"[ ] ")+(i+1)+". "+esc(p.title)+"</li>").join("");
+ const rows=literacyLevels.map(row=>"<tr><td>Level "+row[0]+"</td><td>"+esc(row[1])+"</td><td>"+topicProgressStatus(row)+"</td></tr>").join("");
+ const points=pathway.map((p,i)=>"<li><strong>Module "+(i+1)+" · "+moduleProgressStatus(i)+"</strong> — "+esc(p.title)+"</li>").join("");
  const lines=value=>esc(value).replace(/\r?\n/g,"<br>");
  const line=(number,title,value)=>"<p><strong>"+number+". "+title+"</strong></p><div style='border:1px solid #b9cfdb;border-radius:8px;padding:12px;line-height:1.6;overflow-wrap:anywhere'>"+lines(value)+"</div>";
  const reflection="<h3>Student reflection on this session / check-in</h3>"+line(1,"Studio sessions or modules I worked on",session)+line(2,"What I learned or practiced",learned)+line(3,"What I will do next",next);
- popPrint("<h1>AI STUDY STUDIO | AI PASSPORT PROGRESS REPORT</h1><p>Anytime Studio check-in · Learning Record + Student Reflection</p><p>Name: <strong>"+student+"</strong> | Class/Block: ______ | Report Date: "+esc(new Date().toLocaleDateString("en-US"))+"</p><p><b>"+done+"/6 modules complete · "+topics+"/14 topic badges collected · "+tools+"/3 original study tools marked.</b> This is progress as of this report, not final completion.</p><p>Site practice questions answered: "+state.quizHistory.length+".</p><h3>Six learning modules</h3><ul>"+points+"</ul><h3>14 AI literacy topics</h3><table><tr><th>Level</th><th>Topic</th><th>Progress</th></tr>"+rows+"</table>"+reflection+"<p><strong>These checkmarks are saved on this device. This report is not official certification, teacher-verified evidence, or a test result.</strong> Submit the PDF only as directed in Google Classroom.</p>",false);
+ const badgeCards=literacyLevels.map(row=>{
+  const attained=Boolean(state.pathDone[row[3]]);
+  const status=topicProgressStatus(row);
+  return "<div class='printBadge "+(attained?"attained":"notAttained")+"'><img src='"+badgeAsset(row[0])+"' alt='"+esc(row[1])+" badge' /><b>"+esc(row[1])+"</b><small>"+status+"</small></div>";
+ }).join("");
+ const imageLayout="<style>.printBadgeGrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;margin:9px 0 16px}.printBadge{display:flex;flex-direction:column;align-items:center;gap:3px;text-align:center;padding:5px 3px;border:1px solid #d0dfe7;border-radius:7px;min-width:0;break-inside:avoid;background:#f7fafc}.printBadge img{height:59px;width:59px;max-width:100%;object-fit:contain}.printBadge b{font-size:8px;line-height:1.15;min-height:19px}.printBadge small{font-size:8px;line-height:1.1}.printBadge.notAttained img{filter:grayscale(1);opacity:.3}.printBadge.attained{border-color:#5cb5a4;background:#ecfaf6}.printBadge.attained small{color:#086e5d;font-weight:bold}h3{break-after:avoid}table td,table th{height:auto;padding:4px 8px;font-size:10px}.printModuleList{font-size:11px;line-height:1.55}.printBadgeGrid{break-inside:avoid}@media print{.printBadge img{-webkit-print-color-adjust:exact;print-color-adjust:exact}.printBadge.attained{-webkit-print-color-adjust:exact;print-color-adjust:exact}}</style>";
+ const badges=imageLayout+"<h3>My visual topic badge set · "+topics+" of 14 attained</h3><p style='font-size:11px'>Full color = Attained · Muted = In Progress or Not Started. Only completed module checkpoints unlock topic badges.</p><div class='printBadgeGrid'>"+badgeCards+"</div>";
+ popPrint("<h1>AI STUDY STUDIO | AI PASSPORT PROGRESS REPORT</h1><p>Anytime Studio check-in · Learning Record + Student Reflection</p><p>Name: <strong>"+student+"</strong> | Class/Block: ______ | Report Date: "+esc(new Date().toLocaleDateString("en-US"))+"</p><p><b>"+done+"/6 modules complete · "+topics+"/14 topic badges attained · "+tools+"/3 original study tools marked.</b> This is progress as of this report, not final completion.</p><p>Site practice questions answered: "+state.quizHistory.length+".</p><h3>Six learning modules</h3><ol class='printModuleList'>"+points+"</ol>"+badges+"<h3>14 AI literacy topics</h3><table><tr><th>Level</th><th>Topic</th><th>Status</th></tr>"+rows+"</table>"+reflection+"<p><strong>These checkmarks are saved on this device. This report is not official certification, teacher-verified evidence, or a test result.</strong> Submit the PDF only as directed in Google Classroom.</p>",false,true);
 }
 window.addEventListener("error",e=>{console.error(e.message)});
 draw();updatePrompt();
