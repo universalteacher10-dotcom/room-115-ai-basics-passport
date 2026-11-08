@@ -88,11 +88,36 @@ export default async function handler(req,res){
       if(!rows.rowCount) return send(res,409,{error:'Progress changed on another device. Sign in again to load the newest version.'});
       return send(res,200,{revision:rows.rows[0].revision,savedAt:rows.rows[0].updated_at});
     }
-    if(b.action==='provision'||b.action==='report'||b.action==='reset-pin'||b.action==='create-demo'){
+    if(b.action==='provision'||b.action==='report'||b.action==='reset-pin'||b.action==='create-demo'||b.action==='import-pins'){
       if(!needTeacher(req)) return send(res,403,{error:'Teacher access denied'});
       if(b.action==='report'){
         const rows=await db().query('SELECT id,class_group,is_demo,progress,revision,created_at,updated_at FROM passport_students ORDER BY class_group,created_at');
         return send(res,200,{records:rows.rows});
+      }
+      if(b.action==='import-pins'){
+        // Explicit teacher-only enrollment of PINs assigned in an offline roster.
+        // PINs are HMAC-hashed; plaintext is never stored in the database.
+        if(!Array.isArray(b.pins)||b.pins.length<1||b.pins.length>100) return send(res,400,{error:'Import 1–100 PINs per batch'});
+        const normalized=b.pins.map((x,i)=>{
+          if(!x||!['5A','5B'].includes(x.classGroup)||!validPin(x.pin)||x.pin==='48271936') throw new Error('Invalid class or PIN at row '+(i+1));
+          return {classGroup:x.classGroup,pin:x.pin,digest:digest(x.pin,process.env.PIN_PEPPER)};
+        });
+        if(new Set(normalized.map(x=>x.digest)).size!==normalized.length) return send(res,400,{error:'PINs repeated in the upload'});
+        const client=await db().connect();
+        try {
+          await client.query('BEGIN');
+          const enrolled=[];
+          for(const record of normalized){
+            const result=await client.query(
+              'INSERT INTO passport_students(class_group,pin_digest) VALUES($1,$2) ON CONFLICT(pin_digest) DO NOTHING RETURNING id',
+              [record.classGroup,record.digest]);
+            if(!result.rowCount) throw new Error('One or more PINs already registered. The entire import was cancelled; no duplicate records created.');
+            enrolled.push({classGroup:record.classGroup,studentId:result.rows[0].id,pin:record.pin});
+          }
+          await client.query('COMMIT');
+          return send(res,200,{enrolled});
+        }catch(e){await client.query('ROLLBACK');return send(res,409,{error:e.message})}
+        finally{client.release()}
       }
       if(b.action==='create-demo'){
         const demoPin='48271936';
