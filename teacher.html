@@ -95,7 +95,9 @@ async function importPins(){
   for(let i=0;i<lines.length;i++){
    const parts=lines[i].split(/[\t,]/).map(x=>x.trim().replace(/^"|"$/g,''));
    if(i===0 && parts.some(x=>/slot|class|pin/i.test(x)))continue;
-   if(parts.length===4 && ['S1','S2'].includes(parts[0])){
+   if(parts.length===5 && /^\d+$/.test(parts[0])){
+    pins.push({classGroup:'5A',semester:'S1',pin:parts[1]},{classGroup:'5B',semester:'S1',pin:parts[2]},{classGroup:'5A',semester:'S2',pin:parts[3]},{classGroup:'5B',semester:'S2',pin:parts[4]});
+   }else if(parts.length===4 && ['S1','S2'].includes(parts[0])){
     pins.push({classGroup:'5A',semester:parts[0],pin:parts[2]},{classGroup:'5B',semester:parts[0],pin:parts[3]});
    }else if(parts.length===3 && /^\d+$/.test(parts[0])){
     pins.push({classGroup:'5A',semester,pin:parts[1]},{classGroup:'5B',semester,pin:parts[2]});
