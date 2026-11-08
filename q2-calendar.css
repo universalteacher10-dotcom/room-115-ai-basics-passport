@@ -1,0 +1,36 @@
+/* Q2 Calendar: integrated into the original AI Passport light canvas + navy sidebar. */
+.nav.is-q2-deadline{background:linear-gradient(115deg,#184b70,#156b79)!important;color:#fff!important;border:1px solid #3ca2b5;box-shadow:0 5px 16px #02284235}
+.nav.is-q2-deadline.active{background:linear-gradient(115deg,#0b678a,#0d8a8e)!important;box-shadow:0 0 0 2px #75dfd5}
+.q2-calendar-page{color:#163a55;max-width:1280px;margin:0 auto}
+.q2-calendar-hero{display:grid;grid-template-columns:minmax(0,1fr) 220px;gap:18px;padding:clamp(19px,3vw,31px);background:linear-gradient(110deg,#10253f 5%,#0b527b 64%,#107f86);border:1px solid #2a7797;border-radius:22px;box-shadow:0 14px 34px #12456735;color:white}
+.q2-eyebrow{font-size:11px;font-weight:850;color:#83e0e4;letter-spacing:.14em}
+.q2-calendar-hero h1{font-size:clamp(28px,3.6vw,43px);line-height:1.09;letter-spacing:-.035em;margin:11px 0 8px;color:#fff}
+.q2-calendar-hero p{font-size:15px;line-height:1.55;max-width:680px;color:#cbe4f4;margin:0}
+.q2-duebox{border-radius:17px;background:linear-gradient(145deg,#ffe3a3,#ffb759);color:#70450b;padding:18px;text-align:center;display:flex;flex-direction:column;justify-content:center;gap:6px;box-shadow:inset 0 0 0 1px #fff9}
+.q2-duebox span{font-size:10px;font-weight:950;letter-spacing:.1em}.q2-duebox strong{font-size:clamp(30px,3.5vw,42px);line-height:1;font-weight:950;color:#71410e}.q2-duebox small{font-weight:850}.q2-duebox em{font-style:normal;font-size:11px;font-weight:850;color:#885c18}
+.q2-actionrow{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px}.q2-actionrow a,.q2-actionrow button{border-radius:10px;border:1px solid #7cc3dc;background:#fff;color:#105478;font-size:13px;text-decoration:none;font-weight:850;padding:10px 14px}.q2-actionrow button{background:#174565;color:#e9faff}
+.q2-nextmilestone{border:1px solid #b5dbe5;background:#e9f7fa;border-radius:15px;padding:14px 19px;margin:17px 0}
+.q2-nextmilestone span{display:block;color:#146a82;font-size:10px;font-weight:900;letter-spacing:.1em}.q2-nextmilestone strong{font-size:17px;color:#14506c;display:block;margin-top:4px}.q2-nextmilestone p{font-size:13px;color:#3b6474;margin:4px 0 0}
+.q2-sectiontitle{font-size:20px;margin:22px 0 13px;color:#153f63}
+.q2-months{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}
+.q2-month{background:#f7fbfe;border:1px solid #c7dfea;border-radius:16px;padding:13px;min-width:0}
+.q2-month h3{font-size:16px;font-weight:850;color:#155172;margin:0 0 13px}
+.q2-monthgrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px}
+.q2-weekday{text-align:center;font-size:11px;color:#52758b;font-weight:850;padding:4px 0}
+.q2-day{min-height:51px;border:1px solid transparent;padding:4px;border-radius:8px;display:flex;flex-direction:column;gap:2px;min-width:0;background:#edf4f9}
+.q2-daynum{font-size:12px;font-weight:700;color:#56728a}.q2-day small{font-size:10px;font-weight:850;overflow-wrap:anywhere;line-height:1.15;color:#164966}
+.q2-day.is-empty{background:transparent}
+.q2-day.is-today{outline:2px solid #1e9aca;outline-offset:1px}
+.q2-day.is-checkpoint{background:#dbf3f8;border-color:#6bb9ce}.q2-day.is-major{background:#d4f3e7;border-color:#55bb93}
+.q2-day.is-assessment{background:#e9e0ff;border-color:#9d86d9}.q2-day.is-final{background:#ffe3ab;border:2px solid #df8b12}
+.q2-day.is-buffer{background:#e2edfa;border-color:#90b4df}
+.q2-legend{display:flex;flex-wrap:wrap;gap:9px 16px;margin:12px 0;font-size:11px;color:#47687a;font-weight:700}
+.q2-legend span{display:inline-flex;align-items:center;gap:6px}.q2-legend b{display:inline-block;height:11px;width:11px;border-radius:3px;background:#dbf3f8;border:1px solid #6bb9ce}.q2-legend b.is-major{background:#d4f3e7;border-color:#55bb93}.q2-legend b.is-assessment{background:#e9e0ff;border-color:#9d86d9}.q2-legend b.is-final{background:#ffe3ab;border-color:#df8b12}.q2-legend b.is-buffer{background:#e2edfa;border-color:#90b4df}
+.q2-checkpoints{padding:0;margin:12px 0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;list-style:none}
+.q2-checkpoint{background:#f7fbfd;border:1px solid #cde1ea;border-left:4px solid #67b9d0;border-radius:12px;padding:12px 13px;display:flex;gap:13px;align-items:flex-start;min-width:0}
+.q2-checkpoint time{flex:0 0 83px;color:#155978;font-size:12px;font-weight:950}.q2-checkpoint h3{font-size:14px;color:#163d60;margin:0 0 3px}.q2-checkpoint p{margin:0;font-size:12px;line-height:1.5;color:#496677}
+.q2-checkpoint.is-final{border-left-color:#e6982c;background:#fff5e5}.q2-checkpoint.is-major{border-left-color:#40a47b;background:#f0fbf6}.q2-checkpoint.is-assessment{border-left-color:#9f8ed3}
+.q2-note{border:1px solid #eccfa2;background:#fff7e8;border-radius:12px;padding:15px;margin:18px 0;color:#78541e;font-size:13px;line-height:1.55}
+@media(max-width:1150px){.q2-months{grid-template-columns:1fr 1fr}.q2-checkpoints{grid-template-columns:1fr}}
+@media(max-width:820px){.q2-months{grid-template-columns:1fr}.q2-calendar-hero{grid-template-columns:1fr}.q2-duebox{min-height:115px}.q2-day{min-height:52px}}
+@media(max-width:710px){.q2-calendar-page{padding-bottom:10px}.q2-month{padding:12px}.q2-checkpoints{grid-template-columns:1fr}.q2-legend{font-size:10px}.q2-day{min-height:47px}.q2-calendar-hero h1{font-size:28px}}
