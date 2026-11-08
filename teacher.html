@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Room 115 | AI Passport Teacher Records</title>
+<style>
+:root{font-family:system-ui,Arial,sans-serif;color:#13273b;background:#f0f5fc}
+body{max-width:1000px;margin:28px auto;padding:0 16px}h1{margin-bottom:2px}p{line-height:1.5}
+.card{background:#fff;border:1px solid #ccdaeb;border-radius:15px;padding:20px;margin:16px 0}
+label{display:block;font-weight:700;margin:10px 0 6px}
+input,select,button{font:inherit;padding:10px;border-radius:8px;border:1px solid #98b0ca}
+button{background:#0d4c91;color:white;border:0;cursor:pointer;margin:10px 8px 5px 0}
+button:disabled{opacity:.5;cursor:wait}.hint{color:#49617a;font-size:14px}
+#status{white-space:pre-wrap;font-weight:700}code{background:#e9eff8;padding:2px 5px}
+</style></head><body>
+<h1>🔐 AI Passport · Teacher Records</h1><p>PIN-only student records. No names or student emails are stored in Neon.</p>
+<section class="card">
+<label for="key">Teacher access key</label>
+<input id="key" type="password" autocomplete="off" placeholder="Teacher secret from Vercel" style="width:100%">
+<p class="hint">Used only for these requests. Never share your teacher key with students or save it in GitHub.</p>
+</section>
+<section class="card">
+<h2>Create student PINs</h2><p>Generate unique eight-digit PINs for each section. Download the roster immediately, and match PINs to names in your school-approved records.</p>
+<label for="group">Section</label><select id="group"><option>5A</option><option>5B</option></select>
+<label for="count">Number of new students</label><input id="count" type="number" min="1" max="40" value="10">
+<p><button id="provision" onclick="provision()">Generate PINs and download CSV</button></p>
+<p class="hint">Do not provision a second batch for the same students; this creates NEW student records. Codes are displayed only at creation or reset.</p>
+</section>
+<section class="card">
+<h2>Class progress</h2><button onclick="report()">Download progress report CSV</button>
+<p class="hint">The report contains PIN record IDs, class, checkpoint count, practice history, and last save time. It does not expose PINs; use your offline roster to match record IDs to students.</p>
+</section>
+<section class="card">
+<h2>Replace a lost PIN</h2><label for="studentId">Student record ID from roster</label>
+<input id="studentId" style="width:100%" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx">
+<p><button onclick="resetPin()">Issue replacement PIN</button></p>
+</section>
+<section class="card"><strong>Activity status</strong><p id="status" aria-live="polite">No action performed.</p></section>
+<script>
+const key=()=>document.getElementById('key').value.trim();
+const status=t=>document.getElementById('status').textContent=t;
+const quote=x=>'"'+String(x??'').replaceAll('"','""')+'"';
+function download(filename,rows){
+ const csv=rows.map(row=>row.map(quote).join(',')).join('\r\n');
+ const url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));
+ const a=document.createElement('a');a.href=url;a.download=filename;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+async function request(action,payload={}){
+ if(!key())throw new Error('Enter your teacher access key.');
+ const response=await fetch('/api/passport',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+key()},body:JSON.stringify({action,...payload}),cache:'no-store'});
+ const json=await response.json();
+ if(!response.ok)throw new Error(json.error||'Request failed');
+ return json;
+}
+async function provision(){
+ const group=document.getElementById('group').value, count=Number(document.getElementById('count').value);
+ if(!confirm('Issue '+count+' NEW PINs for class '+group+'? This creates new records.'))return;
+ try{
+  status('Generating codes…');
+  const r=await request('provision',{classGroup:group,count});
+  download('ai-passport-'+group+'-NEW-PINS.csv',[['Class','Student Record ID','Assigned PIN'],...r.issued.map(x=>[x.classGroup,x.studentId,x.pin])]);
+  status(r.issued.length+' codes created. Save the downloaded roster in approved school storage. The PINs cannot be recovered from the server.');
+ }catch(e){status('Not completed: '+e.message)}
+}
+async function report(){
+ try{
+  status('Loading records…');
+  const r=await request('report');
+  const rows=[['Class','Student Record ID','Checkpoints Complete','Studio Sessions','Study Formats','Practice Attempts','Practice Correct','Last Saved','Progress JSON']];
+  for(const x of r.records){
+    const p=x.progress||{},h=Array.isArray(p.quizHistory)?p.quizHistory:[];
+    rows.push([x.class_group,x.id,Array.isArray(p.pathDone)?p.pathDone.filter(Boolean).length:0,Array.isArray(p.sessions)?p.sessions.filter(Boolean).length:0,Array.isArray(p.study)?p.study.filter(Boolean).length:0,h.length,h.filter(y=>y.correct).length,x.updated_at,JSON.stringify(p)]);
+  }
+  download('ai-passport-progress.csv',rows);
+  status(r.records.length+' student progress records exported. Keep the report in approved school storage.');
+ }catch(e){status('Unable to export: '+e.message)}
+}
+async function resetPin(){
+ const id=document.getElementById('studentId').value.trim();
+ if(!confirm('Replace the PIN for record '+id+'? The old PIN will stop working.'))return;
+ try{
+  const r=await request('reset-pin',{studentId:id});
+  download('ai-passport-REPLACEMENT-PIN.csv',[['Class','Student Record ID','New PIN'],[r.classGroup,r.studentId,r.pin]]);
+  status('Replacement PIN issued and downloaded. Update your offline school roster. Previous PIN is now invalid.');
+ }catch(e){status('PIN was not changed: '+e.message)}
+}
+</script></body></html>
