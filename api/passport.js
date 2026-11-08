@@ -69,18 +69,18 @@ export default async function handler(req,res){
     if(b.action==='login'){
       if(!validPin(b.pin)) return send(res,400,{error:'Enter your eight-digit PIN'});
       if(!await throttle(req)) return send(res,429,{error:'Too many sign-in attempts. Please try again later.'});
-      const rows=await db().query('SELECT id,class_group,progress,revision FROM passport_students WHERE pin_digest=$1',[digest(b.pin,process.env.PIN_PEPPER)]);
+      const rows=await db().query('SELECT id,class_group,semester,progress,revision FROM passport_students WHERE pin_digest=$1',[digest(b.pin,process.env.PIN_PEPPER)]);
       if(!rows.rowCount) return send(res,401,{error:'PIN not recognized. Ask your teacher to check your PIN.'});
       const st=rows.rows[0];
-      return send(res,200,{token:makeToken(st.id),classGroup:st.class_group,progress:st.progress,revision:st.revision});
+      return send(res,200,{token:makeToken(st.id),classGroup:st.class_group,semester:st.semester,progress:st.progress,revision:st.revision});
     }
     if(b.action==='load'||b.action==='save'){
       const id=verifyToken(auth(req));
       if(!id) return send(res,401,{error:'Session expired. Enter your PIN again.'});
       if(b.action==='load'){
-        const rows=await db().query('SELECT class_group,progress,revision FROM passport_students WHERE id=$1',[id]);
+        const rows=await db().query('SELECT class_group,semester,progress,revision FROM passport_students WHERE id=$1',[id]);
         if(!rows.rowCount) return send(res,401,{error:'PIN record not found'});
-        return send(res,200,{classGroup:rows.rows[0].class_group,progress:rows.rows[0].progress,revision:rows.rows[0].revision});
+        return send(res,200,{classGroup:rows.rows[0].class_group,semester:rows.rows[0].semester,progress:rows.rows[0].progress,revision:rows.rows[0].revision});
       }
       if(!Number.isInteger(b.revision) || b.revision<0) return send(res,400,{error:'Invalid revision'});
       const serialized=progressShape(b.progress);
@@ -91,7 +91,7 @@ export default async function handler(req,res){
     if(b.action==='provision'||b.action==='report'||b.action==='reset-pin'||b.action==='create-demo'||b.action==='import-pins'){
       if(!needTeacher(req)) return send(res,403,{error:'Teacher access denied'});
       if(b.action==='report'){
-        const rows=await db().query('SELECT id,class_group,is_demo,progress,revision,created_at,updated_at FROM passport_students ORDER BY class_group,created_at');
+        const rows=await db().query('SELECT id,class_group,semester,is_demo,progress,revision,created_at,updated_at FROM passport_students ORDER BY class_group,created_at');
         return send(res,200,{records:rows.rows});
       }
       if(b.action==='import-pins'){
@@ -99,8 +99,8 @@ export default async function handler(req,res){
         // PINs are HMAC-hashed; plaintext is never stored in the database.
         if(!Array.isArray(b.pins)||b.pins.length<1||b.pins.length>100) return send(res,400,{error:'Import 1–100 PINs per batch'});
         const normalized=b.pins.map((x,i)=>{
-          if(!x||!['5A','5B'].includes(x.classGroup)||!validPin(x.pin)||x.pin==='48271936') throw new Error('Invalid class or PIN at row '+(i+1));
-          return {classGroup:x.classGroup,pin:x.pin,digest:digest(x.pin,process.env.PIN_PEPPER)};
+          if(!x||!['5A','5B'].includes(x.classGroup)||!['S1','S2'].includes(x.semester||'S1')||!validPin(x.pin)||x.pin==='48271936') throw new Error('Invalid class or PIN at row '+(i+1));
+          return {classGroup:x.classGroup,semester:x.semester||'S1',pin:x.pin,digest:digest(x.pin,process.env.PIN_PEPPER)};
         });
         if(new Set(normalized.map(x=>x.digest)).size!==normalized.length) return send(res,400,{error:'PINs repeated in the upload'});
         const client=await db().connect();
@@ -109,10 +109,10 @@ export default async function handler(req,res){
           const enrolled=[];
           for(const record of normalized){
             const result=await client.query(
-              'INSERT INTO passport_students(class_group,pin_digest) VALUES($1,$2) ON CONFLICT(pin_digest) DO NOTHING RETURNING id',
-              [record.classGroup,record.digest]);
+              'INSERT INTO passport_students(class_group,semester,pin_digest) VALUES($1,$2,$3) ON CONFLICT(pin_digest) DO NOTHING RETURNING id',
+              [record.classGroup,record.semester,record.digest]);
             if(!result.rowCount) throw new Error('One or more PINs already registered. The entire import was cancelled; no duplicate records created.');
-            enrolled.push({classGroup:record.classGroup,studentId:result.rows[0].id,pin:record.pin});
+            enrolled.push({classGroup:record.classGroup,semester:record.semester,studentId:result.rows[0].id,pin:record.pin});
           }
           await client.query('COMMIT');
           return send(res,200,{enrolled});
@@ -124,10 +124,10 @@ export default async function handler(req,res){
         const existed=await db().query('SELECT id,class_group,is_demo FROM passport_students WHERE pin_digest=$1',[digest(demoPin,process.env.PIN_PEPPER)]);
         if(existed.rowCount){
           if(!existed.rows[0].is_demo) return send(res,409,{error:'That PIN is used by a regular student record.'});
-          return send(res,200,{studentId:existed.rows[0].id,classGroup:existed.rows[0].class_group,pin:demoPin,isDemo:true});
+          return send(res,200,{studentId:existed.rows[0].id,classGroup:existed.rows[0].class_group,semester:'S1',pin:demoPin,isDemo:true});
         }
-        const inserted=await db().query('INSERT INTO passport_students(class_group,pin_digest,is_demo) VALUES($1,$2,true) RETURNING id,class_group',['5A',digest(demoPin,process.env.PIN_PEPPER)]);
-        return send(res,200,{studentId:inserted.rows[0].id,classGroup:inserted.rows[0].class_group,pin:demoPin,isDemo:true});
+        const inserted=await db().query('INSERT INTO passport_students(class_group,semester,pin_digest,is_demo) VALUES($1,'S1',$2,true) RETURNING id,class_group',['5A',digest(demoPin,process.env.PIN_PEPPER)]);
+        return send(res,200,{studentId:inserted.rows[0].id,classGroup:inserted.rows[0].class_group,semester:'S1',pin:demoPin,isDemo:true});
       }
       if(b.action==='reset-pin'){
         if(typeof b.studentId!=='string'|| !/^[0-9a-f-]{36}$/i.test(b.studentId)) return send(res,400,{error:'Invalid record ID'});
@@ -141,15 +141,15 @@ export default async function handler(req,res){
         }
         return send(res,500,{error:'Could not issue unique PIN'});
       }
-      if(!['5A','5B'].includes(b.classGroup) || !Number.isInteger(b.count) || b.count<1 || b.count>40) return send(res,400,{error:'Choose 5A or 5B and 1–40 students'});
+      if(!['5A','5B'].includes(b.classGroup) || !['S1','S2'].includes(b.semester||'S1') || !Number.isInteger(b.count) || b.count<1 || b.count>40) return send(res,400,{error:'Choose 5A or 5B and 1–40 students'});
       const issued=[];
       for(let n=0;n<b.count;n++){
         let row;
         for(let tries=0;tries<8;tries++){
           const pin=makePin();
           try{
-            const result=await db().query('INSERT INTO passport_students(class_group,pin_digest) VALUES($1,$2) RETURNING id',[b.classGroup,digest(pin,process.env.PIN_PEPPER)]);
-            row={studentId:result.rows[0].id,classGroup:b.classGroup,pin};
+            const result=await db().query('INSERT INTO passport_students(class_group,semester,pin_digest) VALUES($1,$2,$3) RETURNING id',[b.classGroup,b.semester||'S1',digest(pin,process.env.PIN_PEPPER)]);
+            row={studentId:result.rows[0].id,classGroup:b.classGroup,semester:b.semester||'S1',pin};
             break;
           }catch(e){if(e.code!=='23505') throw e}
         }
