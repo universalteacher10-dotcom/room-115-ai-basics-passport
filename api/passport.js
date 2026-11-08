@@ -4,7 +4,7 @@ import pg from 'pg';
 export const config = { runtime: 'nodejs' };
 const { Pool } = pg;
 const MAX_PROGRESS = 175000;
-const FIELDS = ['page','pathStep','pathDone','pathChecks','pathAnswers','compareAnswers','isteAnswers','sessions','study','flash','responses','quizIndex','quizAnswers','quizHistory','vocabSearch','vocabFilter','wordIndex','wordFlip','progressReflectionSessions','progressReflectionExplain','progressReflectionNext','safetyAcknowledged','safetyRisk','progressSchema','legacyFinalCheckpoint','studyKitThirdNeedsReview'];
+const FIELDS = ['page','pathStep','pathDone','pathChecks','pathAnswers','compareAnswers','isteAnswers','sessions','study','flash','responses','quizIndex','quizAnswers','quizHistory','vocabSearch','vocabFilter','wordIndex','wordFlip','progressReflectionSessions','progressReflectionExplain','progressReflectionNext','safetyAcknowledged','safetyRisk','safetyVideoWatched','safetyRuleMostImportant','safetyRuleMostReason','safetyRuleNewAware','safetyRuleNewReason','progressSchema','legacyFinalCheckpoint','studyKitThirdNeedsReview'];
 let pool;
 function db() {
   if (!pool) pool = new Pool({connectionString:process.env.DATABASE_URL, max:2, idleTimeoutMillis:5000, connectionTimeoutMillis:10000});
