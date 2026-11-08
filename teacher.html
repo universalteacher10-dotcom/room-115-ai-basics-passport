@@ -29,6 +29,9 @@ button:disabled{opacity:.5;cursor:wait}.hint{color:#49617a;font-size:14px}
 <p class="hint">The report contains PIN record IDs, class, checkpoint count, practice history, and last save time. It does not expose PINs; use your offline roster to match record IDs to students.</p>
 </section>
 <section class="card">
+<h2>Development test PIN</h2><p>Create a clearly labeled <strong>demo-only</strong> record in 5A with PIN <code>48271936</code>. This known PIN must never be assigned to a real student.</p><button onclick="createDemo()">Activate demo PIN</button>
+</section>
+<section class="card">
 <h2>Replace a lost PIN</h2><label for="studentId">Student record ID from roster</label>
 <input id="studentId" style="width:100%" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx">
 <p><button onclick="resetPin()">Issue replacement PIN</button></p>
@@ -64,14 +67,17 @@ async function report(){
  try{
   status('Loading records…');
   const r=await request('report');
-  const rows=[['Class','Student Record ID','Checkpoints Complete','Studio Sessions','Study Formats','Practice Attempts','Practice Correct','Last Saved','Progress JSON']];
+  const rows=[['Class','Demo','Student Record ID','Checkpoints Complete','Studio Sessions','Study Formats','Practice Attempts','Practice Correct','Last Saved','Progress JSON']];
   for(const x of r.records){
     const p=x.progress||{},h=Array.isArray(p.quizHistory)?p.quizHistory:[];
-    rows.push([x.class_group,x.id,Array.isArray(p.pathDone)?p.pathDone.filter(Boolean).length:0,Array.isArray(p.sessions)?p.sessions.filter(Boolean).length:0,Array.isArray(p.study)?p.study.filter(Boolean).length:0,h.length,h.filter(y=>y.correct).length,x.updated_at,JSON.stringify(p)]);
+    rows.push([x.class_group,x.is_demo?'YES':'',x.id,Array.isArray(p.pathDone)?p.pathDone.filter(Boolean).length:0,Array.isArray(p.sessions)?p.sessions.filter(Boolean).length:0,Array.isArray(p.study)?p.study.filter(Boolean).length:0,h.length,h.filter(y=>y.correct).length,x.updated_at,JSON.stringify(p)]);
   }
   download('ai-passport-progress.csv',rows);
   status(r.records.length+' student progress records exported. Keep the report in approved school storage.');
  }catch(e){status('Unable to export: '+e.message)}
+}
+async function createDemo(){
+ try{const r=await request('create-demo');status('Demo PIN active in 5A: '+r.pin+' (student record '+r.studentId+'). Never assign this shared test PIN to a real student.')}catch(e){status('Unable to activate demo PIN: '+e.message)}
 }
 async function resetPin(){
  const id=document.getElementById('studentId').value.trim();
