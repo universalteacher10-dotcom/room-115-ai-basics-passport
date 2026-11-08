@@ -88,11 +88,21 @@ export default async function handler(req,res){
       if(!rows.rowCount) return send(res,409,{error:'Progress changed on another device. Sign in again to load the newest version.'});
       return send(res,200,{revision:rows.rows[0].revision,savedAt:rows.rows[0].updated_at});
     }
-    if(b.action==='provision'||b.action==='report'||b.action==='reset-pin'){
+    if(b.action==='provision'||b.action==='report'||b.action==='reset-pin'||b.action==='create-demo'){
       if(!needTeacher(req)) return send(res,403,{error:'Teacher access denied'});
       if(b.action==='report'){
-        const rows=await db().query('SELECT id,class_group,progress,revision,created_at,updated_at FROM passport_students ORDER BY class_group,created_at');
+        const rows=await db().query('SELECT id,class_group,is_demo,progress,revision,created_at,updated_at FROM passport_students ORDER BY class_group,created_at');
         return send(res,200,{records:rows.rows});
+      }
+      if(b.action==='create-demo'){
+        const demoPin='48271936';
+        const existed=await db().query('SELECT id,class_group,is_demo FROM passport_students WHERE pin_digest=$1',[digest(demoPin,process.env.PIN_PEPPER)]);
+        if(existed.rowCount){
+          if(!existed.rows[0].is_demo) return send(res,409,{error:'That PIN is used by a regular student record.'});
+          return send(res,200,{studentId:existed.rows[0].id,classGroup:existed.rows[0].class_group,pin:demoPin,isDemo:true});
+        }
+        const inserted=await db().query('INSERT INTO passport_students(class_group,pin_digest,is_demo) VALUES($1,$2,true) RETURNING id,class_group',['5A',digest(demoPin,process.env.PIN_PEPPER)]);
+        return send(res,200,{studentId:inserted.rows[0].id,classGroup:inserted.rows[0].class_group,pin:demoPin,isDemo:true});
       }
       if(b.action==='reset-pin'){
         if(typeof b.studentId!=='string'|| !/^[0-9a-f-]{36}$/i.test(b.studentId)) return send(res,400,{error:'Invalid record ID'});
