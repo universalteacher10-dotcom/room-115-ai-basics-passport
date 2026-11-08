@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS passport_students (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   class_group text NOT NULL CHECK (class_group IN ('5A','5B')),
   pin_digest char(64) NOT NULL UNIQUE,
+  is_demo boolean NOT NULL DEFAULT false,
   progress jsonb NOT NULL DEFAULT '{}'::jsonb,
   revision integer NOT NULL DEFAULT 0,
   created_at timestamptz NOT NULL DEFAULT now(),
