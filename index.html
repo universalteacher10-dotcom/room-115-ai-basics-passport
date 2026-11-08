@@ -836,10 +836,10 @@ function passportBadgePreview(){return `<div class="passportPreviewWrap" aria-la
 function badgeGalleryView(){
  const earned=earnedTopicCount(),next=Math.max(0,state.pathDone.findIndex(v=>!v)<0?5:state.pathDone.findIndex(v=>!v));
  const groups=[
-  ["gold","🥇 Gold Badges","Advanced study and safety"],
-  ["silver","🥈 Silver Badges","Verify and evaluate information"],
+  ["blue","💎 Blue Badges","AI fundamentals"],
   ["bronze","🥉 Bronze Badges","Strong prompts and smart thinking"],
-  ["blue","💎 Blue Badges","AI fundamentals"]
+  ["silver","🥈 Silver Badges","Verify and evaluate information"],
+  ["gold","🥇 Gold Badges","Advanced study and safety"]
  ];
  const tiers=groups.map(g=>{
   const rows=literacyLevels.filter(row=>badgeRarity(row[0])===g[0]);
@@ -858,7 +858,7 @@ function badgeGalleryView(){
  '<button type="button" onclick="setPage(&quot;teacher&quot;)">🏆 Certification steps</button></div></div>'+
  '<aside class="badgeGalleryGoal"><span>Badges earned</span><strong>'+earned+'<small>/14</small></strong>'+
  '<p>'+state.pathDone.filter(Boolean).length+'/6 modules</p></aside></section>'+
- '<p class="badgeGalleryHelp"><strong>Gold, Silver, Bronze and Blue</strong> are design tiers, not separate grades. Gold cards appear first, but you earn badges in learning order. Tap even a locked badge to preview its topic.</p>'+
+ '<p class="badgeGalleryHelp"><strong>Blue → Bronze → Silver → Gold.</strong> Explore the collection from foundational topics to advanced challenges. Gold appears at the bottom. These are design tiers, not separate grades; earn badges by completing the learning modules in order. Tap any locked badge to preview its topic.</p>'+
  '<div class="badgeGalleryTiers">'+tiers+'</div>'+
  '<div class="badgeGalleryFooter"><div><strong>These are topic badges—not the official AI Basics certification.</strong>'+
  '<p>The teacher-approved badge requires Classroom evidence and a separate test.</p></div>'+
