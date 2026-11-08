@@ -126,7 +126,7 @@ export default async function handler(req,res){
           if(!existed.rows[0].is_demo) return send(res,409,{error:'That PIN is used by a regular student record.'});
           return send(res,200,{studentId:existed.rows[0].id,classGroup:existed.rows[0].class_group,semester:'S1',pin:demoPin,isDemo:true});
         }
-        const inserted=await db().query('INSERT INTO passport_students(class_group,semester,pin_digest,is_demo) VALUES($1,'S1',$2,true) RETURNING id,class_group',['5A',digest(demoPin,process.env.PIN_PEPPER)]);
+        const inserted=await db().query("INSERT INTO passport_students(class_group,semester,pin_digest,is_demo) VALUES($1,'S1',$2,true) RETURNING id,class_group",['5A',digest(demoPin,process.env.PIN_PEPPER)]);
         return send(res,200,{studentId:inserted.rows[0].id,classGroup:inserted.rows[0].class_group,semester:'S1',pin:demoPin,isDemo:true});
       }
       if(b.action==='reset-pin'){
