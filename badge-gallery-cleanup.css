@@ -58,7 +58,7 @@
 .certStepsCompact details[open] .certStepExpandIcon{transform:rotate(180deg)}
 .certStepsCompact .certStepBody{padding:13px 20px 16px 63px;border-top:1px solid #deedf0}
 .certStepsCompact .certStepBody ul{margin-bottom:9px}
-.certStepsCompact .certTip{display:none}
+.certStepsCompact .certTip{display:block;font-size:11px;color:#5c7789;margin-top:10px}
 .certStepsCompact .certEvidence{background:#f0fbf6}
 .certTipsDisclosure{margin:17px 0;background:#f4f9ff;border:1px solid #ccdfeb;border-radius:14px}
 .certTipsDisclosure summary{cursor:pointer;color:#1d4f69;font-size:14px;font-weight:850;padding:13px 17px}
