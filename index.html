@@ -566,6 +566,19 @@ body{background:radial-gradient(ellipse at 85% 0%,#dff7fa 0,transparent 35%),lin
 .safetyVideoQuestion textarea{margin-bottom:0;resize:vertical;line-height:1.5}.safetyVideoQuestion select:focus-visible,.safetyVideoQuestion textarea:focus-visible{outline:2px solid #119ba6;outline-offset:2px}
 .safetyVideoFeedback{border-left:4px solid #178e93;padding:10px 12px;background:#dcf7f4;border-radius:7px;font-weight:800;color:#136b68!important}
 @media(max-width:710px){.safetyVideoQuestions{grid-template-columns:minmax(0,1fr)}}
+
+.safetyVideoMiniQuiz{margin:19px 0 13px;padding:16px;border:1px solid #96cddd;border-radius:14px;background:linear-gradient(120deg,#f4fcff,#f3faf8)}
+.safetyVideoQuizEyebrow{font-size:11px;font-weight:950;letter-spacing:.1em;color:#147887}
+.safetyVideoMiniQuiz h4{margin:6px 0;font-size:18px;color:#164760}
+.safetyVideoMiniQuiz>p{font-size:13px;line-height:1.55}
+.safetyVideoQuizItem{min-width:0;padding:14px;margin:13px 0;border:1px solid #bfdce5;border-radius:12px;background:#fff}
+.safetyVideoQuizItem legend{padding:0 6px;font-weight:850;font-size:14px;line-height:1.5;color:#153e5d}
+.safetyVideoQuizChoice{display:flex;align-items:flex-start;gap:10px;margin:7px 0;padding:10px;border:1px solid #d1e4ea;border-radius:10px;background:#f8fcfd;cursor:pointer;line-height:1.4;color:#244c62;font-size:13px}
+.safetyVideoQuizChoice:has(input:checked){border-color:#168e9b;background:#e5f8f5}
+.safetyVideoQuizChoice input{flex:0 0 auto;margin-top:2px;accent-color:#0e7988}
+.safetyVideoQuizFeedback{font-size:12px!important;border-left:3px solid #338c9c;background:#e8f7f9;color:#235b6b!important;padding:9px 11px;border-radius:6px;margin:10px 0 0!important}
+.safetyVideoQuizScore{font-weight:850!important;background:#e4f4ed;padding:9px 12px;border-radius:9px;color:#126553!important}
+@media(max-width:650px){.safetyVideoMiniQuiz{padding:11px}.safetyVideoQuizItem{padding:11px}.safetyVideoQuizChoice{min-height:44px}}
 </style>
 <link rel="stylesheet" href="./passport-cloud.css"/>
 <link rel="stylesheet" href="./q2-calendar.css"/>
@@ -649,7 +662,7 @@ const lexicon=[
 ];
 const questions=[["Your classmate shares an AI summary of a museum exhibit. One fact cannot be found on the museum's page. What is the strongest next step?","Add the unconfirmed fact to your notes","Check the museum's original information and leave out unsupported claims","Ask the same AI to say it more confidently",1,"You are responsible for checking sources before repeating claims. Confidence does not prove accuracy."],["You need help understanding an article, but your teacher wants your own interpretation. Which request would keep you doing the thinking?","Write the final interpretation for me","Ignore the reading and give me an answer","Ask me two questions that will help me explain the article's main idea",2,"A good learning prompt creates opportunities for your own explanation, not a finished submission."],["Your school updates its phone policy this morning. An AI assistant gives you last year's rule. What evidence should you trust?","The current official school policy","The first answer from the AI","The answer that sounds most detailed",0,"For changing facts, verify with a current primary source rather than relying on a model's possibly outdated information."],["You find a convincing quotation in an AI-generated speech draft but cannot locate it in any published speech. What should you do?","Treat it as a paraphrase and invent a citation","Use it without checking because the point is strong","Do not attribute the quotation until you locate its original source",2,"Verifying the original source protects your credibility and avoids using invented quotations."],["Your first AI tutoring response is too advanced. Which follow-up gives the most useful direction?","Explain the same concept to a ninth grader using a school-based example, then ask me a question","Make it better","Say it again with longer words",0,"Specific requests about audience, format, and learning goals often make explanations more useful."],["A student uses AI to suggest three possible claims for an argument. What should the student do before selecting one?","Pick whichever claim sounds most sophisticated","Compare each claim with the text and decide which evidence supports it","Copy all three into the final essay",1,"AI suggestions are starting points; a student must evaluate evidence and make their own decisions."],["A study group has several pages of handwritten notes. They want to hear a spoken explanation of the same ideas. Which is the best learning use of AI?","Make the audio overview, then compare it with the original notes","Skip studying because the audio exists","Ask AI to invent examples that are definitely in the notes",0,"Changing the format can support learning, but students must compare output against their sources."],["A helper examines a screenshot and a student's spoken explanation. The response contains a mistake. Which statement is most accurate?","Combining input types guarantees correctness","The student should still verify what the assistant noticed and concluded","The assistant cannot use different input types together",1,"An AI system may process multiple media, but that does not make its interpretation automatically reliable."],["You are testing an AI note-taking tool for school. Which action protects classmates' privacy?","Upload classmates' full personal profiles to test responses","Post screenshots of their grades publicly","Use sample or anonymized information instead of private student records",2,"Use minimal, appropriate data and follow school privacy rules when trying AI tools."],["You want practice for an interview rather than a ready-made script. Which approach offers better preparation?","Ask the assistant to play an interviewer and react to your answers","Ask for a complete speech to memorize without practice","Let the assistant submit the interview on your behalf",0,"A simulated role can provide guided practice while you remain responsible for the answers."],["A classmate asks AI for the answer to a math word problem and copies it without understanding. What important step is missing?","Making the answer look polished","Checking the reasoning and trying the method independently","Opening a different chatbot",1,"Independent reasoning and explanation are crucial for learning—even when the answer is correct."],["You return to an AI tool in a new conversation and it doesn't know which novel your class is reading. What's the most productive response?","Assume that every new conversation has the full history","Tell it to guess the novel","Give the necessary context again and explain your goal",2,"Tools vary in what previous information they retain. Supply the relevant context when needed."],["Someone claims a movie-recommendation system can therefore understand and solve every human problem. What is the best critique?","Success at a specialized task doesn't demonstrate general human-level reasoning","Any tool that recommends videos is generally intelligent","All current AI has identical abilities",0,"A system's strength in a narrow task should not be confused with broad general intelligence."],["Your teacher provides a study packet in NotebookLM. The assistant produces a surprising claim. What should you do next?","Tell it to remove the source links","Open the cited passage in the uploaded packet and check whether it supports the claim","Treat the claim as correct because it came from your packet",1,"Source-grounded tools still require you to examine the passages and evaluate whether they support the answer."],["An AI summary seems to disagree with an assigned article. What would a careful researcher do?","Compare the summary with the article and identify where they differ","Assume the shorter text is always more accurate","Publish the summary with no review",0,"Researchers compare outputs with the actual evidence rather than trusting a fluent summary."],["An assistant guesses that a club meets on Tuesdays; later it invents a nonexistent club adviser. Which explanation best separates the two problems?","Both are harmless ways to help","The first fills in a missing detail; the second introduces a fabricated factual claim","The first proves the second must also be correct",1,"Unstated assumptions and fabricated facts are different failure modes; both demand verification."],["You made flashcards from the Passport. Which routine will best reveal what you still need to learn?","Read each answer before attempting the question","Study only the cards you already know","Answer from memory, check, and revisit missed cards later",2,"Active retrieval and checking errors provide better evidence of understanding than rereading completed answers."],["Before requesting your certification test, you discover that your third study product isn't uploaded. What's the best next step?","Request the test and assume everything was submitted","Complete and upload the missing original study product in Google Classroom, then follow the test-request directions","Submit a classmate's product to move ahead",1,"The badge process asks for original work and documented completion before the separate certification test."]];
 const NAVID="room115_ai_basics_v2";
-let state={page:"home",pathStep:0,pathDone:[false,false,false,false,false,false],pathChecks:{},pathAnswers:{},compareAnswers:{},isteAnswers:{},sessions:[false,false],study:[false,false,false],flash:{},responses:{},quizIndex:0,quizAnswers:{},quizHistory:[],vocabSearch:"",vocabFilter:"All",wordIndex:0,wordFlip:false,progressName:"",progressReflectionSessions:"",progressReflectionExplain:"",progressReflectionNext:"",safetyAcknowledged:false,safetyRisk:"",safetyVideoWatched:false,safetyRuleMostImportant:"",safetyRuleMostReason:"",safetyRuleNewAware:"",safetyRuleNewReason:""};
+let state={page:"home",pathStep:0,pathDone:[false,false,false,false,false,false],pathChecks:{},pathAnswers:{},compareAnswers:{},isteAnswers:{},sessions:[false,false],study:[false,false,false],flash:{},responses:{},quizIndex:0,quizAnswers:{},quizHistory:[],vocabSearch:"",vocabFilter:"All",wordIndex:0,wordFlip:false,progressName:"",progressReflectionSessions:"",progressReflectionExplain:"",progressReflectionNext:"",safetyAcknowledged:false,safetyRisk:"",safetyVideoWatched:false,safetyRuleMostImportant:"",safetyRuleMostReason:"",safetyRuleNewAware:"",safetyRuleNewReason:"",safetyVideoQuizAnswers:{}};
 const CLOUD_DEFAULT_STATE=JSON.parse(JSON.stringify(state));
 // Preserve older student work without counting the old final checkpoint as new safety learning.
 const PASSPORT_PROGRESS_SCHEMA=3;
@@ -875,18 +888,67 @@ function setStudentDocUrl(){const el=document.getElementById('passportDocUrl');i
 async function copyArtifact(i){const s=moduleArtifacts[i].prompt;try{await navigator.clipboard.writeText(s);alert('Module prompts copied. Paste them into your Google Doc, then write your own answers.')}catch{window.prompt('Copy this into your Google Doc, then answer in your own words:',s)}}
 function googleDocStudio(i){const a=moduleArtifacts[i],saved=safeDocUrl(state.passportDocUrl||'');return `<section class="googleDocStudio" aria-label="Create your Google Doc artifact"><div class="docStudioHeader"><span>✍️</span><div><div class="eyebrow">CREATE · GOOGLE DOCS ARTIFACT</div><h3>${esc(a.title)}</h3><p>${esc(a.time)} · Write in your own words. Use one Learning Log for all six modules.</p></div></div><div class="docSource">Learning inspiration: ${link(a.source,a.sourceUrl)}. Your task is shorter and written for the AI Passport.</div><div class="docStudentTask"><strong>Write these responses in your Google Doc</strong>${a.prompt.split('\n').slice(1).map(x=>`<p>${esc(x)}</p>`).join('')}</div><div class="docActions"><button class="btn primary" type="button" onclick="window.open(RESOURCE.googleDocCreate,'_blank','noopener')">${i===0?'1 · Create a new Google Doc ↗':'Open a new Google Doc ↗'}</button>${btn('Copy these prompts',`copyArtifact(${i})`,'secondary')}${saved?link('Open my saved Learning Log',saved):''}</div><label class="docSaveLabel" for="passportDocUrl">${saved?'Your saved Google Doc link':'Save your Google Doc link here to reopen it next time'}</label><div class="docSaveRow"><input id="passportDocUrl" inputmode="url" type="url" placeholder="Paste your Google Docs share link" value="${esc(saved)}"/><button type="button" class="btn ghost" onclick="setStudentDocUrl()">Save link</button></div><p class="small muted">Use your school Google account. Rename the file <b>AI Passport Learning Log — Your Name</b>. Your responses stay in Google Docs. Keep the link in Classroom or your own school records so you can find it on any device.</p></section>`}
 const SAFETY_VIDEO_URL="https://docs.google.com/videos/d/1Vf3yLl1LGilZDjcsNgNji_WUr-1VRNpgUweSoBjtLLM/play?usp=sharing";
-function safetyVideoReady(){
- const valid=name=>aiSafetyRules.some(x=>x[0]===name);
+
+const SAFETY_VIDEO_QUIZ=[
+ {question:"A student wants to upload an actual report card to a chatbot to make a study plan. What is the safest approach?",
+  choices:["Upload it after covering the student's first name.","Upload it and tell the chatbot to delete it later.","Describe the subject and study goal without uploading the private record.","Ask a classmate to upload the report card instead."],
+  correct:2,
+  feedbackCorrect:"This protects private school records while still letting AI suggest general study strategies.",
+  feedbackWrong:"A report card contains private student information. Describe the learning goal without uploading the record."},
+ {question:"A chatbot gives you a quotation and a citation for an English assignment. What should you do before using it?",
+  choices:["Trust it because the citation looks academic.","Open the cited source and confirm that the quotation really appears there.","Change a few words and use it without checking.","Ask the chatbot whether it is completely certain."],
+  correct:1,
+  feedbackCorrect:"Checking the original source helps catch invented quotations and inaccurate citations.",
+  feedbackWrong:"AI can invent quotations and citations. Open the actual source and verify the quotation yourself."}
+];
+function safetyVideoReflectionsReady(){
+ const valid=name=>aiSafetyRules.some(r=>r[0]===name);
  return Boolean(state.safetyVideoWatched)&&valid(state.safetyRuleMostImportant)&&valid(state.safetyRuleNewAware)&&
- String(state.safetyRuleMostReason||'').trim().length>=20&&String(state.safetyRuleNewReason||'').trim().length>=20;
+ String(state.safetyRuleMostReason||"").trim().length>=20&&String(state.safetyRuleNewReason||"").trim().length>=20;
 }
+function safetyVideoQuizScore(){
+ return SAFETY_VIDEO_QUIZ.reduce((count,q,i)=>count+(Number(state.safetyVideoQuizAnswers?.[i])===q.correct?1:0),0);
+}
+function safetyVideoQuizReady(){return safetyVideoQuizScore()===SAFETY_VIDEO_QUIZ.length;}
+function safetyQuizFeedback(i){
+ const response=state.safetyVideoQuizAnswers?.[i],q=SAFETY_VIDEO_QUIZ[i];
+ if(response===undefined||response===null)return "Select the best answer. You can try again after feedback.";
+ return Number(response)===q.correct?"✓ "+q.feedbackCorrect:"Try again: "+q.feedbackWrong;
+}
+function renderSafetyVideoQuiz(){
+ return '<section class="safetyVideoMiniQuiz" aria-labelledby="safetyVideoQuizHeading">'+
+ '<div class="safetyVideoQuizEyebrow">🧠 QUICK CHECK · TWO QUESTIONS</div>'+
+ '<h4 id="safetyVideoQuizHeading">Can you apply the safety rules?</h4>'+
+ '<p>Choose the BEST answer in each situation. Both must be correct to finish Module 5. Your answers save with your PIN; this is practice, not the official certification test.</p>'+
+ SAFETY_VIDEO_QUIZ.map((q,i)=>
+  '<fieldset class="safetyVideoQuizItem"><legend>'+(i+1)+'. '+esc(q.question)+'</legend>'+
+  q.choices.map((choice,j)=>'<label class="safetyVideoQuizChoice"><input type="radio" name="safety-video-q'+i+'" value="'+j+'"'+(Number(state.safetyVideoQuizAnswers?.[i])===j?' checked':'')+
+   ' onchange="answerSafetyVideoQuiz('+i+','+j+')"><span>'+String.fromCharCode(65+j)+'. '+esc(choice)+'</span></label>').join('')+
+  '<p id="safety-video-quiz-feedback-'+i+'" class="safetyVideoQuizFeedback" role="status" aria-live="polite">'+esc(safetyQuizFeedback(i))+'</p></fieldset>'
+ ).join('')+
+ '<p id="safety-video-quiz-score" class="safetyVideoQuizScore">Knowledge check: '+safetyVideoQuizScore()+' / 2 correct'+(safetyVideoQuizReady()?' ✓':' · Try until both are correct.')+'</p>'+
+ '</section>';
+}
+function answerSafetyVideoQuiz(i,choice){
+ if(!Number.isInteger(i)||i<0||i>=SAFETY_VIDEO_QUIZ.length||!Number.isInteger(choice)||choice<0||choice>=4)return;
+ if(!state.safetyVideoQuizAnswers||typeof state.safetyVideoQuizAnswers!=="object")state.safetyVideoQuizAnswers={};
+ state.safetyVideoQuizAnswers[i]=choice;
+ persist();
+ const feedback=document.getElementById("safety-video-quiz-feedback-"+i);
+ if(feedback)feedback.textContent=safetyQuizFeedback(i);
+ const score=document.getElementById("safety-video-quiz-score");
+ if(score)score.textContent="Knowledge check: "+safetyVideoQuizScore()+" / 2 correct"+(safetyVideoQuizReady()?" ✓":" · Try until both are correct.");
+ refreshSafetyVideo();
+}
+
+function safetyVideoReady(){return safetyVideoReflectionsReady()&&safetyVideoQuizReady();}
 function safetyRuleChoices(selected){
  return '<option value="">Choose a safety rule…</option>'+aiSafetyRules.map((r,i)=>
  '<option value="'+esc(r[0])+'"'+(selected===r[0]?' selected':'')+'>'+(i+1)+'. '+esc(r[0])+'</option>').join('');
 }
 function refreshSafetyVideo(){
  const m=document.getElementById("safety-video-feedback");
- if(m)m.textContent=safetyVideoReady()?"✓ Both reflections are complete and saved under your PIN.":"To finish Module 5: watch the video, check the box, choose two rules, and explain each in 20+ characters.";
+ if(m)m.textContent=safetyVideoReady()?"✓ Video, reflections, and both quiz questions complete. Saved under your PIN.":!safetyVideoReflectionsReady()?"Watch the video, select two rules, and explain each choice (20+ characters).":"Reflections saved. Finish both safety quiz questions (2/2 correct).";
  const b=document.getElementById("module5-finish");
  if(b)b.disabled=!(safetyReady()&&moduleFiveChecksReady());
 }
@@ -896,7 +958,7 @@ function updateSafetyVideo(field,value){
  state[field]=String(value||'').slice(0,1000);persist();refreshSafetyVideo();
 }
 async function copySafetyVideoReflections(){
- if(!safetyVideoReady()){alert("Please finish the required video and both reflections first.");return}
+ if(!safetyVideoReflectionsReady()){alert("Please finish the video and both written reflections first.");return}
  const content='Module 5 · 10 Rules for AI Users\n\n1. Most important safety rule: '+state.safetyRuleMostImportant+
  '\nWhy: '+state.safetyRuleMostReason.trim()+'\n\n2. Rule I needed to know: '+state.safetyRuleNewAware+
  '\nWhy: '+state.safetyRuleNewReason.trim();
@@ -965,7 +1027,8 @@ function guidedPathView(){
       <textarea id="safety-new-why" rows="3" maxlength="1000" placeholder="Before the video, I didn't realize… Now I will…" oninput="updateSafetyVideo('safetyRuleNewReason',this.value)">${esc(state.safetyRuleNewReason||'')}</textarea>
     </div>
   </div>
-  <p id="safety-video-feedback" class="safetyVideoFeedback" role="status" aria-live="polite">${safetyVideoReady()?'✓ Both reflections are complete and saved under your PIN.':'To finish Module 5: watch the video, check the box, choose two rules, and explain each in 20+ characters.'}</p>
+  ${renderSafetyVideoQuiz()}
+  <p id="safety-video-feedback" class="safetyVideoFeedback" role="status" aria-live="polite">${safetyVideoReady()?'✓ Video, reflections, and both quiz questions complete. Saved under your PIN.':!safetyVideoReflectionsReady()?'Watch the video, select two rules, and explain each choice (20+ characters).':'Reflections saved. Finish both safety quiz questions (2/2 correct).'}</p>
   <p class="small muted">Your two responses autosave under your student PIN. Copy them into the Module 5 section of your <strong>existing Learning Log</strong>; do not start a second document.</p>
   <button type="button" class="btn secondary" onclick="copySafetyVideoReflections()">📋 Copy my video reflections</button>
 </section>
