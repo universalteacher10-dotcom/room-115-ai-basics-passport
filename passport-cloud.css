@@ -1,0 +1,18 @@
+/* The full original Passport remains unchanged behind the PIN sign-in. */
+body.passport-cloud-pending .app{visibility:hidden}
+.passportPinOverlay{position:fixed;inset:0;z-index:99999;display:grid;place-items:center;background:linear-gradient(135deg,#061c38,#075475 68%,#0ba8a7);padding:18px;overflow-y:auto}
+.passportPinOverlay[hidden]{display:none}
+.passportPinDialog{width:min(100%,460px);background:#fff;border:1px solid #bae9f0;border-radius:22px;padding:27px 28px;box-shadow:0 24px 75px #00172a96;color:#17354e}
+.passportPinDialog h2{font-size:27px;margin:4px 0 10px;color:#102e4d}
+.passportPinDialog p{font-size:14px;color:#506e81;line-height:1.6}
+.passportPinDialog label{display:block;font-weight:850;margin:18px 0 6px;color:#1e4c67}
+.passportPinDialog input{display:block;width:100%;padding:13px 15px;font-size:27px;text-align:center;letter-spacing:5px;border:2px solid #94bdce;border-radius:11px;background:#fff}
+.passportPinDialog button{display:block;width:100%;margin:16px 0 0;border:0;border-radius:11px;background:linear-gradient(110deg,#0872bd,#08a69e);color:white;padding:14px;font-weight:850;font-size:16px}
+.passportPinDialog button:disabled{opacity:.65}
+.passportPinBrand{font-weight:850;color:#087d95;text-transform:uppercase;letter-spacing:.12em;font-size:12px}
+#passportPinMessage{min-height:24px}
+.passportCloudTop{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+#passportCloudStatus{font-weight:850;color:#137152;font-size:12px;letter-spacing:.01em}
+.passportCloudSignout{background:#fff;border:1px solid #c0d7e4;color:#22516a;border-radius:9px;padding:7px 10px;font-weight:800;font-size:12px}
+@media(max-width:710px){.passportPinDialog{padding:22px 17px}.passportCloudTop{margin:5px 0}.passportCloudSignout{padding:5px 8px;font-size:11px}}
+@media print{.passportPinOverlay,.passportCloudTop{display:none!important}body.passport-cloud-pending .app{visibility:visible!important}}
