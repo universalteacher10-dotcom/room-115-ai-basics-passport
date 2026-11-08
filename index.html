@@ -557,6 +557,7 @@ body{background:radial-gradient(ellipse at 85% 0%,#dff7fa 0,transparent 35%),lin
 .badgeClassroomStepLink small{font-size:11px;color:#4c6979}
 </style>
 <link rel="stylesheet" href="./passport-cloud.css"/>
+<link rel="stylesheet" href="./q2-calendar.css"/>
 </head>
 <body class="passport-cloud-pending">
 <div class="app">
@@ -612,7 +613,7 @@ const RESOURCE = {
  commonsenseHumans:"https://www.commonsense.org/education/digital-literacy/designed-to-feel-human",
  googleDocCreate:"https://docs.google.com/document/create"
 };
-const pages=[["home","⌂","Home"],["path","✦","Current Module"],["progress","📄","Progress Report"],["study","▤","My Study Kit"],["practice","✧","Practice"],["words","◇","Vocabulary"],["safety","🛡️","AI Safety Rules"],["resources","▣","Resources"],["teacher","ⓘ","Badge Steps"],["recovery","💾","Save & Restore"]];
+const pages=[["home","⌂","Home"],["path","✦","Current Module"],["calendar","📅","Q2 Deadlines · Jan 22"],["progress","📄","Progress Report"],["study","▤","My Study Kit"],["practice","✧","Practice"],["words","◇","Vocabulary"],["safety","🛡️","AI Safety Rules"],["resources","▣","Resources"],["teacher","ⓘ","Badge Steps"],["recovery","💾","Save & Restore"]];
 const lexicon=[
  ["AI","Computer technology that can recognize patterns, respond to information, or create outputs.","Know AI","A chatbot answering a question"],
  ["Chatbot","An application that responds in a conversation using text or voice.","Know AI","A student asks a question in a chat window"],
@@ -684,8 +685,8 @@ const btn=(txt,act,kind="primary")=>`<button class="btn ${kind}" onclick="${act}
 const link=(label,url)=>`<a target="_blank" rel="noopener noreferrer" href="${url}">${esc(label)} ↗</a>`;
 function bar(count,total){return `<div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="${total}" aria-valuenow="${count}"><b style="width:${100*count/total}%"></b></div>`}
 function section(title,sub=""){return `<div class="sectionTitle"><div><h2>${title}</h2>${sub?`<div class="small muted">${sub}</div>`:""}</div></div>`}
-function draw(){nav.innerHTML=pages.map(([p,ic,n])=>`<button class="nav ${p===state.page?"active":""}" onclick="setPage('${p}')"><span style="font-size:20px">${ic}</span><span>${n}</span></button>`).join("");
- const views={path:guidedPathView,module:modulePreviewView,progress:progressView,home:homeView,learn:learnView,practice:practiceView,study:studyView,words:wordsView,safety:safetyView,resources:resourcesView,teacher:teacherView,recovery:()=>`<div id="recovery-slot"></div>`};
+function draw(){nav.innerHTML=pages.map(([p,ic,n])=>`<button class="nav ${p===state.page?"active":""} ${p==="calendar"?"is-q2-deadline":""}" onclick="setPage('${p}')"><span style="font-size:20px">${ic}</span><span>${n}</span></button>`).join("");
+ const views={path:guidedPathView,module:modulePreviewView,calendar:()=>window.Q2Calendar?window.Q2Calendar.render():"<div class=\"card\"><h2>Q2 calendar loading…</h2></div>",progress:progressView,home:homeView,learn:learnView,practice:practiceView,study:studyView,words:wordsView,safety:safetyView,resources:resourcesView,teacher:teacherView,recovery:()=>`<div id="recovery-slot"></div>`};
  content.innerHTML=views[state.page]();
 }
 
@@ -928,7 +929,7 @@ function guidedPathView(){
  <div class="pathPart"><h3>Before you continue · My Classroom checklist</h3>${p.checks.map((c,j)=>`<label class="pathCheck"><input type="checkbox" ${checks[j]?'checked':''} onchange="pathCheck(${i},${j},this.checked)"><span>${esc(c)}</span></label>`).join('')}</div>
  ${i===5?`<div class="pathPart" id="module-6-submit-guide"><h3>📋 Module 6 · Final submission checklist</h3><p>Keep using your <strong>ONE Learning Log</strong>. Finish these items in order; the separate teacher certification steps happen afterward.</p><ol class="finalSubmitGuide"><li><strong>Finish the learning:</strong> Review all 14 topics, make your <strong>third DIFFERENT study tool</strong>, and complete your AI-Ready Graduate reflection in your existing Learning Log.</li><li><strong>Step 2 · Course work in Google Classroom:</strong> Attach your <strong>completed Learning Log</strong>, <strong>Course Completion Certificate PDF</strong>, and <strong>Progress Report (Learning Record) PDF</strong> to the designated Step 2 assignment.</li><li><strong>Step 3 · Study Materials in Google Classroom:</strong> Upload evidence of all <strong>three original study tools</strong>—two-column notes, flashcards, and the different third tool.</li><li><strong>Step 4 · Test Request:</strong> Email your teacher to request the official test; submit the <strong>email PDF evidence</strong> in the Step 4 Classroom assignment.</li></ol><p><strong>After you submit:</strong> Your teacher administers the separate <strong>25-question test</strong> (Step 5: pass at <strong>18/25</strong>, up to three tries; corrections if needed). Then complete your <strong>final reflection and teacher badge request</strong> in Step 6. The 14 topic badges on this site are not official test certification.</p><p class="small muted">The site does not send files, emails, or test requests for you. Open the matching assignment in Google Classroom and attach your evidence there.</p><div class="row">${btn('Open Google Classroom','window.open(\'https://classroom.google.com/\',\'_blank\')','secondary')}</div></div>${progressReflectionEditor()}<div class="finishPanel"><h3>🏆 My AI Passport completion PDFs</h3><p><strong>First finish all six Passport modules</strong>, then enter your name and save both the Course Completion Certificate and Learning Record as PDFs. Attach these to <strong>Step 2</strong> in Google Classroom along with your completed Learning Log.</p><label for="completionName"><strong>First and last name</strong></label><input id="completionName" maxlength="90" placeholder="Your name" value="${esc(state.progressName||'')}" oninput="state.progressName=this.value;persist()"/><div class="row">${btn('Save completion certificate PDF','printCertificate()','primary')}${btn('Download Progress Report PDF','printSummary()','secondary')}</div><p class="small muted">In the print window, choose Save as PDF. These documents show Passport module progress only; neither is proof of passing the official test or earning the teacher-issued AI Basics Badge.</p></div>`:''}
  <div class="pathNext"><strong>${state.pathDone[i]?'✓ Stage finished':'Ready to finish this stage?'}</strong><p class="small muted">Complete the compare choices (${compareScore}/${comparePrompts[i].length} correct), the three practice questions (${score}/3 correct), and the two work checks.</p><div class="row">${i>0?btn('← Previous stage',`pathVisit(${i-1})`,'ghost'):'<span></span>'}${state.pathDone[i]?(i<5?btn('Next module →',`pathVisit(${i+1})`):btn('Review all practice','setPage(\'practice\')')):`<button type="button" class="btn primary" id="${i===4?'module5-finish':'module-finish'}" onclick="pathComplete(${i})" ${ready?'':'disabled'}>✓ Finish module →</button>`}</div></div>
- </article><aside class="card pathSide"><h3>📌 Your Classroom badge steps</h3><p class="small muted">The official record of submitted work is in Google Classroom. The 14 topic badges here are not certification.</p>${classroomSteps()}<div class="gcMini"><p class="small muted">Your module-specific upload reminder appears after the Google Doc creation task below.</p></div><p>${btn('Download Progress Report PDF','printSummary()','secondary')}</p><p class="small muted">Site checkmarks are stored in this browser only. Your teacher sees your uploaded evidence, not these checkmarks.</p><p class="small muted">💾 Use the Save & Restore page in the left navigation to back up your progress.</p></aside></div><div id="badge-collection">${passportBadgeWall()}</div>`;
+ </article><aside class="card pathSide"><h3>📌 Your Classroom badge steps</h3><p class="small muted">The official record of submitted work is in Google Classroom. The 14 topic badges here are not certification.</p>${classroomSteps()}<div class="gcMini"><p class="small muted">Your module-specific upload reminder appears after the Google Doc creation task below.</p></div><p>${btn('Download Progress Report PDF','printSummary()','secondary')}</p><p class="small muted">Passport checkmarks autosave under your assigned PIN. Your teacher verifies Classroom evidence separately from site checkmarks.</p><p class="small muted">💾 Use the Save & Restore page in the left navigation to back up your progress.</p></aside></div><div id="badge-collection">${passportBadgeWall()}</div>`;
 }
 
 const moduleCatalog=[
@@ -1257,6 +1258,7 @@ function printSummary(){
 window.addEventListener("error",e=>{console.error(e.message)});
 draw();updatePrompt();
 </script>
+<script src="./q2-calendar.js" defer></script>
 <script src="./passport-recovery.js" defer></script>
 <script src="./passport-cloud.js" defer></script>
 </body>
