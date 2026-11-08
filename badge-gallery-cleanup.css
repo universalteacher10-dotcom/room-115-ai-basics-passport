@@ -1,0 +1,72 @@
+/* Badge Experience: dedicated gallery, compact certification roadmap.
+   Scoped only to the new badge view and existing Badge Steps view. */
+.badgeGalleryPage{max-width:1240px;margin:0 auto;padding-bottom:24px}
+.badgeGalleryHero{position:relative;overflow:hidden;display:grid;grid-template-columns:minmax(0,1fr) 165px;align-items:center;gap:22px;border:1px solid #33699a;border-radius:22px;background:linear-gradient(115deg,#0a2143,#113d71 57%,#176b7f);box-shadow:0 15px 34px #133b6a32;color:#eef9ff;padding:clamp(20px,3vw,31px)}
+.badgeGalleryHero:after{content:"";position:absolute;right:9%;top:-95px;width:230px;height:230px;border:1px solid #ffffff20;border-radius:50%;pointer-events:none;box-shadow:0 0 0 43px #ffffff0c,0 0 0 84px #ffffff07}
+.badgeGalleryHero>div,.badgeGalleryHero>aside{position:relative;z-index:1}
+.badgeGalleryEyebrow{font-size:11px;font-weight:950;text-transform:uppercase;letter-spacing:.13em;color:#8ce8e9}
+.badgeGalleryHero h1{font-size:clamp(29px,3.4vw,43px);line-height:1.14;color:white;margin:8px 0 10px;letter-spacing:-.035em}
+.badgeGalleryHero p{color:#d1e9f5;font-size:14px;line-height:1.6;margin:0 0 17px;max-width:720px}
+.badgeGalleryActions{display:flex;flex-wrap:wrap;align-items:center;gap:9px}
+.badgeGalleryActions button,.badgeGalleryActions a{display:inline-flex;justify-content:center;align-items:center;min-height:42px;border-radius:11px;text-decoration:none;border:1px solid #8ccde0;padding:10px 13px;font-size:13px;font-weight:850;line-height:1.25;color:#eaffff;background:#124e73}
+.badgeGalleryActions button:first-child{color:#0b3d55;background:#bafaf2;border-color:#cffff7}
+.badgeGalleryActions button:hover,.badgeGalleryActions button:focus-visible{outline:2px solid #ccfbfa;outline-offset:2px}
+.badgeGalleryGoal{border:1px solid #f9df80;background:linear-gradient(150deg,#fff0be,#ffc15d 65%,#eba13d);box-shadow:0 10px 20px #001f4050;border-radius:16px;display:flex;flex-direction:column;text-align:center;padding:19px 12px;min-width:0}
+.badgeGalleryGoal span{font-size:11px;letter-spacing:.09em;font-weight:950;color:#825018;text-transform:uppercase}
+.badgeGalleryGoal strong{display:block;color:#633a16;font-size:48px;font-weight:950;line-height:1.08;margin:5px 0}
+.badgeGalleryGoal strong small{font-size:23px;color:#9c6825}
+.badgeGalleryGoal p{font-size:11px;font-weight:800;margin:3px 0 0;color:#744e1a}
+.badgeGalleryHelp{margin:14px 0 17px;font-size:13px;line-height:1.5;color:#436879}
+.badgeGalleryHelp strong{color:#15546c}
+.badgeGalleryTiers{display:grid;gap:15px}
+.badgeGalleryTier{border-radius:19px;padding:18px 19px 21px;color:#f2faff;background:linear-gradient(120deg,#102544,#163b68 76%,#17475b);border:1px solid #356385;box-shadow:0 8px 25px #18456824}
+.badgeGalleryTier.tier-gold{background:linear-gradient(125deg,#382916,#56411e 54%,#254d5a);border-color:#c99a38}
+.badgeGalleryTier.tier-silver{background:linear-gradient(125deg,#18364c,#2b4c62 60%,#193658);border-color:#a8cde6}
+.badgeGalleryTier.tier-bronze{background:linear-gradient(125deg,#33293a,#513b40 63%,#19395b);border-color:#b8835d}
+.badgeGalleryTierHead{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-bottom:14px}
+.badgeGalleryTierHead h2{margin:0;color:#f2fbff;font-size:clamp(18px,2vw,24px)}
+.badgeGalleryTierHead p{margin:2px 0 0;color:#d1e0f0;font-size:12px}
+.badgeGalleryTierScore{flex-shrink:0;min-width:75px;border:1px solid #ffffff6a;background:#ffffff14;padding:8px 12px;border-radius:12px;text-align:center;color:#fff;font-weight:950;font-size:13px;line-height:1.25}
+.badgeGalleryShelf{grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.badgeGalleryShelf .passportBadge{min-height:180px;max-width:100%;background:#ffffff0d}
+.badgeGalleryShelf .passportBadge:focus-visible{outline:3px solid #c9f9fe}
+.badgeGalleryFooter{margin:17px 0 6px;display:flex;align-items:center;flex-wrap:wrap;gap:12px;padding:17px 20px;border-radius:16px;background:#ecf8fb;border:1px solid #c7e3eb}
+.badgeGalleryFooter>div{flex:1 1 320px}
+.badgeGalleryFooter strong{display:block;color:#164660;font-size:15px;margin-bottom:3px}
+.badgeGalleryFooter p{margin:0;font-size:12px;color:#486b7c}
+.badgeGalleryFooter button{min-height:42px;border:1px solid #238597;background:#126d86;border-radius:10px;color:#fff;padding:10px 13px;font-size:13px;font-weight:850}
+.moduleBadgeShortcut{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px 18px;background:linear-gradient(110deg,#e8f5fb,#ebf8f3);border:1px solid #aed6e2;border-radius:13px;padding:12px 16px;margin:11px 0 17px}
+.moduleBadgeShortcut>div{display:flex;flex-direction:column;gap:3px}
+.moduleBadgeShortcut strong{font-size:14px;color:#194b65}
+.moduleBadgeShortcut span{font-size:12px;color:#5d7b8c}
+.moduleBadgeShortcut button{background:#136b88;border:0;border-radius:9px;padding:10px 13px;color:#fff;font-size:12px;font-weight:850}
+.certRoadmapNote{background:#eaf8fa;border:1px solid #bee0e9;border-radius:13px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin:16px 0}
+.certRoadmapNote strong{font-size:14px;color:#194960}
+.certRoadmapNote span{font-size:12px;color:#567789}
+.certRoadmapNote button{background:#167d8f;color:#fff;border:none;border-radius:9px;font-size:12px;font-weight:850;padding:10px 13px}
+.certStepsGrid.certStepsCompact{display:grid;grid-template-columns:1fr;gap:8px}
+.certStepsCompact details{background:#fff;border:1px solid #c9dfe9;border-radius:12px;overflow:hidden;box-shadow:0 3px 12px #1746620b}
+.certStepsCompact details[open]{border-color:#74bfc8;box-shadow:0 5px 18px #13647517}
+.certStepsCompact summary{cursor:pointer;list-style:none;display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:13px;align-items:center;padding:12px 16px;background:linear-gradient(95deg,#f7fcff,#f6fbf9)}
+.certStepsCompact summary::-webkit-details-marker{display:none}
+.certStepsCompact summary:focus-visible{outline:3px solid #168b96;outline-offset:-3px}
+.certStepsCompact .certStepNumber{width:34px;height:34px;flex:0 0 34px;font-size:16px;border-radius:10px}
+.certStepsCompact .certStepSummaryTitle{min-width:0}
+.certStepsCompact .certStepSummaryTitle strong{display:block;color:#19465d;font-size:14px;line-height:1.25}
+.certStepsCompact .certStepSummaryTitle small{font-size:11px;color:#5e8091;display:block;margin-top:3px}
+.certStepsCompact .certStepExpandIcon{font-size:19px;color:#168496;transition:transform .16s}
+.certStepsCompact details[open] .certStepExpandIcon{transform:rotate(180deg)}
+.certStepsCompact .certStepBody{padding:13px 20px 16px 63px;border-top:1px solid #deedf0}
+.certStepsCompact .certStepBody ul{margin-bottom:9px}
+.certStepsCompact .certTip{display:none}
+.certStepsCompact .certEvidence{background:#f0fbf6}
+.certTipsDisclosure{margin:17px 0;background:#f4f9ff;border:1px solid #ccdfeb;border-radius:14px}
+.certTipsDisclosure summary{cursor:pointer;color:#1d4f69;font-size:14px;font-weight:850;padding:13px 17px}
+.certTipsDisclosure summary:focus-visible{outline:2px solid #208498;border-radius:12px}
+.certTipsDisclosure .certTipsInner{padding:0 17px 17px;font-size:13px;color:#45667a;line-height:1.55}
+.certTipsDisclosure .certTipsInner p{margin:0 0 10px}
+.certTipsDisclosure .certTipsInner .certSurvivalActions{margin-top:10px}
+@media(max-width:980px){.badgeGalleryShelf{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:670px){.badgeGalleryHero{grid-template-columns:1fr}.badgeGalleryGoal{padding:11px 16px;flex-direction:row;align-items:center;justify-content:center;gap:11px}.badgeGalleryGoal strong{font-size:30px;margin:0}.badgeGalleryGoal p{margin:0}.badgeGalleryShelf{grid-template-columns:repeat(2,minmax(0,1fr))}.badgeGalleryTier{padding:12px}.badgeGalleryTierHead{gap:8px}.badgeGalleryTierHead h2{font-size:17px}.badgeGalleryShelf .passportBadge{min-height:158px}.certStepsCompact .certStepBody{padding:13px 15px}.certStepsCompact summary{padding:11px;gap:10px}.certStepsCompact .certStepSummaryTitle strong{font-size:13px}.badgeGalleryActions a,.badgeGalleryActions button{flex:1 1 auto}}
+@media(max-width:360px){.badgeGalleryShelf{gap:8px}.badgeGalleryShelf .passportBadge{padding:8px 3px}.badgeGalleryTierScore{min-width:53px;padding:6px 7px}}
+@media(prefers-reduced-motion:reduce){.certStepsCompact .certStepExpandIcon{transition:none}}
