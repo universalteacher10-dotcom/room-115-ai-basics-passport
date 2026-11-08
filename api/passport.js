@@ -59,7 +59,7 @@ async function throttle(req) {
     "INSERT INTO passport_login_limits(bucket,attempts,window_start) VALUES($1,1,now()) ON CONFLICT(bucket) DO UPDATE SET attempts=CASE WHEN passport_login_limits.window_start < now()-interval '15 minutes' THEN 1 ELSE passport_login_limits.attempts+1 END, window_start=CASE WHEN passport_login_limits.window_start < now()-interval '15 minutes' THEN now() ELSE passport_login_limits.window_start END RETURNING attempts",
     [bucket]
   );
-  return result.rows[0].attempts<=15;
+  return result.rows[0].attempts<=80; // school Chromebook cohorts may share a public IP
 }
 export default async function handler(req,res){
   if(req.method!=='POST') return send(res,405,{error:'POST required'});
