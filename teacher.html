@@ -25,6 +25,14 @@ button:disabled{opacity:.5;cursor:wait}.hint{color:#49617a;font-size:14px}
 <p class="hint">Do not provision a second batch for the same students; this creates NEW student records. Codes are displayed only at creation or reset.</p>
 </section>
 <section class="card">
+<h2>Import previously assigned PINs</h2>
+<p>Use this to activate the school-roster PINs you've already assigned. Paste the two-column CSV values or the full three-column downloadable roster. No student names are transmitted.</p>
+<label for="assignedPins">Assigned PIN list</label>
+<textarea id="assignedPins" rows="5" placeholder="5A,79030981&#10;5B,63555575" style="width:100%;padding:12px;border:1px solid #98b0ca;border-radius:9px"></textarea>
+<p><button onclick="importPins()">Import assigned PINs</button></p>
+<p class="hint">Each row should contain section and PIN, or paste the three-column file with Slot, Class 5A PIN, Class 5B PIN. Already-registered PINs cause the entire import to stop without creating duplicates.</p>
+</section>
+<section class="card">
 <h2>Class progress</h2><button onclick="report()">Download progress report CSV</button>
 <p class="hint">The report contains PIN record IDs, class, checkpoint count, practice history, and last save time. It does not expose PINs; use your offline roster to match record IDs to students.</p>
 </section>
@@ -75,6 +83,30 @@ async function report(){
   download('ai-passport-progress.csv',rows);
   status(r.records.length+' student progress records exported. Keep the report in approved school storage.');
  }catch(e){status('Unable to export: '+e.message)}
+}
+async function importPins(){
+ try {
+  const raw=document.getElementById('assignedPins').value.trim();
+  if(!raw)throw new Error('Paste your assigned PINs first.');
+  const pins=[];
+  const lines=raw.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
+  for(let i=0;i<lines.length;i++){
+   const parts=lines[i].split(/[\t,]/).map(x=>x.trim().replace(/^"|"$/g,''));
+   if(i===0 && parts.some(x=>/slot|class|pin/i.test(x)))continue;
+   if(parts.length===3 && /^\d+$/.test(parts[0])){
+    pins.push({classGroup:'5A',pin:parts[1]},{classGroup:'5B',pin:parts[2]});
+   }else if(parts.length===2 && ['5A','5B'].includes(parts[0])){
+    pins.push({classGroup:parts[0],pin:parts[1]});
+   }else throw new Error('Check the data format on row '+(i+1));
+  }
+  if(pins.length<1||pins.length>100)throw new Error('Import between 1 and 100 PINs.');
+  if(!confirm('Activate '+pins.length+' assigned PINs in the database?'))return;
+  status('Registering PINs securely…');
+  const r=await request('import-pins',{pins});
+  download('ai-passport-CONFIRMED-PINS.csv',[['Class','Student Record ID','Assigned PIN'],...r.enrolled.map(x=>[x.classGroup,x.studentId,x.pin])]);
+  document.getElementById('assignedPins').value='';
+  status(r.enrolled.length+' assigned PINs activated. Confirmed roster downloaded. Save it in approved school storage.');
+ }catch(e){status('Import not completed: '+e.message)}
 }
 async function createDemo(){
  try{const r=await request('create-demo');status('Demo PIN active in 5A: '+r.pin+' (student record '+r.studentId+'). Never assign this shared test PIN to a real student.')}catch(e){status('Unable to activate demo PIN: '+e.message)}
