@@ -136,11 +136,8 @@ function draw(){nav.innerHTML=pages.map(([p,ic,n])=>`<button class="nav ${p===st
 const pathway=[
 {
 title:"Meet AI",category:"INTRO · 1 OF 2",time:"~20 minutes",tag:"Watch → Explain → Note",
-description:"Start with the big picture: AI, chatbots, large language models, creating content, and finding information.",
-resources:[
-{label:"Khan Academy — What Is AI? (2:37)",url:"https://www.khanacademy.org/science/big-questions/what-is-ai",note:"Watch the video or select Transcript if playback is blocked."},
-{label:"Khan Academy — What Are AI Chatbots?",url:"https://www.khanacademy.org/college-careers-more/ai-for-education/x68ea37461197a514%3Aai-our-lives/x68ea37461197a514%3Aai-chatbots-who-s-behind-the-screen/v/what-are-ai-chatbots",note:"Short follow-up if time allows; you can read its transcript instead."}
-],
+description:"Learn the AI basics through your existing Khan Academy assignments. No duplicate videos or extra Khan tasks are required here.",
+resources:[{label:"Open your Class 5 Khan Academy assignments",url:"https://www.khanacademy.org/",note:"Sign in with your assigned Class 5 Google account. Open your teacher-assigned activities under To-do / All assignments; do not use separate public videos."}],
 guide:"Teacher's glossary: Levels 1–4. Find Chatbot, Information Retrieval, Generative AI, Prompt, LLM, ANI and AGI. Your source has the test vocabulary.",
 task:"Begin a page of two-column notes. On the LEFT, write a vocabulary term or a question. On the RIGHT, write its meaning IN YOUR OWN WORDS and one example. Start with at least two terms you heard in the videos.",
 exampleLeft:"How do I know a claim is supported?",exampleRight:"I can look for where the claim came from and compare it with the original. Example: check the book before repeating a quotation.",
@@ -248,12 +245,13 @@ function guidedPathView(){
  <article class="card">
  <div class="row"><span class="tag">${esc(step.category)}</span><span class="pill">⏱ ${step.time}</span></div>
  <h2 style="font-size:28px;margin:9px 0 5px;letter-spacing:-.025em">${i+1}. ${esc(step.title)}</h2><p class="muted" style="margin-top:0">${esc(step.description)}</p>
- <div class="lessonPart"><h3>Activity 1 · Open ONE resource, then come back</h3>
+ ${i===0?`<div class="card" style="background:#eef8ff;border:2px solid #a9d8f6;margin:15px 0"><h3>🧭 Your Class 5 Khan Academy guide</h3><p><b>1.</b> Sign in with your assigned Class 5 Google account. <b>2.</b> Open <b>Assignments → To-do → All assignments</b>. <b>3.</b> Complete only the activities assigned by your teacher, in order.</p><div class="grid"><div class="pathResource"><b>📋 Assignment list</b><p>Examples shown in class: Welcome to the course! · AI in five · New tools for a new age: FAQ · How AI Works · What is machine learning? · How chatbots and large language models work · AI: Training data and bias.</p><p class="small muted">Articles have a document icon; videos have a play icon. Your actual assigned list determines what to do.</p></div><div class="pathResource"><b>▶ Video lesson screen</b><p>Play the whole video. If Khan says you must watch it before continuing, finish playback. Open <b>Transcript</b> for reading support, then select <b>Next</b>. Return to the assignment list to check completion.</p><p class="small muted">The Khan AI assistant panel is not an additional required activity unless your teacher says so.</p></div></div><p><b>Then return to Passport:</b> Create your own two-column notes. Do not repeat Khan videos on this site.</p></div>`:""}
+<div class="lessonPart"><h3>Activity 1 · Open ONE resource, then come back</h3>
  ${step.resources.map((r,j)=>r.url?
  `<div class="pathResource" style="margin-bottom:10px"><span class="tag">${j===0?"START HERE":"IF THERE'S TIME / SUPPORT"}</span><p style="margin:7px 0 5px">${link(r.label,r.url)}</p><p class="small muted" style="margin:0">${esc(r.note)}</p></div>`:
  `<div class="pathResource" style="margin-bottom:10px"><span class="tag">OPTIONAL FALLBACK</span><p style="margin:7px 0 5px"><b>${esc(r.label)}</b></p><p class="small muted" style="margin:0">${esc(r.note)}</p></div>`
  ).join("")}
- <p class="small muted"><b>When you're done, return to this tab.</b> Open only the named video/level, not the entire Khan or Code.org course. If the website is blocked, use the alternate instructions below.</p>
+ <p class="small muted"><b>When you're done, return to this tab.</b> For Khan, follow your assigned activities; for Code.org, open only the named level. If the website is blocked, use the alternate instructions below.</p>
  </div>
  <div class="lessonPart"><h3>Activity 2 · Connect it to YOUR test vocabulary</h3><p>${esc(step.guide)}</p>
  <p><b>Teacher source:</b> ${link("Open the AI Basics Badge Study Guide",RESOURCE.source)}</p>
@@ -291,7 +289,7 @@ function guidedPathView(){
 }
 
 function homeView(){const done=state.sessions.filter(Boolean).length,s=state.study.filter(Boolean).length;return `
-<section class="hero"><div><div class="eyebrow">NHS · ELA Elective</div><h1>AI Basics<br>Passport</h1><p>Learn it. Question it. Use it to learn.<br>Two short, hands-on learning sessions. Then create <strong>your own</strong> study materials from your teacher's guide.</p>${btn("Continue guided pathway →","setPage('path')")} ${btn("Teacher's source ↗","window.open(RESOURCE.source,'_blank')","ghost")}</div><div class="heroVisual"><div class="orb"><span>AI</span></div><b>ROOM 115</b><span class="muted small">Your learning lab</span></div></section>
+<section class="hero"><div><div class="eyebrow">NHS · ELA Elective</div><h1>AI Basics<br>Passport</h1><p>Learn it. Question it. Use it to learn.<br>Use your assigned Khan Academy introduction once. Then create <strong>your own</strong> study materials from your teacher's guide.</p>${btn("Continue guided pathway →","setPage('path')")} ${btn("Teacher's source ↗","window.open(RESOURCE.source,'_blank')","ghost")}</div><div class="heroVisual"><div class="orb"><span>AI</span></div><b>ROOM 115</b><span class="muted small">Your learning lab</span></div></section>
 ${section("Your journey","Only about 20 minutes of each Studio block—your academic work stays protected.")}
 <div class="grid"><div class="card"><div class="row"><span class="tag">Intro sessions</span><span class="stat">${done}/2</span></div>${bar(done,2)}<p>Understand AI & prompt better · Question AI & study smarter</p>${btn(done===2?"Review guided pathway →":"Continue pathway →","setPage('path')","secondary")}</div>
 <div class="card"><div class="row"><span class="tag">Your study kit</span><span class="stat">${s}/3</span></div>${bar(s,3)}<p>Handwritten two-column notes · Your flashcards · Your choice</p>${btn("Build your study kit →","setPage('study')","secondary")}</div></div>
@@ -299,26 +297,10 @@ ${section("Your two learning sessions")}
 <div class="grid">${[["01","Understand AI & Write Better Prompts","Chatbots · prompts · generative AI · LLMs",0],["02","Question AI & Be a Better Study Partner","Hallucinations · verification · academic agency",1]].map(([num,name,desc,i])=>`<div class="card"><div class="row"><span class="tag">Session ${num}</span><span class="pill">${state.sessions[i]?"✓ Completed":"20 min"}</span></div><h3>${name}</h3><p>${desc}</p>${btn("Open session →",`setPage('learn');setTimeout(()=>document.getElementById('lesson${i}')?.scrollIntoView({behavior:'smooth'}),50)`,"ghost")}</div>`).join("")}</div>
 ${section("An important difference")}<div class="card"><strong>Practice is not your certification test.</strong><p>Your official badge still requires your own three study products, an emailed test request, the teacher's existing 25-question assessment, reflection, and teacher approval.</p>${btn("Try practice →","setPage('practice')","secondary")}</div>`}
 function learnView(){return `<div class="eyebrow">Guided microcourse</div><h1 style="font-size:35px;margin:6px 0 6px">Two short sessions</h1><p class="muted">At each checkpoint, read, try, and make a decision. These lessons are your introduction—not extra written homework.</p>
-<section class="card" style="margin:18px 0;background:#f0f8ff">
- <div class="row"><h3>🎬 Video Learning Menu</h3><span class="pill">Edpuzzle-friendly</span></div>
- <p class="small muted">Choose the video that helps you understand today's concept. Your teacher may assign selected clips in Edpuzzle. You do not have to watch every video.</p>
- <div class="grid">
- <div><b>Chatbots and LLMs</b><p><a href="https://www.youtube.com/watch?v=X-AWdfSFCHQ" target="_blank" rel="noopener noreferrer">Code.org: How Chatbots &amp; LLMs Work ↗</a></p></div>
- <div><b>Prompts and roles</b><p><a href="https://youtu.be/6k-6jtgsbW4" target="_blank" rel="noopener noreferrer">Public Library: How to Craft and Refine Prompts ↗</a></p></div>
- <div><b>Hallucinations</b><p><a href="https://youtu.be/cA83zeSRjxQ" target="_blank" rel="noopener noreferrer">Public Library: Assessing AI &amp; Hallucinations ↗</a></p></div>
- <div><b>Verifying information</b><p><a href="https://www.poynter.org/mediawise/programs/ai-unlocked/finding-facts-with-generative-ai-search/" target="_blank" rel="noopener noreferrer">MediaWise: Finding Facts With AI Search ↗</a></p></div>
- </div>
- <p class="small muted">Also use <a href="https://studio.code.org/courses/gen-ai-humanities/units/1/resources" target="_blank" rel="noopener noreferrer">Code.org's Humanities resource collection ↗</a> for teacher support.</p>
-</section>
+
 <div class="stack">
 <article class="card lesson" id="lesson0"><div class="row"><span class="tag">Session 01</span><span class="pill">⏱ About 20 minutes</span></div><h2>Understand AI & Write Better Prompts</h2><p class="desc">Goal: explain basic AI terms and give clear, useful instructions.</p><div class="timeline"><span class="time">Watch 1:30</span><span class="time">Read ~5 min</span><span class="time">Try ~9 min</span><span class="time">Review ~4 min</span></div>
-<div class="lessonPart"><h3>1 · Watch your teacher-provided video</h3><video controls preload="metadata" playsinline><source src="videos/ai-01-intro-to-ai.mp4" type="video/mp4">Your browser cannot play this video.</video><p class="small muted">AI 01 — Introduction to AI · 1 min 30 sec. Captions are available only if supplied in the video.</p></div>
-<div class="lessonPart"><h3>🎬 More video support: Chatbots, LLMs, and prompts</h3>
-<p class="small muted">Choose ONE extra clip if you need an explanation; do not watch them all unless assigned in Edpuzzle.</p>
-<p><a href="https://www.youtube.com/watch?v=X-AWdfSFCHQ" target="_blank" rel="noopener noreferrer">▶ Code.org: How Chatbots &amp; Large Language Models Work ↗</a></p>
-<p><a href="https://youtu.be/6k-6jtgsbW4" target="_blank" rel="noopener noreferrer">▶ Public Library: AI Prompting — Craft &amp; Refine ↗</a></p>
-<p><a href="https://studio.code.org/courses/gen-ai-humanities/units/1/lessons/1/student" target="_blank" rel="noopener noreferrer">⌁ Code.org: Crafting Prompts practice activity ↗</a></p>
-</div>
+<div class="lessonPart"><h3>1 · Complete your assigned Khan Academy introduction</h3><p>Sign in with your Class 5 Google account and complete only your teacher-assigned Khan activities. The visual directions are in Learning Path → Meet AI. You do not need to watch another introduction video here.</p></div>
 <div class="lessonPart"><h3>2 · Understand the words</h3><p>A <strong>chatbot</strong> is the conversation app; a <strong>large language model (LLM)</strong> is one kind of technology behind language generation. <strong>Information retrieval</strong> finds something from available information. <strong>Generative AI</strong> makes new content. <strong>ANI</strong> is narrow; <strong>AGI</strong> describes hypothetical broad AI.</p><div class="focus">AI is a tool category—not just a talking robot. A good ELA learner asks, “Is the tool finding information, creating content, or helping me think?”</div></div>
 <div class="lessonPart"><h3>3 · Choose the best answer</h3><p>A student asks an AI to <em>create</em> three original opening lines for a story. Which is the best label?</p><div id="l0choices" class="choices">${["Information retrieval","Generative AI","Knowledge cutoff"].map((a,i)=>`<button class="choice" onclick="checkLesson(0,${i})">${a}</button>`).join("")}</div><div id="l0feedback"></div></div>
 <div class="lessonPart"><h3>4 · Build a stronger ELA study prompt</h3><p>Include the role, task, context and output. Type your ideas—this preview updates instantly.</p>
